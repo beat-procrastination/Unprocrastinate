@@ -69,8 +69,6 @@ function details(button) {
     }
 }
 
-
-
 function changeButton(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
@@ -83,24 +81,85 @@ function changeButton(button){
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-        startTimeBlocking(button.parentNode.parentNode);
+        NotificatioPermission(button.parentNode.parentNode);
     }
   }
+
+  function NotificatioPermission(element) {
+    if (!("Notification" in window)) {
+        alert("Dieser Browser unterstützt keine Benachrichtigungen");
+    } else {
+        alert("Benachrichtigungen sind aktiviert");
+    }
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                startTimeBlocking(element);
+            } else {
+                alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
+            }
+        });
+    } else if (Notification.permission === "granted") {
+        startTimeBlocking(element);
+    } else {
+        alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
+    }
+    }
+
 
   function startTimeBlocking(element){
     const playTime = element.querySelector("#start-time").value;
     const endTime = element.querySelector("#end-time").value;
+    const playButton = element.querySelector("#play-button");
+    const nameZeitplanung = element.querySelector('#nameZeitplanung');
    
     if (!playTime || !endTime) {
         alert('Bitte geben Sie eine gültige Uhrzeit.');
+        changeButton(playButton);
         return;
     }
     const [startHours, startMinutes] = playTime.split(':').map(Number);
     const [endHours, endMinutes] = endTime.split(':').map(Number);
 
-  }
+    setInterval(() => {
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
 
+        const currentTime = currentHours * 60 + currentMinutes;
+        const startTotalMinutes = startHours * 60 + startMinutes;
+        const endTotalMinutes = endHours * 60 + endMinutes
+        if ((endTotalMinutes - startTotalMinutes) < 20) {
+            alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
+            changeButton(playButton);
+            return;
+        }
+    
 
+        
+        if (currentTime === startTotalMinutes) {
+            if (Notification.permission === 'granted') {
+                new Notification('Bestätigen sie, dass sie angefangen haben!');}
+        }
+        setTimeout(() => {
+            if (!checkbox.checked) {
+                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach der Startzeit vergangen sind.');
+               
+            }
+        }, 10 * 60 * 1000); 
+
+        if (currentTime === endTotalMinutes) {
+            if (Notification.permission === 'granted') {
+                new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);
+        }}
+    }, 60000);
+    }
+
+    
+    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission();
+    }
+  
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
@@ -248,4 +307,3 @@ function startTimer(element) {
 
 
 
-test
