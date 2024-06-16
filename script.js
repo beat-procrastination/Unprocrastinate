@@ -112,7 +112,7 @@ function changeButton(button){
     const endTime = element.querySelector("#end-time").value;
     const playButton = element.querySelector("#play-button");
     const nameZeitplanung = element.querySelector('#nameZeitplanung');
-   
+    const checkbox = element.querySelector('.checkboxTimeBlocking')
     if (!playTime || !endTime) {
         alert('Bitte geben Sie eine gültige Uhrzeit.');
         changeButton(playButton);
@@ -151,8 +151,11 @@ function changeButton(button){
         if (currentTime === endTotalMinutes) {
             if (Notification.permission === 'granted') {
                 new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);
+                checkbox.checked = false; 
+                changeButton(playButton);
         }}
     }, 60000);
+   
     }
 
     
@@ -258,6 +261,7 @@ function startTimer(element) {
     const TimerNameValue = timerName.value;
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
+    
     
     if (WiederholungenValue < 1 || intervalValue <= 0) {
         alert("Bitte geben Sie gültige Werte ein für Intervall sowie Wiederholungen!");
