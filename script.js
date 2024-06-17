@@ -4,7 +4,8 @@ const container = document.getElementById('container');
 const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
-
+let wurdeVorangestelltWiederholungen = false;
+let wurdeVorangestelltIntervall = false;
 
 function openErinnerungen() {
    window.location.href = 'Erinnerungen.html';
@@ -306,6 +307,144 @@ function startTimer(element) {
 } 
 
 
+   
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved data when the page loads
+    loadData();
+
+    // Add event listeners to save data automatically on input change
+    document.getElementById('erinnerungListe').addEventListener('input', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            saveData();
+        }
+    });
+});
+
+// Function to save data to localStorage
+function saveData() {
+    const container = document.getElementById('erinnerungListe');
+    const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
+
+    const data = Array.from(erinnerungElements).map((element, index) => {
+        const dateTime = element.querySelector('#inputDateTime').value;
+        const endDate = element.querySelector('#inputEndDate').value;
+        const name = element.querySelector('.erinnerungName').value;
+        const interval = element.querySelector('select[name="Intervall"]').value;
+
+        return {
+            id: index,
+            dateTime: dateTime,
+            endDate: endDate,
+            name: name,
+            interval: interval
+        };
+    });
+
+    localStorage.setItem('erinnerungen', JSON.stringify(data));
+}
+
+// Function to load data from localStorage
+function loadData() {
+    const data = JSON.parse(localStorage.getItem('erinnerungen'));
+    if (data) {
+        data.forEach(item => {
+            createNewElementWithData(item);
+        });
+    }
+}
+
+// Function to create a new element and populate it with data
+function createNewElementWithData(data) {
+    const container = document.getElementById('erinnerungListe');
+    const originalDiv = document.createElement('div');
+    originalDiv.className = 'erinnerungContainer';
+    
+    originalDiv.innerHTML = `
+        <div class="erinnerungÜbersicht">
+            <input type="checkbox" class="checkbox" id="checkboxErinnerung" name="placeholder">
+            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+            <div class="container">
+        <svg onclick="dropDownMenu(this)" class="menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9
+
+            " stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+        
+            <div id="dropdownMenu" class="dropdown-content hidden">
+            
+                <a onclick="löschen(this)" href="#">Löschen</a>
+                <a onclick="fixieren(this)" href="#">Fixieren</a>
+            </div>                                                                                                       
+    </div> 
+        </div>
+        <div class="hidde">
+            <div class="erinnerungDetails">
+                <div class="datumContainer">
+                    <input id="inputDateTime" class="inputErinnerungDetails" placeholder="Datum & Uhrzeit" type="text" value="${data.dateTime}">
+                    <input id="inputEndDate" class="inputErinnerungDetails" placeholder="Enddatum (Optional)" type="text" value="${data.endDate}">
+                </div>
+                <div class="intervallContainer">
+                    <select class="inputErinnerungDetails" name="Intervall">
+                        <option ${data.interval === 'Stunde' ? 'selected' : ''}>Stunde</option>
+                        <option ${data.interval === 'Tag' ? 'selected' : ''}>Tag</option>
+                        <option ${data.interval === 'Woche' ? 'selected' : ''}>Woche</option>
+                        <option ${data.interval === 'Monat' ? 'selected' : ''}>Monat</option>
+                        <option ${data.interval === 'Jahr' ? 'selected' : ''}>Jahr</option>
+                        <option ${data.interval === 'Minute' ? 'selected' : ''}>Minute</option>
+                    </select>
+                    <input class="inputErinnerungDetails" placeholder="Jede">
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(originalDiv);
+}
+
+// Function to create a new element when the button is pressed
+function createNewElement(id, containerId) {
+    const container = document.getElementById(containerId);
+    const originalDiv = document.createElement('div');
+    originalDiv.className = 'erinnerungContainer';
+    
+    originalDiv.innerHTML = `
+        <div class="erinnerungÜbersicht">
+            <input type="checkbox" class="checkbox" id="checkboxErinnerung" name="placeholder">
+            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text">
+            <div class="container">
+        <svg onclick="dropDownMenu(this)" class="menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9
+
+            " stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+        
+            <div id="dropdownMenu" class="dropdown-content hidden">
+            
+                <a onclick="löschen(this)" href="#">Löschen</a>
+                <a onclick="fixieren(this)" href="#">Fixieren</a>
+            </div>                                                                                                       
+    </div> 
+        </div>
+        <div class="hidde">
+            <div class="erinnerungDetails">
+                <div class="datumContainer">
+                    <input id="inputDateTime" class="inputErinnerungDetails" placeholder="Datum & Uhrzeit" type="text">
+                    <input id="inputEndDate" class="inputErinnerungDetails" placeholder="Enddatum (Optional)" type="text">
+                </div>
+                <div class="intervallContainer">
+                    <select class="inputErinnerungDetails" name="Intervall">
+                        <option>Stunde</option>
+                        <option>Tag</option>
+                        <option>Woche</option>
+                        <option>Monat</option>
+                        <option>Jahr</option>
+                        <option>Minute</option>
+                    </select>
+                    <input class="inputErinnerungDetails" placeholder="Jede">
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(originalDiv);
+    saveData();  // Save the state immediately after creating a new element
+}
 
 
 

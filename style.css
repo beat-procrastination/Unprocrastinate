@@ -155,27 +155,106 @@ height: 10vh;
 
 
 
-.erinnerung{
- display: flex;
- flex-direction: row;
- justify-content: space-around;
- flex-wrap: wrap;
- height: 30vw;
- border: 0.5vw+0.5vh solid red;
- padding: 2vw 0vw 0vw 0vw;
- background-color: blue;
+.erinnerungContainer{
+  height: auto;
+  width: auto; 
+  padding: calc(0.5vw + 0.5vh);
+  border: calc(0.3vw + 0.3vh) solid black;
+  margin-bottom: 4vh;
 }
 
-.inputText{
- height: 5vw;
- padding: 1vw 0vw 1vw 0vw;
- background-color: white;
+.erinnerungÜbersicht{
+  display: block;
+  height: 7vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.erinnerngInputBox{
- height: 10vw;
- padding: 1vw 0vw 1vw 0vw;
- background-color: green;
+
+.checkbox{
+  width: auto;
+  background-color: green;
+  margin: 0 4vw 0 0vw;
 }
+
+.erinnerungName{
+  width: 55vw;
+  height: 4vh;
+  margin-bottom: 2vh;
+}
+
+.erinnerungDetails{
+  height: 12vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.datumContainer{
+  display: flex;
+  width: 50%;
+  height: 12vh;
+  flex-wrap: wrap;
+}
+
+.intervallContainer{
+  display: flex;
+  width: 50%;
+  height: 12vh;
+  flex-wrap: wrap;
+}
+
+.inputErinnerungDetails{
+  height: 40%;
+  width: 100%;
+  margin: 0 5% 0 5%;
+}
+
+
+
+
+.ausredeContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; 
+  flex-wrap: wrap;
+  text-wrap: wrap;
+  width: auto;
+  border: calc(0.5vw+0.5vh) solid black;
+}
+
+.ausrede{
+  border: calc(0.5vw + 0.5vh) solid black;
+  background-color: gray;
+  margin-bottom: 5vh;
+  width: 80vw;
+  height: auto;
+}
+
+
+.ausredeÜbersicht{
+  display: block;
+  height: 7vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.ausredeName{
+  width: 55vw;
+  height: 4vh;
+  margin-bottom:0 ;
+  justify-content: center;
+  align-items: center;
+}
+
+.ausredeDetails{
+  height: auto;
+  margin: 0% 4% 0% 4%;
+}
+
 
 
 
