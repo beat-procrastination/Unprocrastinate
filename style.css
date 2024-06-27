@@ -2,8 +2,10 @@
   --farbe: #fff5ee; 
 }
 
+
 *{
  color: #252525;
+
 }
 
 
@@ -44,6 +46,7 @@ h2{text-align: center;
  .neuesElement{ display: flex;
   align-items: center;
   gap: 4%;
+  height: 8vh;
   
   }
   .bigWords{
@@ -61,11 +64,11 @@ h2{text-align: center;
   gap: 4%;
   
   }
-  .bodyTimer, .bodyTimeBlocking, .inputTimeBlocking{
+  .bodyTimer, .bodyHallofShame ,.bodyTimeBlocking, .inputTimeBlocking, .bodyErinnerungen{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color:(--farbe);
+  background-color:var(--farbe);
   
   }
   svg{
@@ -88,10 +91,15 @@ h2{text-align: center;
   font-size: calc(2.5vw + 2.5vh) ;
   border: calc(0.25vh + 0.25vw) solid black;
   padding:(1vh + 1vw) ;
-  height:10vh;
+  height:11vh;
   gap: 1%;
+  margin-top: 5vh;
   }
 
+
+  .bodyErinnerungen{
+
+  }
 
     
   .newTimer, .newTimeBlocking{
@@ -114,11 +122,12 @@ h2{text-align: center;
   border-left: calc(0.25vh + 0.25vw) solid black;
   height: 7vh;
   position: relative;
-  margin-bottom: 5vh;
+  margin-bottom: 8vh;
   }
   input{
   border:2px solid transparent;
   box-shadow: 0 0 0 2px black;
+  background-color: var(--farbe);
   }
   input::placeholder{
   color: black;
@@ -165,7 +174,9 @@ h2{text-align: center;
   width: auto;
   padding: calc(0.5vw + 0.5vh);
   border: calc(0.3vw + 0.3vh) solid black;
-  margin-bottom: 9vh;
+  margin-bottom: 8vh;
+  margin-top: 5vh;
+
   }
   
   .erinnerungÜbersicht{
@@ -273,7 +284,9 @@ h2{text-align: center;
   gap: 4%;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 2%
+  padding: 0 2%;
+  margin-bottom: 8vh;
+  
   }
   
   #repeat{
@@ -288,6 +301,7 @@ font-size: calc(2.5vw + 2.5vh) ;
 border: calc(0.25vh + 0.25vw) solid black;
 padding:calc(1vh + 1vw) ;
 height:7vh;
+margin-top: 5vh;
 
 }
 
