@@ -2,8 +2,10 @@
   --farbe: #fff5ee; 
 }
 
+
 *{
  color: #252525;
+
 }
 
 
@@ -62,7 +64,11 @@ h2{text-align: center;
   gap: 4%;
   
   }
+<<<<<<< HEAD
   .bodyTimer, .bodyTimeBlocking, .inputTimeBlocking, .bodyHallofShame{
+=======
+  .bodyTimer, .bodyHallofShame ,.bodyTimeBlocking, .inputTimeBlocking, .bodyErinnerungen{
+>>>>>>> c95614966db96a404de1df668742c2a95183f4ba
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -95,6 +101,10 @@ h2{text-align: center;
   }
 
   
+  .bodyErinnerungen{
+
+  }
+
   .bodyErinnerungen{
 
   }
@@ -174,6 +184,10 @@ h2{text-align: center;
   border: calc(0.3vw + 0.3vh) solid black;
   margin-bottom: 8vh;
   margin-top: 5vh;
+<<<<<<< HEAD
+=======
+
+>>>>>>> c95614966db96a404de1df668742c2a95183f4ba
   }
   
   .erinnerungÜbersicht{
@@ -283,6 +297,10 @@ h2{text-align: center;
   flex-wrap: wrap;
   padding: 0 2%;
   margin-bottom: 8vh;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> c95614966db96a404de1df668742c2a95183f4ba
   }
   
   #repeat{
