@@ -167,7 +167,7 @@ function changeButton(button){
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
-    
+
     
     if(playButton.classList.contains('hidden')){
         playButton.classList.remove('hidden');
@@ -237,7 +237,7 @@ function startTimer(element) {
     
     function stopTimer() {
         clearInterval(myVar);
-        isRunning = false;  // Update the flag
+        isRunning = false;  
         alert(`Timer wurde gestoppt.`);
     }
    
@@ -256,12 +256,14 @@ function startTimer(element) {
     }
     
     const intervalInput = element.querySelector("#Intervall");
-    const Wiederholungen = element.querySelector("#Wiederholungen");
+    const Wiederholungen = element.querySelector("#wiederholungen");
+    console.log(Wiederholungen);
     const timerName = element.querySelector("#timerName");
 
     const TimerNameValue = timerName.value;
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
+  
     
     
     if (WiederholungenValue < 1 || intervalValue <= 0) {
@@ -602,11 +604,11 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
         </div>
     `;
     container.appendChild(originalDivErinnerung);
-    saveDataErinnerung();  // Save the state immediately after creating a new element  
+    saveDataErinnerung();  
 }
 
-// Function to create a new element when the button is pressed
-function createNewElementTimer(containerId) {          //Timer
+
+function createNewElementTimer(containerId) {         
     const container = document.getElementById(containerId);
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
