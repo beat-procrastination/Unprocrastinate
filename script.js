@@ -7,6 +7,7 @@ const stopButton = document.getElementById('stop-button');
 let wurdeVorangestelltWiederholungen = false;
 let wurdeVorangestelltIntervall = false;
 
+
 function openErinnerungen() {
    window.location.href = 'Erinnerungen.html';
 }
@@ -41,6 +42,8 @@ dropdownMenus.forEach(menu => {
 inputElements.forEach(input => {
         input.value = '';
     });
+
+ 
 
 
 
@@ -78,7 +81,7 @@ function changeButton(button){
     if(playButton.classList.contains('hidden')){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
-        
+        stopTimeBlocking();
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
@@ -107,58 +110,79 @@ function changeButton(button){
     }
     }
 
+    let isRunningTimeBlocking = false;
 
-  function startTimeBlocking(element){
-    const playTime = element.querySelector("#start-time").value;
-    const endTime = element.querySelector("#end-time").value;
-    const playButton = element.querySelector("#play-button");
-    const nameZeitplanung = element.querySelector('#nameZeitplanung');
-    const checkbox = element.querySelector('.checkboxTimeBlocking')
-    if (!playTime || !endTime) {
-        alert('Bitte geben Sie eine gültige Uhrzeit.');
-        changeButton(playButton);
-        return;
-    }
-    const [startHours, startMinutes] = playTime.split(':').map(Number);
-    const [endHours, endMinutes] = endTime.split(':').map(Number);
-
-    setInterval(() => {
-        const now = new Date();
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes();
-
-        const currentTime = currentHours * 60 + currentMinutes;
-        const startTotalMinutes = startHours * 60 + startMinutes;
-        const endTotalMinutes = endHours * 60 + endMinutes
-        if ((endTotalMinutes - startTotalMinutes) < 20) {
+    function startTimeBlocking(element) {
+        if (!isRunningTimeBlocking) {
+            return;
+        }
+    
+        const playTime = element.querySelector("#start-time").value;
+        const endTime = element.querySelector("#end-time").value;
+        const playButton = element.querySelector("#play-button");
+        const nameZeitplanung = element.querySelector('#nameZeitplanung');
+        const checkbox = element.querySelector('.checkboxTimeBlocking');
+    
+        if (!playTime || !endTime) {
+            alert('Bitte geben Sie eine gültige Uhrzeit ein.');
+            changeButton(playButton);
+            return;
+        }
+    
+        const [startHours, startMinutes] = playTime.split(':').map(Number);
+        const [endHours, endMinutes] = endTime.split(':').map(Number);
+    
+        if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 20) {
             alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
             changeButton(playButton);
             return;
         }
     
-
-        
-        if (currentTime === startTotalMinutes) {
-            if (Notification.permission === 'granted') {
-                new Notification('Bestätigen sie, dass sie angefangen haben!');}
-        }
-        setTimeout(() => {
-            if (!checkbox.checked) {
-                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach der Startzeit vergangen sind.');
-               
+        isRunningTimeBlocking = true;
+    
+        const timeBlockingInterval = setInterval(() => {
+            if (!isRunningTimeBlocking) {
+                clearInterval(timeBlockingInterval);
+                return;
             }
-        }, 10 * 60 * 1000); 
-
-        if (currentTime === endTotalMinutes) {
-            if (Notification.permission === 'granted') {
-                new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);
-                checkbox.checked = false; 
-                changeButton(playButton);
-        }}
-    }, 60000);
-   
+    
+            const now = new Date();
+            const currentHours = now.getHours();
+            const currentMinutes = now.getMinutes();
+    
+            const currentTime = currentHours * 60 + currentMinutes;
+            const startTotalMinutes = startHours * 60 + startMinutes;
+            const endTotalMinutes = endHours * 60 + endMinutes;
+    
+            if (currentTime === startTotalMinutes) {
+                if (Notification.permission === 'granted') {
+                    new Notification('Bestätigen Sie, dass Sie angefangen haben!');
+                }
+            }
+    
+            setTimeout(() => {
+                if (!isRunningTimeBlocking) return;
+                if (!checkbox.checked) {
+                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach der Startzeit vergangen sind.');
+                }
+            }, 10 * 60 * 1000);
+    
+            if (currentTime === endTotalMinutes) {
+                if (Notification.permission === 'granted') {
+                    new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);
+                    checkbox.checked = false;
+                    changeButton(playButton);
+                    stopTimeBlocking();
+                }
+            }
+        }, 60000);
     }
-
+    
+    function stopTimeBlocking() {
+        isRunningTimeBlocking = false;
+        alert('Zeitplanung wurde gestoppt.');
+    }
+    
     
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
@@ -419,7 +443,7 @@ function saveDataBlocking() {   //Blocking
     const blockingElements = container.querySelectorAll('.blockingContainer');
     
     const data = Array.from(blockingElements).map((element, index) => {
-        console.log(element)
+      
         const startTime = element.querySelector('#start-time').value;
         const endTime = element.querySelector('#end-time').value;
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
