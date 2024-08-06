@@ -73,6 +73,15 @@ function details(button) {
     }
 }
 
+
+
+function stopTimeBlocking() {
+    isRunningTimeBlocking = false;
+    alert('Zeitplanung wurde gestoppt.');
+    console.log("funktioniert3");
+}
+
+
 function changeButton(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
@@ -82,14 +91,17 @@ function changeButton(button){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
         stopTimeBlocking();
+        console.log("funktioniert2");
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         NotificatioPermission(button.parentNode.parentNode);
+        console.log("funktioniert");
     }
   }
 
   function NotificatioPermission(element) {
+
     if (!("Notification" in window)) {
         alert("Dieser Browser unterstützt keine Benachrichtigungen");
     } else {
@@ -113,9 +125,9 @@ function changeButton(button){
     let isRunningTimeBlocking = false;
 
     function startTimeBlocking(element) {
-        if (!isRunningTimeBlocking) {
-            return;
-        }
+        isRunningTimeBlocking = true;
+       
+        
     
         const playTime = element.querySelector("#start-time").value;
         const endTime = element.querySelector("#end-time").value;
@@ -137,14 +149,24 @@ function changeButton(button){
             changeButton(playButton);
             return;
         }
-    
-        isRunningTimeBlocking = true;
+        if (isRunningTimeBlocking===false) {
+            stopTimeBlocking();
+            return;
+      
+     }
+        
+        
+
+     
     
         const timeBlockingInterval = setInterval(() => {
-            if (!isRunningTimeBlocking) {
+            if (isRunningTimeBlocking===false) {
+                stopTimeBlocking();
                 clearInterval(timeBlockingInterval);
                 return;
-            }
+          
+         }
+            
     
             const now = new Date();
             const currentHours = now.getHours();
@@ -166,6 +188,12 @@ function changeButton(button){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach der Startzeit vergangen sind.');
                 }
             }, 10 * 60 * 1000);
+            if (isRunningTimeBlocking===false) {
+                stopTimeBlocking();
+                clearInterval(timeBlockingInterval);
+                return;
+          
+         }
     
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
@@ -176,17 +204,12 @@ function changeButton(button){
                 }
             }
         }, 60000);
-    }
     
-    function stopTimeBlocking() {
-        isRunningTimeBlocking = false;
-        alert('Zeitplanung wurde gestoppt.');
-    }
     
     
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
-    }
+    }}
   
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-button");
