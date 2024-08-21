@@ -73,8 +73,57 @@ function details(button) {
     }
 }
 
+  
+function dropDownMenu(button) {
+    var dropdownMenu = button.parentNode.querySelector(".dropdown-content");
+    if (dropdownMenu.classList.contains("hidden")) {
+      dropdownMenu.classList.remove("hidden");
+    } else {
+      dropdownMenu.classList.add("hidden");
+    }
+}
+
+  
 
 
+function löschen(button) {
+    
+    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
+
+    if (parentElement.parentNode.children.length > 1) {
+       
+        parentElement.remove();
+    } else {
+       
+        createNewElement('newTimeBlocking', 'timeBlockingList');
+        parentElement.remove();
+    }
+}
+
+  
+  
+function fixieren(button) {
+
+    var dropdownMenus = document.querySelectorAll('.dropdown-content');
+    dropdownMenus.forEach(function(menu) {
+        menu.classList.add('hidden');
+    });
+
+   
+    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+   
+
+    
+    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
+   
+
+    if (containerOfButton !== container.firstElementChild) {
+        container.insertBefore(containerOfButton, container.firstElementChild);
+    }
+}
+
+
+// Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
     alert('Zeitplanung wurde gestoppt.');
@@ -211,11 +260,14 @@ function changeButton(button){
         Notification.requestPermission();
     }}
   
+
+
+
+    //Timer Start
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
 
-    
     if(playButton.classList.contains('hidden')){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
@@ -226,56 +278,6 @@ function changeButtons(button){
         startTimer(button.parentNode.parentNode);
     }
   }
-
-  
-  
-  function dropDownMenu(button) {
-    var dropdownMenu = button.parentNode.querySelector(".dropdown-content");
-    if (dropdownMenu.classList.contains("hidden")) {
-      dropdownMenu.classList.remove("hidden");
-    } else {
-      dropdownMenu.classList.add("hidden");
-    }
-}
-
-  
-
-
-function löschen(button) {
-    
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
-
-    if (parentElement.parentNode.children.length > 1) {
-       
-        parentElement.remove();
-    } else {
-       
-        createNewElement('newTimeBlocking', 'timeBlockingList');
-        parentElement.remove();
-    }
-}
-
-  
-  
-function fixieren(button) {
-
-    var dropdownMenus = document.querySelectorAll('.dropdown-content');
-    dropdownMenus.forEach(function(menu) {
-        menu.classList.add('hidden');
-    });
-
-   
-    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
-   
-
-    
-    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
-   
-
-    if (containerOfButton !== container.firstElementChild) {
-        container.insertBefore(containerOfButton, container.firstElementChild);
-    }
-}
 
 function startTimer(element) {
     let myVar;
@@ -310,8 +312,6 @@ function startTimer(element) {
     const TimerNameValue = timerName.value;
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
-  
-    
     
     if (WiederholungenValue < 1 || intervalValue <= 0) {
         alert("Bitte geben Sie gültige Werte ein für Intervall sowie Wiederholungen!");
