@@ -726,64 +726,76 @@ function createNewElementBlocking(containerId) {   //Blocking
 }
 
         
+// errinnerung
+let stopped = false;
+let timerId = null;
 
-function changeButto(button){
-    var playButton = button.parentNode.querySelector("#play-button");
-    var stopButton = button.parentNode.querySelector("#stop-button");
-    
-    if(playButton.classList.contains('hidden')){
+function changeButto(button) {
+    const playButton = button.parentNode.querySelector("#play-button");
+    const stopButton = button.parentNode.querySelector("#stop-button");
+
+    if (playButton.classList.contains('hidden')) {
+        // Stoppen des Timers und Umschalten auf Play-Button
+        stopped = true;
+        clearTimeout(timerId); // Timer stoppen, falls er läuft
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
-    } else if (stopButton.classList.contains('hidden')) {
+        alert("Die Erinnerung wurde angehalten."); // Alert beim Anhalten
+    } else {
+        // Starten der Erinnerung und Umschalten auf Stop-Button
+        stopped = false;
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-    }
+        
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        } else {
+            startReminder(button.parentNode.parentNode.parentNode.parentNode);
+        }
 
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission();
-    } else {
-        Erinnerung(button.parentNode.parentNode.parentNode.parentNode);
+        // EventListener hinzufügen, um auf das Stoppen zu reagieren
+        stopButton.addEventListener('click', stopReminder);
     }
 }
 
-function Erinnerung(einheit) {
-    console.log(einheit);
+function stopReminder() {
+    stopped = true;
+    clearTimeout(timerId); // Timer stoppen
+    alert("Die Erinnerung wurde angehalten.");
+}
+
+function startReminder(einheit) {
     const playButton = einheit.querySelector("#play-button");
     const dateInput = einheit.querySelector('#inputDate');
     const timeInput = einheit.querySelector('#inputTime');
-    const reminderName = einheit.querySelector('.erinnerungName');
+    const reminderName = einheit.querySelector('.erinnerungName').value;
 
-    // Debugging: Prüfen, ob die Elemente gefunden werden
-    console.log("Date Input:", dateInput);
-    console.log("Time Input:", timeInput);
-    console.log("Reminder Name:", reminderName);
-
-    if (!dateInput || !timeInput || !reminderName) {
-        alert("Ein oder mehrere Eingabefelder wurden nicht gefunden. Überprüfen Sie die Selektoren und das DOM.");
-        return;
-    }
-
-    const dateValue = dateInput.value;
-    const timeValue = timeInput.value;
-    const reminderNameValue = reminderName.value;
-
-    console.log(dateValue, timeValue, reminderNameValue);
-    if (!dateValue || !timeValue || !reminderNameValue) {
-        alert("Geben Sie gültige Werte ein!");
+    if (!dateInput.value || !timeInput.value || !reminderName) {
+        alert("Bitte alle Felder ausfüllen.");
+        stopped = true;
         changeButto(playButton);
         return;
     }
 
-    const reminderDateTime = new Date(`${dateValue}T${timeValue}`);
+    const reminderDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
     const now = new Date();
     const timeToReminder = reminderDateTime - now;
 
     if (timeToReminder <= 0) {
-        alert('Die eingegebene Zeit liegt in der Vergangenheit');
+        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+        stopped = true;
+        changeButto(playButton);
         return;
     }
 
-    setTimeout(() => {
-        new Notification(`Es ist Zeit für deine Erinnerung: ${reminderNameValue}`);
+    // Timer starten und den ID speichern
+    timerId = setTimeout(() => {
+        // Erst nach Ablauf der Zeit prüfen, ob der Timer gestoppt wurde
+        if (!stopped) {
+            new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
+            
+        }
+        stopped = true;  // Automatisch stoppen nach der Benachrichtigung
+        changeButto(einheit.querySelector("#stop-button"));
     }, timeToReminder);
 }
