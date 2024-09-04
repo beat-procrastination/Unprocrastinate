@@ -199,6 +199,7 @@ function changeButton(button){
             return;
         }
         if (isRunningTimeBlocking===false) {
+            console.log("k");
             stopTimeBlocking();
             return;
       
@@ -210,8 +211,8 @@ function changeButton(button){
     
         const timeBlockingInterval = setInterval(() => {
             if (isRunningTimeBlocking===false) {
-                stopTimeBlocking();
-                clearInterval(timeBlockingInterval);
+                
+             clearInterval(timeBlockingInterval);
                 return;
           
          }
@@ -240,6 +241,7 @@ function changeButton(button){
             if (isRunningTimeBlocking===false) {
                 stopTimeBlocking();
                 clearInterval(timeBlockingInterval);
+                console.log("h");
                 return;
           
          }
@@ -335,7 +337,7 @@ function startTimer(element) {
   
     function startInterval() {
         alert("Timer hat gestartet.");
-        isRunning = true;  
+        isRunning = true;  ß
         myVar = setInterval(myTimer, intervalValue);
 
         function myTimer() {
@@ -729,7 +731,7 @@ function createNewElementBlocking(containerId) {   //Blocking
 // errinnerung
 let stopped = false;
 let timerId = null;
-
+const checkboxx = element.querySelector('.checkboxErinnerung');
 function changeButto(button) {
     const playButton = button.parentNode.querySelector("#play-button");
     const stopButton = button.parentNode.querySelector("#stop-button");
@@ -761,7 +763,7 @@ function changeButto(button) {
 function stopReminder() {
     stopped = true;
     clearTimeout(timerId); // Timer stoppen
-    alert("Die Erinnerung wurde angehalten.");
+    console.log("Die Erinnerung wurde angehalten.");
 }
 
 function startReminder(einheit) {
@@ -788,13 +790,19 @@ function startReminder(einheit) {
         return;
     }
 
-    // Timer starten und den ID speichern
+
     timerId = setTimeout(() => {
-        // Erst nach Ablauf der Zeit prüfen, ob der Timer gestoppt wurde
+        
         if (!stopped) {
             new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
             
         }
+        
+    setTimeout(() => {
+        if (!checkboxx.checked) {
+            alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');
+        }
+    }, 10 * 60 * 1000);
         stopped = true;  // Automatisch stoppen nach der Benachrichtigung
         changeButto(einheit.querySelector("#stop-button"));
     }, timeToReminder);
