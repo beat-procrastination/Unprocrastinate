@@ -4,8 +4,7 @@ const container = document.getElementById('container');
 const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
-let wurdeVorangestelltWiederholungen = false;
-let wurdeVorangestelltIntervall = false;
+
 
 
 function openErinnerungen() {
@@ -199,7 +198,7 @@ function changeButton(button){
             return;
         }
         if (isRunningTimeBlocking===false) {
-            console.log("k");
+            
             stopTimeBlocking();
             return;
       
@@ -241,7 +240,6 @@ function changeButton(button){
             if (isRunningTimeBlocking===false) {
                 stopTimeBlocking();
                 clearInterval(timeBlockingInterval);
-                console.log("h");
                 return;
           
          }
@@ -308,7 +306,6 @@ function startTimer(element) {
     
     const intervalInput = element.querySelector("#Intervall");
     const Wiederholungen = element.querySelector("#wiederholungen");
-    console.log(Wiederholungen);
     const timerName = element.querySelector("#timerName");
 
     const TimerNameValue = timerName.value;
@@ -337,7 +334,7 @@ function startTimer(element) {
   
     function startInterval() {
         alert("Timer hat gestartet.");
-        isRunning = true;  ß
+        isRunning = true;  
         myVar = setInterval(myTimer, intervalValue);
 
         function myTimer() {
@@ -731,7 +728,7 @@ function createNewElementBlocking(containerId) {   //Blocking
 // errinnerung
 let stopped = false;
 let timerId = null;
-const checkboxx = element.querySelector('.checkboxErinnerung');
+
 function changeButto(button) {
     const playButton = button.parentNode.querySelector("#play-button");
     const stopButton = button.parentNode.querySelector("#stop-button");
@@ -742,7 +739,7 @@ function changeButto(button) {
         clearTimeout(timerId); // Timer stoppen, falls er läuft
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
-        alert("Die Erinnerung wurde angehalten."); // Alert beim Anhalten
+       
     } else {
         // Starten der Erinnerung und Umschalten auf Stop-Button
         stopped = false;
@@ -765,13 +762,14 @@ function stopReminder() {
     clearTimeout(timerId); // Timer stoppen
     console.log("Die Erinnerung wurde angehalten.");
 }
-
+ 
 function startReminder(einheit) {
     const playButton = einheit.querySelector("#play-button");
     const dateInput = einheit.querySelector('#inputDate');
     const timeInput = einheit.querySelector('#inputTime');
     const reminderName = einheit.querySelector('.erinnerungName').value;
-
+    const checkboxx = einheit.querySelector('#checkboxErinnerung');
+    console.log(checkboxx);
     if (!dateInput.value || !timeInput.value || !reminderName) {
         alert("Bitte alle Felder ausfüllen.");
         stopped = true;
