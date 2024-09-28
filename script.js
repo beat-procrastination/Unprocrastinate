@@ -4,8 +4,7 @@ const container = document.getElementById('container');
 const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
-let wurdeVorangestelltWiederholungen = false;
-let wurdeVorangestelltIntervall = false;
+
 
 
 function openErinnerungen() {
@@ -73,8 +72,57 @@ function details(button) {
     }
 }
 
+  
+function dropDownMenu(button) {
+    var dropdownMenu = button.parentNode.querySelector(".dropdown-content");
+    if (dropdownMenu.classList.contains("hidden")) {
+      dropdownMenu.classList.remove("hidden");
+    } else {
+      dropdownMenu.classList.add("hidden");
+    }
+}
+
+  
 
 
+function löschen(button) {
+    
+    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
+
+    if (parentElement.parentNode.children.length > 1) {
+       
+        parentElement.remove();
+    } else {
+       
+        createNewElement('newTimeBlocking', 'timeBlockingList');
+        parentElement.remove();
+    }
+}
+
+  
+  
+function fixieren(button) {
+
+    var dropdownMenus = document.querySelectorAll('.dropdown-content');
+    dropdownMenus.forEach(function(menu) {
+        menu.classList.add('hidden');
+    });
+
+   
+    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+   
+
+    
+    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
+   
+
+    if (containerOfButton !== container.firstElementChild) {
+        container.insertBefore(containerOfButton, container.firstElementChild);
+    }
+}
+
+
+// Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
     alert('Zeitplanung wurde gestoppt.');
@@ -150,6 +198,7 @@ function changeButton(button){
             return;
         }
         if (isRunningTimeBlocking===false) {
+            
             stopTimeBlocking();
             return;
       
@@ -161,8 +210,8 @@ function changeButton(button){
     
         const timeBlockingInterval = setInterval(() => {
             if (isRunningTimeBlocking===false) {
-                stopTimeBlocking();
-                clearInterval(timeBlockingInterval);
+                
+             clearInterval(timeBlockingInterval);
                 return;
           
          }
@@ -211,11 +260,14 @@ function changeButton(button){
         Notification.requestPermission();
     }}
   
+
+
+
+    //Timer Start
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-button");
     var stopButton = button.parentNode.querySelector("#stop-button");
 
-    
     if(playButton.classList.contains('hidden')){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
@@ -226,56 +278,6 @@ function changeButtons(button){
         startTimer(button.parentNode.parentNode);
     }
   }
-
-  
-  
-  function dropDownMenu(button) {
-    var dropdownMenu = button.parentNode.querySelector(".dropdown-content");
-    if (dropdownMenu.classList.contains("hidden")) {
-      dropdownMenu.classList.remove("hidden");
-    } else {
-      dropdownMenu.classList.add("hidden");
-    }
-}
-
-  
-
-
-function löschen(button) {
-    
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
-
-    if (parentElement.parentNode.children.length > 1) {
-       
-        parentElement.remove();
-    } else {
-       
-        createNewElement('newTimeBlocking', 'timeBlockingList');
-        parentElement.remove();
-    }
-}
-
-  
-  
-function fixieren(button) {
-
-    var dropdownMenus = document.querySelectorAll('.dropdown-content');
-    dropdownMenus.forEach(function(menu) {
-        menu.classList.add('hidden');
-    });
-
-   
-    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
-   
-
-    
-    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
-   
-
-    if (containerOfButton !== container.firstElementChild) {
-        container.insertBefore(containerOfButton, container.firstElementChild);
-    }
-}
 
 function startTimer(element) {
     let myVar;
@@ -304,14 +306,11 @@ function startTimer(element) {
     
     const intervalInput = element.querySelector("#Intervall");
     const Wiederholungen = element.querySelector("#wiederholungen");
-    console.log(Wiederholungen);
     const timerName = element.querySelector("#timerName");
 
     const TimerNameValue = timerName.value;
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
-  
-    
     
     if (WiederholungenValue < 1 || intervalValue <= 0) {
         alert("Bitte geben Sie gültige Werte ein für Intervall sowie Wiederholungen!");
@@ -726,64 +725,83 @@ function createNewElementBlocking(containerId) {   //Blocking
 }
 
         
+// errinnerung
+let stopped = false;
+let timerId = null;
 
-function changeButto(button){
-    var playButton = button.parentNode.querySelector("#play-button");
-    var stopButton = button.parentNode.querySelector("#stop-button");
-    
-    if(playButton.classList.contains('hidden')){
+function changeButto(button) {
+    const playButton = button.parentNode.querySelector("#play-button");
+    const stopButton = button.parentNode.querySelector("#stop-button");
+
+    if (playButton.classList.contains('hidden')) {
+        // Stoppen des Timers und Umschalten auf Play-Button
+        stopped = true;
+        clearTimeout(timerId); // Timer stoppen, falls er läuft
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
-    } else if (stopButton.classList.contains('hidden')) {
+       
+    } else {
+        // Starten der Erinnerung und Umschalten auf Stop-Button
+        stopped = false;
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-    }
+        
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        } else {
+            startReminder(button.parentNode.parentNode.parentNode.parentNode);
+        }
 
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission();
-    } else {
-        Erinnerung(button.parentNode.parentNode.parentNode.parentNode);
+        // EventListener hinzufügen, um auf das Stoppen zu reagieren
+        stopButton.addEventListener('click', stopReminder);
     }
 }
 
-function Erinnerung(einheit) {
-    console.log(einheit);
+function stopReminder() {
+    stopped = true;
+    clearTimeout(timerId); // Timer stoppen
+    console.log("Die Erinnerung wurde angehalten.");
+}
+ 
+function startReminder(einheit) {
     const playButton = einheit.querySelector("#play-button");
     const dateInput = einheit.querySelector('#inputDate');
     const timeInput = einheit.querySelector('#inputTime');
-    const reminderName = einheit.querySelector('.erinnerungName');
-
-    // Debugging: Prüfen, ob die Elemente gefunden werden
-    console.log("Date Input:", dateInput);
-    console.log("Time Input:", timeInput);
-    console.log("Reminder Name:", reminderName);
-
-    if (!dateInput || !timeInput || !reminderName) {
-        alert("Ein oder mehrere Eingabefelder wurden nicht gefunden. Überprüfen Sie die Selektoren und das DOM.");
-        return;
-    }
-
-    const dateValue = dateInput.value;
-    const timeValue = timeInput.value;
-    const reminderNameValue = reminderName.value;
-
-    console.log(dateValue, timeValue, reminderNameValue);
-    if (!dateValue || !timeValue || !reminderNameValue) {
-        alert("Geben Sie gültige Werte ein!");
+    const reminderName = einheit.querySelector('.erinnerungName').value;
+    const checkboxx = einheit.querySelector('#checkboxErinnerung');
+    console.log(checkboxx);
+    if (!dateInput.value || !timeInput.value || !reminderName) {
+        alert("Bitte alle Felder ausfüllen.");
+        stopped = true;
         changeButto(playButton);
         return;
     }
 
-    const reminderDateTime = new Date(`${dateValue}T${timeValue}`);
+    const reminderDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
     const now = new Date();
     const timeToReminder = reminderDateTime - now;
 
     if (timeToReminder <= 0) {
-        alert('Die eingegebene Zeit liegt in der Vergangenheit');
+        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+        stopped = true;
+        changeButto(playButton);
         return;
     }
 
+
+    timerId = setTimeout(() => {
+        
+        if (!stopped) {
+            new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
+            
+        }
+        
     setTimeout(() => {
-        new Notification(`Es ist Zeit für deine Erinnerung: ${reminderNameValue}`);
+        if (!checkboxx.checked) {
+            alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');
+        }
+    }, 10 * 60 * 1000);
+        stopped = true;  // Automatisch stoppen nach der Benachrichtigung
+        changeButto(einheit.querySelector("#stop-button"));
     }, timeToReminder);
 }
