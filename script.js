@@ -509,8 +509,9 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 
     const data = Array.from(ausredeElements).map((element, index) => {
       
-        const ausredeDetailsInput = element.querySelector('.ausredeDetailsInput').value;
+        const ausredeDetailsInput = element.querySelector('#ausredeDetailsInput').value;
         console.log("ausredeDetailsInput" + ausredeDetailsInput);
+
         return {
             id: index,
             ausredeDetailsInput: ausredeDetailsInput,
@@ -554,8 +555,11 @@ function loadDataBlocking() {   //Blocking
 
 // Function to load data from localStorage
 function loadDataOffeneAusrede() {   //offeneAusrede
-    const data = JSON.parse(localStorage.getItem('offenAusrede'));
+    console.log("Lade offeneAusreden")
+    const data = JSON.parse(localStorage.getItem('offeneAusrede'));
+    console.log(data);
     if (data) {
+        console.log("Data zum laden vorhanden.")
         data.forEach(item => {
             createNewElementWithDataOffeneAusrede(item);
         });
@@ -668,15 +672,16 @@ function createNewElementWithDataBlocking(data) {  //Blocking
 
 
 function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
+    console.log("erstelle offeneAusrede mit Daten.");
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
     
-    originalDivBlocking.innerHTML = `
+    originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">
             <h3 class="">Name Timeblocking 16.04.2024</h3>
         </div>                
-        <input class="ausredeDetails" placeholder="Bitte Versäumnis begründen." type="text" id="ausredeDetailsInput" value="${data.ausredeDetailsInput}">
+        <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="5" cols="50" value="${data.ausredeDetailsInput}></textarea>
     `;
     container.appendChild(originalDivOffeneAusrede);
 }
