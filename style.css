@@ -227,7 +227,18 @@ h2{text-align: center;
   margin:3vh 2vw 1vh 0;
   }
   
-  .ausredeContainer{
+  .offeneAusredeListe{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    text-wrap: wrap;
+    width: auto;
+    border: calc(0.5vw+0.5vh) solid black;
+    }
+
+  .geschlosseneAusredeListe{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,7 +249,7 @@ h2{text-align: center;
   border: calc(0.5vw+0.5vh) solid black;
   }
   
-  .ausrede{
+  .ausredeContainer{
   border: calc(0.5vw + 0.5vh) solid black;
   background-color: gray;
   margin-bottom: 5vh;

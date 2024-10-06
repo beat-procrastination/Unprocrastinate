@@ -234,7 +234,8 @@ function changeButton(button){
             setTimeout(() => {
                 if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
-                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach der Startzeit vergangen sind.');
+                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.');
+                    
                 }
             }, 10 * 60 * 1000);
             if (isRunningTimeBlocking===false) {
@@ -416,6 +417,25 @@ document.addEventListener('DOMContentLoaded', function() {  //Blocking
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {  //Ausrede
+    // Load saved data when the page loads
+    loadDataAusrede();
+    
+    // Add event listeners to save data automatically on input change
+    document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            saveDataAusrede();
+        }
+    });
+
+    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.change')) {
+            saveDataBlocking();
+        }
+    });
+});
+
 
 // Function to save data to localStorage 
 function saveDataErinnerung() {   //Erinnerung
@@ -463,6 +483,28 @@ function saveDataTimer() {  //Timer
 function saveDataBlocking() {   //Blocking
     const container = document.getElementById('blockingListe');
     const blockingElements = container.querySelectorAll('.blockingContainer');
+    
+    const data = Array.from(blockingElements).map((element, index) => {
+      
+        const startTime = element.querySelector('#start-time').value;
+        const endTime = element.querySelector('#end-time').value;
+        const nameBlocking = element.querySelector('#nameZeitplanung').value;
+
+        return {
+            id: index,
+            startTime: startTime,
+            endTime: endTime,
+            nameBlocking: nameBlocking,
+        };
+    });
+    localStorage.setItem('blocking', JSON.stringify(data));
+}
+
+
+// Function to save data to localStorage 
+function saveDataBlocking() {   //Ausrede
+    const container = document.getElementById('ausredeListe');
+    const ausredeElements = container.querySelectorAll('.blockingContainer');
     
     const data = Array.from(blockingElements).map((element, index) => {
       
@@ -805,3 +847,49 @@ function startReminder(einheit) {
         changeButto(einheit.querySelector("#stop-button"));
     }, timeToReminder);
 }
+
+
+
+//Hall of Shame 
+
+// Function to create a new element and populate it with data
+function createNewElementWithDataAusrede(data) {  //Ausrede
+    const container = document.getElementById('ausredeListe');
+    const originalDivAusrede = document.createElement('div');
+    originalDivAusrede.className = 'ausredeContainer';
+    
+    originalDivAusrede.innerHTML = `
+        <div class="ausredeContainer">
+            <div class="ausredeÜbersicht">
+                <h3 class="">Name Timeblocking 16.04.2024</h3>
+            </div>                
+            <div class="ausredeDetails">
+                <h4>
+                    Hier soll die Ausrede stehen. 
+                </h4>
+            </div>
+        </div>
+    `;
+    container.appendChild(originalDivAusrede);
+}
+
+function createNewElementAusrede((containerId) => {
+    const container = document.getElementById(containerId);
+    const originalDivAusrede = document.createElement('div');
+    originalDivAusrede.className = 'ausredeContainer';
+
+    originalDivAusrede.innerHTML = `
+        <div class="ausrede">
+            <div class="ausredeÜbersicht">
+                <h3 class="">Name Timeblocking 16.04.2024</h3>
+            </div>                
+            <input class="ausredeDetails" placeholder="Bitte Versäumnis begründen." type="text" id="ausredeDetailsInput">
+        </div>
+    `;
+})
+
+
+function ausredeAngeben(() => {
+    openHallofShame(); 
+
+})
