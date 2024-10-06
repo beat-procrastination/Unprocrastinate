@@ -417,21 +417,21 @@ document.addEventListener('DOMContentLoaded', function() {  //Blocking
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {  //Ausrede
+document.addEventListener('DOMContentLoaded', function() {  //offeneAusrede
     // Load saved data when the page loads
-    loadDataAusrede();
+    loadDataOffeneAusrede();
     
     // Add event listeners to save data automatically on input change
     document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-            saveDataAusrede();
+            saveDataOffeneAusrede();
         }
     });
 
     // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
     document.addEventListener('click', function(event) {
         if (event.target.closest('.change')) {
-            saveDataBlocking();
+            saveDataOffeneAusrede();
         }
     });
 });
@@ -502,24 +502,22 @@ function saveDataBlocking() {   //Blocking
 
 
 // Function to save data to localStorage 
-function saveDataBlocking() {   //Ausrede
-    const container = document.getElementById('ausredeListe');
-    const ausredeElements = container.querySelectorAll('.blockingContainer');
-    
-    const data = Array.from(blockingElements).map((element, index) => {
-      
-        const startTime = element.querySelector('#start-time').value;
-        const endTime = element.querySelector('#end-time').value;
-        const nameBlocking = element.querySelector('#nameZeitplanung').value;
+function saveDataOffeneAusrede() {   //offeneAusrede
+    const container = document.getElementById('offeneAusredeListe');
+    const ausredeElements = container.querySelectorAll('.offeneAusredeContainer');
+    console.log(ausredeElements);
 
+    const data = Array.from(ausredeElements).map((element, index) => {
+      
+        const ausredeDetailsInput = element.querySelector('.ausredeDetailsInput').value;
+        console.log("ausredeDetailsInput" + ausredeDetailsInput);
         return {
             id: index,
-            startTime: startTime,
-            endTime: endTime,
-            nameBlocking: nameBlocking,
+            ausredeDetailsInput: ausredeDetailsInput,
         };
     });
-    localStorage.setItem('blocking', JSON.stringify(data));
+    localStorage.setItem('offeneAusrede', JSON.stringify(data));
+    console.log(data);
 }
 
 
@@ -550,6 +548,16 @@ function loadDataBlocking() {   //Blocking
     if (data) {
         data.forEach(item => {
             createNewElementWithDataBlocking(item);
+        });
+    }
+}
+
+// Function to load data from localStorage
+function loadDataOffeneAusrede() {   //offeneAusrede
+    const data = JSON.parse(localStorage.getItem('offenAusrede'));
+    if (data) {
+        data.forEach(item => {
+            createNewElementWithDataOffeneAusrede(item);
         });
     }
 }
@@ -659,6 +667,20 @@ function createNewElementWithDataBlocking(data) {  //Blocking
 }
 
 
+function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
+    const container = document.getElementById('offeneAusredeListe');
+    const originalDivOffeneAusrede = document.createElement('div');
+    originalDivOffeneAusrede.className = 'offeneAusredeContainer';
+    
+    originalDivBlocking.innerHTML = `
+        <div class="ausredeÜbersicht">
+            <h3 class="">Name Timeblocking 16.04.2024</h3>
+        </div>                
+        <input class="ausredeDetails" placeholder="Bitte Versäumnis begründen." type="text" id="ausredeDetailsInput" value="${data.ausredeDetailsInput}">
+    `;
+    container.appendChild(originalDivOffeneAusrede);
+}
+
 
 // Function to create a new element when the button is pressed
 function createNewElementErinnerung(containerId) {   //Erinnerung
@@ -695,8 +717,8 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     saveDataErinnerung();  
 }
 
-
-function createNewElementTimer(containerId) {         
+// Function to create a new element when the button is pressed
+function createNewElementTimer(containerId) {       //Timer
     const container = document.getElementById(containerId);
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
@@ -767,6 +789,30 @@ function createNewElementBlocking(containerId) {   //Blocking
 }
 
         
+// Function to create a new element when the button is pressed
+function createNewElementOffeneAusrede(containerId) {   //offeneAusrede
+    console.log(containerId) 
+    const container = document.getElementById(containerId);
+    const originalDivOffeneAusrede = document.createElement('div');
+    originalDivOffeneAusrede.className = 'offeneAusredeContainer';
+    console.log(container);
+    
+    originalDivOffeneAusrede.innerHTML = `
+        <div class="ausredeÜbersicht">
+                <h3 class="">Name Timeblocking 16.04.2024</h3>
+            </div>                
+            <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="5" cols="50"></textarea>
+        </div>
+    `;
+    container.appendChild(originalDivOffeneAusrede);
+    saveDataOffeneAusrede();  // Save the state immediately after creating a new element
+    
+}
+
+
+
+
+
 // errinnerung
 let stopped = false;
 let timerId = null;
@@ -849,7 +895,7 @@ function startReminder(einheit) {
 }
 
 
-
+/*
 //Hall of Shame 
 
 // Function to create a new element and populate it with data
@@ -859,7 +905,6 @@ function createNewElementWithDataAusrede(data) {  //Ausrede
     originalDivAusrede.className = 'ausredeContainer';
     
     originalDivAusrede.innerHTML = `
-        <div class="ausredeContainer">
             <div class="ausredeÜbersicht">
                 <h3 class="">Name Timeblocking 16.04.2024</h3>
             </div>                
@@ -868,7 +913,6 @@ function createNewElementWithDataAusrede(data) {  //Ausrede
                     Hier soll die Ausrede stehen. 
                 </h4>
             </div>
-        </div>
     `;
     container.appendChild(originalDivAusrede);
 }
@@ -893,3 +937,5 @@ function ausredeAngeben(() => {
     openHallofShame(); 
 
 })
+
+*/

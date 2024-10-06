@@ -228,15 +228,15 @@ h2{text-align: center;
   }
   
   .offeneAusredeListe{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
-    text-wrap: wrap;
-    width: auto;
-    border: calc(0.5vw+0.5vh) solid black;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-wrap: wrap;
+  text-wrap: wrap;
+  width: auto;
+  border: calc(0.5vw+0.5vh) solid black;
+  }
 
   .geschlosseneAusredeListe{
   display: flex;
@@ -249,7 +249,16 @@ h2{text-align: center;
   border: calc(0.5vw+0.5vh) solid black;
   }
   
-  .ausredeContainer{
+  .offeneAusredeContainer{
+  border: calc(0.5vw + 0.5vh) solid black;
+  background-color: gray;
+  margin-bottom: 5vh;
+  width: 80vw;
+  height: auto;
+  justify-content: center;
+  }
+
+  .geschlosseneAusredeContainer{
   border: calc(0.5vw + 0.5vh) solid black;
   background-color: gray;
   margin-bottom: 5vh;
@@ -273,6 +282,12 @@ h2{text-align: center;
   align-items: center;
   }
   
+  .ausredeDetailsInput{
+  width: 70vw;
+  height: 5vh;
+  margin: 0% 4% 0% 4%;
+  }
+
   .ausredeDetails{
   height: auto;
   margin: 0% 4% 0% 4%;
