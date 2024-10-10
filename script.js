@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {  //offeneAusrede
     
     // Add event listeners to save data automatically on input change
     document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+        if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
             saveDataOffeneAusrede();
         }
     });
@@ -508,9 +508,9 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     console.log(ausredeElements);
 
     const data = Array.from(ausredeElements).map((element, index) => {
-      
+        console.log("element" + element + "index" + index)
         const ausredeDetailsInput = element.querySelector('#ausredeDetailsInput').value;
-        console.log("ausredeDetailsInput" + ausredeDetailsInput);
+        console.log("ausredeDetailsInput " + ausredeDetailsInput);
 
         return {
             id: index,
@@ -681,7 +681,7 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
         <div class="ausredeÜbersicht">
             <h3 class="">Name Timeblocking 16.04.2024</h3>
         </div>                
-        <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="5" cols="50" value="${data.ausredeDetailsInput}></textarea>
+        <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50">${data.ausredeDetailsInput}</textarea>
     `;
     container.appendChild(originalDivOffeneAusrede);
 }
@@ -806,7 +806,7 @@ function createNewElementOffeneAusrede(containerId) {   //offeneAusrede
         <div class="ausredeÜbersicht">
                 <h3 class="">Name Timeblocking 16.04.2024</h3>
             </div>                
-            <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="5" cols="50"></textarea>
+            <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50"></textarea>
         </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
