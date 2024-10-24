@@ -508,13 +508,15 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     console.log(ausredeElements);
 
     const data = Array.from(ausredeElements).map((element, index) => {
-        console.log("element" + element + "index" + index)
+        console.log("element" + element + "index" + index);
         const ausredeDetailsInput = element.querySelector('#ausredeDetailsInput').value;
         console.log("ausredeDetailsInput " + ausredeDetailsInput);
+        const ausredeName = element.querySelector('#ausredeName').innerText;
 
         return {
             id: index,
             ausredeDetailsInput: ausredeDetailsInput,
+            ausredeName: ausredeName,
         };
     });
     localStorage.setItem('offeneAusrede', JSON.stringify(data));
@@ -679,7 +681,7 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">
-            <h3 class="">Name Timeblocking 16.04.2024</h3>
+            <h3 id="ausredeName">${data.ausredeName}</h3>
         </div>                
         <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50">${data.ausredeDetailsInput}</textarea>
     `;
@@ -795,7 +797,7 @@ function createNewElementBlocking(containerId) {   //Blocking
 
         
 // Function to create a new element when the button is pressed
-function createNewElementOffeneAusrede(containerId) {   //offeneAusrede
+function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAusrede
     console.log(containerId) 
     const container = document.getElementById(containerId);
     const originalDivOffeneAusrede = document.createElement('div');
@@ -803,8 +805,8 @@ function createNewElementOffeneAusrede(containerId) {   //offeneAusrede
     console.log(container);
     
     originalDivOffeneAusrede.innerHTML = `
-        <div class="ausredeÜbersicht">
-                <h3 class="">Name Timeblocking 16.04.2024</h3>
+        <div class="ausredeÜbersicht">   
+                <h3 id="ausredeName">${ausredeName}</h3>
             </div>                
             <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50"></textarea>
         </div>
