@@ -235,7 +235,7 @@ function changeButton(button){
                 if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.');
-                    
+                    //Hier Code für verpasste Zeitplanung
                 }
             }, 10 * 60 * 1000);
             if (isRunningTimeBlocking===false) {
@@ -741,9 +741,9 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
                 <div class="datumContainer">
                 
                    <label  class="labelErinnerung" for="inputDate">Datum:</label>
-            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
+            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date">
                     <label  class="labelErinnerung" for="inputTime">Uhrzeit:</label>
-            <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
+            <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time">
          
             </div>
        
