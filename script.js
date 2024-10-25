@@ -986,7 +986,7 @@ function startReminder(einheit, isRepeat = false) {
         }, 10 * 60 * 1000);
         checkIntervalId = setInterval(() => {
             let now = new Date(); // Aktualisiere die Zeit bei jeder Wiederholung
-            let endDateTime = endDateInput ? new Date(`${endDateInput}T21:32:00`) : null;
+            let endDateTime = endDateInput ? new Date(`${endDateInput}T23:59:59`) : null;
             console.log(now);
             console.log(endDateTime);
     
