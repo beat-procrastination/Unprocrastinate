@@ -60,25 +60,24 @@ if (playButton && stopButton) {
 
 }
 
-function details(button) {
+function details(button){
     let parent = button.parentNode.parentNode.querySelector('.details');
-   
-    if (parent.classList.contains('hidden')) {
-        parent.classList.remove('hidden');
-        
-    } else {
-        parent.classList.add('hidden');
-   
-    }
-}
+  if (parent.classList.contains('hidden')){
+    parent.classList.remove('hidden');
+  }
+  else{
+    parent.classList.add('hidden');
+  }
 
+
+}
   
 function dropDownMenu(button) {
-    var dropdownMenu = button.parentNode.querySelector(".dropdown-content");
-    if (dropdownMenu.classList.contains("hidden")) {
-      dropdownMenu.classList.remove("hidden");
+    var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
+    if (dropdownMenu.classList.contains('hidden')) {
+      dropdownMenu.classList.remove('hidden');
     } else {
-      dropdownMenu.classList.add("hidden");
+      dropdownMenu.classList.add('hidden');
     }
 }
 
@@ -126,7 +125,7 @@ function fixieren(button) {
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
     alert('Zeitplanung wurde gestoppt.');
-    console.log("funktioniert3");
+    
 }
 
 
@@ -139,12 +138,12 @@ function changeButton(button){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
         stopTimeBlocking();
-        console.log("funktioniert2");
+        
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         NotificatioPermission(button.parentNode.parentNode);
-        console.log("funktioniert");
+        
     }
   }
 
@@ -182,9 +181,13 @@ function changeButton(button){
         const playButton = element.querySelector("#play-button");
         const nameZeitplanung = element.querySelector('#nameZeitplanung');
         const checkbox = element.querySelector('.checkboxTimeBlocking');
+        const repeatInput = element.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+        const detailsInput = element.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+     const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
+
     
-        if (!playTime || !endTime) {
-            alert('Bitte geben Sie eine gültige Uhrzeit ein.');
+        if (!playTime || !endTime || !repeatInput || !nameZeitplanung) {
+            alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
         }
@@ -266,8 +269,8 @@ function changeButton(button){
 
     //Timer Start
 function changeButtons(button){
-    var playButton = button.parentNode.querySelector("#play-button");
-    var stopButton = button.parentNode.querySelector("#stop-button");
+    var playButton = button.parentNode.querySelector("#play-buttonTimer");
+    var stopButton = button.parentNode.querySelector("#stop-buttonTimer");
 
     if(playButton.classList.contains('hidden')){
         playButton.classList.remove('hidden');
@@ -291,13 +294,13 @@ function startTimer(element) {
         alert(`Timer wurde gestoppt.`);
     }
    
-    const stopButton = element.querySelector("#stop-button");
+    const stopButton = element.querySelector("#stop-buttonTimer");
     stopButton.addEventListener("click", function() {
         stopTimer();
          
     });
     
-    const playButton = element.querySelector("#play-button");
+    const playButton = element.querySelector("#play-buttonTimer");
    
     if (!("Notification" in window)) {
         alert("Dieser Browser unterstützt keine Benachrichtigungen");
@@ -313,6 +316,9 @@ function startTimer(element) {
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
     
+    console.log(TimerNameValue);
+    console.log(WiederholungenValue);
+    console.log(intervalValue);
     if (WiederholungenValue < 1 || intervalValue <= 0) {
         alert("Bitte geben Sie gültige Werte ein für Intervall sowie Wiederholungen!");
         changeButtons(playButton);
@@ -581,7 +587,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
         <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
             <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
-            <input class="input-nameErinnerung erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+            <input class="input-nameErinnerung" placeholder="Name der Erinnerung" type="text" value="${data.name}">
             <div class="container">
         <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
@@ -590,14 +596,14 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
             </div>                                                                                                       
         </div> 
         </div>
-        <div class="hidde">
+        
             <div class="erinnerungDetails">
                 <div class="datumContainer">
                 
-                   <label  class="labelErinnerung" for="inputDate">Datum:</label>
+                   <label  class="labelErinnerung"  for="inputDate">Datum:</label>
             <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
-                    <label  class="labelErinnerung" for="inputTime">Uhrzeit:</label>
-            <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
+                    <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
+            <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
          
             </div>
        
@@ -624,7 +630,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
         </div> 
             
                 
-            </div>
+        
         </div>
     `;
     container.appendChild(originalDivErinnerung);
@@ -637,11 +643,12 @@ function createNewElementWithDataTimer(data) {          //Timer
     originalDivTimer.className = 'timerContainer';
     
     originalDivTimer.innerHTML = `
+    
         <div class="timerHeadline">
-            <svg onclick="changeButtons(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input class="input-name" placeholder="Name Timer" type="text" id="timerName" value="${data.nameTimer}">
-            <svg onclick="details(this)"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#0F0F0F"></path> </g></svg>
+            <svg onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg class="hidden"  id="stop-buttonTimer" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+            <input class="input-nameTimer" placeholder="Name Timer" type="text" id="timerName" value="${data.nameTimer}">
+            
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="Timermenu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
@@ -650,15 +657,15 @@ function createNewElementWithDataTimer(data) {          //Timer
                 </div>                                                                                                       
             </div>      
         </div>
-        <div class="details hidden">
-            <div class="input-container"> 
-                <span class="intervall">Intervall(min):</span>
+        <div class="detailsTimer">
+                <label class="intervall" for="Intervall">Intervall(min):</label>
                 <input class="input-timer" type="number" name="Intervall" id="Intervall" min="1" value="${data.intervall}">
-                <span class="wiederholungen">Wiederholungen:</span>
+                <label class="wiederholungen" for="wiederholungen">Wiederholungen:</label>
                 <input class="input-timer" type="number" name="Wiederholungen" id="wiederholungen" min="1" value="${data.wiederholungen}">
            
-                </div>
-        </div>        
+              </div>  
+        
+                
     `;
     container.appendChild(originalDivTimer);
 }
@@ -670,31 +677,56 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     originalDivBlocking.className = 'blockingContainer';
     
     originalDivBlocking.innerHTML = `
-        <div class="newTimeBlockingHeadline" >
+     <div class="newTimeBlockingHeadline" >
             <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">
+             <input type="checkbox" class="checkboxTimeBlocking">
+            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
+           
             <div class="container">
-                <svg onclick="dropDownMenu(this)" class="menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+                <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
                     <a onclick="löschen(this)" href="#" class="change">Löschen</a>
                     <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
                 </div>                                                                                                       
             </div>                                  
-        </div>                                                                                                                                                                                                                                             
+        </div>                                                                                                                                                                                                                                              
         <div class="inputTimeBlocking-container"> 
-            <div class="pair" >
-            <input type="checkbox" class="checkboxTimeBlocking">
-            </div>
-            <div class="pair">
+          <div class="datumContainer">
+            
+           
                 <label class="labelZeitplanung" for="start-time">Start:</label>
                 <input class="inputTimeBlocking"  type="time" id="start-time" name="start-time" value="${data.startTime}">
-            </div>
-            <div class="pair">
-                <label  class="labelZeitplanung" for="end-time">Ende:</label>
+                <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
                 <input  class="inputTimeBlocking"   type="time" id="end-time" name="end-time" value="${data.endTime}">
-            </div>
+          </div>
+          <div class="BlockingDropDown">
+          
+          
+      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
+      <div id="block">
+        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)" value="${data.repeatInput}">
+     <option value="" disabled selected>Bitte wählen...</option>
+       <option value="nichts">Keine Wiederholung</option>
+      <option value="Täglich">Täglich</option>
+      <option value="Wöchentlich">Wöchentlich</option>
+      <option value="Monatlich">Monatlich</option>
+      <option value="Jährlich">Jährlich</option>
+    </select>
+
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
         </div>
+         </div>
+        <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
+        <input id="endDate" type="date" class="inputTimeBlocking">
+    
+        </div> 
+            
+                
+    </div>
+
+    </div>
     `;
     container.appendChild(originalDivBlocking);
 }
@@ -736,13 +768,12 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
             </div>                                                                                                       
         </div> 
         </div>
-        <div class="hidde">
-                 <div class="erinnerungDetails">
+         <div class="erinnerungDetails">
                 <div class="datumContainer">
                 
                    <label  class="labelErinnerung" for="inputDate">Datum:</label>
             <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date">
-                    <label  class="labelErinnerung" for="inputTime">Uhrzeit:</label>
+                    <label  class="labelErinnerung" id="labelTime for="inputTime">Uhrzeit:</label>
             <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time">
          
             </div>
@@ -788,16 +819,16 @@ function createNewElementTimer(containerId) {       //Timer
             <svg onclick="changeButtons(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
             <input class="input-name" placeholder="Name Timer" type="text" id="timerName">
-            <svg onclick="details(this)" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#0F0F0F"></path> </g></svg>
+            
             <div class="container">
-                <svg onclick="dropDownMenu(this)" class="menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+                <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
                     <a onclick="löschen(this)" href="#" class="change">Löschen</a>
                     <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
                 </div>                                                                                                       
             </div>      
         </div>
-        <div class="details hidden">
+        <div class="details">
             <div class="input-container"> 
                 <span class="intervall">Intervall(min):</span>
                 <input class="input-timer" type="number" name="Intervall" id="Intervall" min="1"  >
@@ -820,9 +851,11 @@ function createNewElementBlocking(containerId) {   //Blocking
         <div class="newTimeBlockingHeadline" >
             <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+            <input type="checkbox" class="checkboxTimeBlocking">
             <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
+            
             <div class="container">
-                <svg onclick="dropDownMenu(this)" class="menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+                <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
                     <a onclick="löschen(this)" href="#" class="change">Löschen</a>
                     <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
@@ -830,18 +863,39 @@ function createNewElementBlocking(containerId) {   //Blocking
             </div>                                  
         </div>                                                                                                                                                                                                                                             
         <div class="inputTimeBlocking-container"> 
-            <div class="pair" >
-            <input type="checkbox" class="checkboxTimeBlocking">
-            </div>
-            <div class="pair">
-                <label class="labelZeitplanung" for="start-time">Start:</label>
-                <input class="inputTimeBlocking"  type="time" id="start-time" name="start-time">
-            </div>
-            <div class="pair">
-                <label  class="labelZeitplanung" for="end-time">Ende:</label>
-                <input  class="inputTimeBlocking"   type="time" id="end-time" name="end-time">
-            </div>
+          <div class="datumContainer">
+            <label class="labelZeitplanung" for="starTime">Start:</label>
+                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time">
+                <label  class="labelZeitplanung" for="endTime">Ende:</label>
+                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time">
+          </div>
+        
+          <div class="BlockingDropDown">
+         
+      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
+      <div id="block">
+        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)">
+     <option value="" disabled selected>Bitte wählen...</option>
+       <option value="nichts">Keine Wiederholung</option>
+      <option value="Täglich">Täglich</option>
+      <option value="Wöchentlich">Wöchentlich</option>
+      <option value="Monatlich">Monatlich</option>
+      <option value="Jährlich">Jährlich</option>
+    </select>
+
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
         </div>
+         </div>
+        <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
+        <input id="endDate" type="date" class="inputTimeBlocking">
+    
+        </div> 
+            
+                
+    </div>
+
+    </div>
     `;
     container.appendChild(originalDivBlocking);
     saveDataBlocking();  // Save the state immediately after creating a new element
