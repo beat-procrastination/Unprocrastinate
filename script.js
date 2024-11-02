@@ -157,6 +157,7 @@ function changeButton(button){
     if (Notification.permission === "default") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
+               
                 startTimeBlocking(element);
             } else {
                 alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
@@ -170,20 +171,38 @@ function changeButton(button){
     }
 
     let isRunningTimeBlocking = false;
-
+    let  repeat = false;
+    let checkboxx = false;
     function startTimeBlocking(element) {
         isRunningTimeBlocking = true;
        
+        let playTime, endTime;
+    if(!repeat){
+         playTime = element.querySelector("#startTime").value;
+         endTime = element.querySelector("#endTime").value;
+    }else{
+         playTime = adjustTime(element.querySelector("#startTime").value, 3);
+         endTime = adjustTime(element.querySelector("#endTime").value, 3);
+        console.log(playTime, endTime);
+
+    }
+    function adjustTime(time, minutesToAdd) {
+        const timeObj = new Date();
+        const [hours, minutes] = time.split(':').map(Number);
         
+        timeObj.setHours(hours);
+        timeObj.setMinutes(minutes + minutesToAdd);
     
-        const playTime = element.querySelector("#start-time").value;
-        const endTime = element.querySelector("#end-time").value;
+        // Ausgabe im Format "HH:MM"
+        return timeObj.toTimeString().slice(0, 5);
+    }
         const playButton = element.querySelector("#play-button");
-        const nameZeitplanung = element.querySelector('#nameZeitplanung');
+        const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
         const repeatInput = element.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
         const detailsInput = element.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
-     const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
+        const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
+        const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
 
     
         if (!playTime || !endTime || !repeatInput || !nameZeitplanung) {
@@ -194,25 +213,16 @@ function changeButton(button){
     
         const [startHours, startMinutes] = playTime.split(':').map(Number);
         const [endHours, endMinutes] = endTime.split(':').map(Number);
-    
-        if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 20) {
+     
+        if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
             alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
             changeButton(playButton);
             return;
         }
-        if (isRunningTimeBlocking===false) {
-            
-            stopTimeBlocking();
-            return;
-      
-     }
-        
-        
-
-     
     
-        const timeBlockingInterval = setInterval(() => {
-            if (isRunningTimeBlocking===false) {
+        
+        let timeBlockingInterval = setInterval(() => {
+            if (!isRunningTimeBlocking) {
                 
              clearInterval(timeBlockingInterval);
                 return;
@@ -227,6 +237,7 @@ function changeButton(button){
             const currentTime = currentHours * 60 + currentMinutes;
             const startTotalMinutes = startHours * 60 + startMinutes;
             const endTotalMinutes = endHours * 60 + endMinutes;
+           
     
             if (currentTime === startTotalMinutes) {
                 if (Notification.permission === 'granted') {
@@ -234,28 +245,32 @@ function changeButton(button){
                 }
             }
     
-            setTimeout(() => {
+           let timeoutCheckbox = setTimeout(() => {
                 if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
+                    if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.');
-                    //Hier Code für verpasste Zeitplanung
+                   checkboxx =true;
+                    clearTimeout(timeoutCheckbox);}
                 }
             }, 10 * 60 * 1000);
-            if (isRunningTimeBlocking===false) {
-                stopTimeBlocking();
-                clearInterval(timeBlockingInterval);
-                return;
-          
-         }
-    
+        
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
-                    new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);
-                    checkbox.checked = false;
+                    new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
+                    checkbox.checked = false; 
+                    if(repeatInput === 'Keine Wiederholung'){
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
+                if (repeatInput !== 'Keine Wiederholung') {
+                    handleRepeats(repeatInput, detailsInput, now, endDate, playButton, element);
+                    
+                }
+        
             }
+           
+
         }, 60000);
     
     
@@ -263,8 +278,45 @@ function changeButton(button){
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
     }}
+    function handleRepeats(repeatInput, detailsInput, now, endDateInput, playButton, element) {
+        let repeatInterval = 0;
+        // Bestimmen des Wiederholungsintervalls
+        if (repeatInput === 'Täglich') {
+            repeatInterval =  500 * 60; 
+        } else if (repeatInput === 'Wöchentlich') {
+            repeatInterval = 7 * 24 * 60 * 60 * 1000; 
+        } else if (repeatInput === 'Monatlich') {
+            repeatInterval = 30 * 24 * 60 * 1000 * 60; 
+        } else if (repeatInput === 'Jährlich') {
+            repeatInterval = 365 * 24 * 60 * 60 * 1000; 
+        }
+    
+        if (detailsInput) {
+            const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
+            repeatInterval *= detailsNumber;
+            console.log(repeatInterval);
+        }
+        let nextRepeatDate = new Date(now);
+         nextRepeatDate = new Date(now.getTime() + repeatInterval); 
+    
+       console.log(nextRepeatDate)
+       console.log("endDate:", endDateInput);
+        if (nextRepeatDate <= endDateInput) {
+            const delayUntilNextRepeat = nextRepeatDate - now;
+            console.log(delayUntilNextRepeat);
+            setTimeout(() => {
+                repeat=true;
+                startTimeBlocking(element); // Start der Hauptfunktion erneut
+            }, delayUntilNextRepeat);
+        }else{
+            console.log("5");
+            changeButton(playButton);
+            stopTimeBlocking();
+            return;
+        }
+    }
   
-
+  
 
 
     //Timer Start
@@ -696,9 +748,9 @@ function createNewElementWithDataBlocking(data) {  //Blocking
             
            
                 <label class="labelZeitplanung" for="start-time">Start:</label>
-                <input class="inputTimeBlocking"  type="time" id="start-time" name="start-time" value="${data.startTime}">
+                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
                 <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
-                <input  class="inputTimeBlocking"   type="time" id="end-time" name="end-time" value="${data.endTime}">
+                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
           </div>
           <div class="BlockingDropDown">
           
@@ -831,9 +883,9 @@ function createNewElementTimer(containerId) {       //Timer
         <div class="details">
             <div class="input-container"> 
                 <span class="intervall">Intervall(min):</span>
-                <input class="input-timer" type="number" name="Intervall" id="Intervall" min="1"  >
+                <input class="input-timer" type="number"  id="Intervall" min="1"  >
                 <span class="wiederholungen">Wiederholungen:</span>
-                <input class="input-timer" type="number" name="Wiederholungen" id="wiederholungen" min="1" >
+                <input class="input-timer" type="number"  id="wiederholungen" min="1" >
             </div>
         </div>
     `;

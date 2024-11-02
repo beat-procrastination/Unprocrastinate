@@ -328,7 +328,7 @@ font-size:calc(1vh + 2.75vw) ;
   width: 30%;
   margin:1vh 3vw 1vh 3vw;
   background-color: var(--farbe);
-  font-size:smaller;
+  
   }
   
   .offeneAusredeListe{
