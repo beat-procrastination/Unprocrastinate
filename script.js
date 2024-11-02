@@ -176,26 +176,9 @@ function changeButton(button){
     function startTimeBlocking(element) {
         isRunningTimeBlocking = true;
        
-        let playTime, endTime;
-    if(!repeat){
-         playTime = element.querySelector("#startTime").value;
-         endTime = element.querySelector("#endTime").value;
-    }else{
-         playTime = adjustTime(element.querySelector("#startTime").value, 3);
-         endTime = adjustTime(element.querySelector("#endTime").value, 3);
-        console.log(playTime, endTime);
-
-    }
-    function adjustTime(time, minutesToAdd) {
-        const timeObj = new Date();
-        const [hours, minutes] = time.split(':').map(Number);
         
-        timeObj.setHours(hours);
-        timeObj.setMinutes(minutes + minutesToAdd);
-    
-        // Ausgabe im Format "HH:MM"
-        return timeObj.toTimeString().slice(0, 5);
-    }
+        const playTime = element.querySelector("#startTime").value;
+        const endTime = element.querySelector("#endTime").value;
         const playButton = element.querySelector("#play-button");
         const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
@@ -282,7 +265,7 @@ function changeButton(button){
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
         if (repeatInput === 'Täglich') {
-            repeatInterval =  500 * 60; 
+            repeatInterval =  1000 * 60 * 60 *24; 
         } else if (repeatInput === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; 
         } else if (repeatInput === 'Monatlich') {
@@ -305,11 +288,10 @@ function changeButton(button){
             const delayUntilNextRepeat = nextRepeatDate - now;
             console.log(delayUntilNextRepeat);
             setTimeout(() => {
-                repeat=true;
+                
                 startTimeBlocking(element); // Start der Hauptfunktion erneut
             }, delayUntilNextRepeat);
         }else{
-            console.log("5");
             changeButton(playButton);
             stopTimeBlocking();
             return;
