@@ -1004,54 +1004,6 @@ function startReminder(einheit, isRepeat = false) {
 }
 
 
-/*
-//Hall of Shame 
-
-// Function to create a new element and populate it with data
-function createNewElementWithDataAusrede(data) {  //Ausrede
-    const container = document.getElementById('ausredeListe');
-    const originalDivAusrede = document.createElement('div');
-    originalDivAusrede.className = 'ausredeContainer';
-    
-    originalDivAusrede.innerHTML = `
-            <div class="ausredeÜbersicht">
-                <h3 class="">Name Timeblocking 16.04.2024</h3>
-            </div>                
-            <div class="ausredeDetails">
-                <h4>
-                    Hier soll die Ausrede stehen. 
-                </h4>
-            </div>
-    `;
-    container.appendChild(originalDivAusrede);
-}
-
-function createNewElementAusrede((containerId) => {
-    const container = document.getElementById(containerId);
-    const originalDivAusrede = document.createElement('div');
-    originalDivAusrede.className = 'ausredeContainer';
-
-    originalDivAusrede.innerHTML = `
-        <div class="ausrede">
-            <div class="ausredeÜbersicht">
-                <h3 class="">Name Timeblocking 16.04.2024</h3>
-            </div>                
-            <input class="ausredeDetails" placeholder="Bitte Versäumnis begründen." type="text" id="ausredeDetailsInput">
-        </div>
-    `;
-})
-
-
-function ausredeAngeben(() => {
-    openHallofShame(); 
-
-})
-
-*/
-
-
-
-
 function call(button) {
     let repeatSelect = button.parentNode.parentNode.querySelector("#repeatInput");
     let extraOptionsDiv = button.parentNode.parentNode.querySelector("#extraOptions");
