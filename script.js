@@ -277,16 +277,24 @@ function changeButton(button){
         if (detailsInput) {
             const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
             repeatInterval *= detailsNumber;
-            console.log(repeatInterval);
+            
         }
-        let nextRepeatDate = new Date(now);
-         nextRepeatDate = new Date(now.getTime() + repeatInterval); 
+        let nextRepeatDate = new Date(now.getTime() + repeatInterval);
+
+    // Startzeit für `nextRepeatDate` festlegen
+    const [startHours, startMinutes] = element.querySelector("#startTime").value.split(':').map(Number);
+    nextRepeatDate.setHours(startHours, startMinutes, 0, 0);
+
+    // Eine Minute abziehen, um sicherzustellen, dass die Wiederholung pünktlich startet
+    nextRepeatDate = new Date(nextRepeatDate.getTime() - 60000);
+
+    console.log("Next Repeat Date:", nextRepeatDate);
+    console.log("End Date:", endDateInput);
+
     
-       console.log(nextRepeatDate)
-       console.log("endDate:", endDateInput);
+
         if (nextRepeatDate <= endDateInput) {
             const delayUntilNextRepeat = nextRepeatDate - now;
-            console.log(delayUntilNextRepeat);
             setTimeout(() => {
                 
                 startTimeBlocking(element); // Start der Hauptfunktion erneut
