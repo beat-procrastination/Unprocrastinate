@@ -173,8 +173,10 @@ function changeButton(button){
     let isRunningTimeBlocking = false;
     let  repeat = false;
     let checkboxx = false;
+    let neueAusredenZwischenspeicher = [];
     function startTimeBlocking(element) {
         isRunningTimeBlocking = true;
+        console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
        
         
         const playTime = element.querySelector("#startTime").value;
@@ -223,7 +225,7 @@ function changeButton(button){
            
     
             if (currentTime === startTotalMinutes) {
-                if (Notification.permission === 'granted') {
+                if (Notification.permission === 'granted') {  
                     new Notification('Bestätigen Sie, dass Sie angefangen haben!');
                 }
             }
@@ -232,7 +234,9 @@ function changeButton(button){
                 if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
                     if(!checkboxx){
-                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.');
+                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
+                    neueAusredenZwischenspeicher.push(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
+
                    checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
@@ -399,85 +403,89 @@ function startTimer(element) {
 
 //Speichern: 
 
-document.addEventListener('DOMContentLoaded', function() {  //Erinnerung
-    // Load saved data when the page loads
-    loadDataErinnerung();
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.body.class === "bodyErinnerungen") {     //Erinnerung
+        // Load saved data when the page loads
+        loadDataErinnerung();
+        
+        // Add event listeners to save data automatically on input change
+        document.getElementById('erinnerungListe').addEventListener('input', function(event) {
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+                saveDataErinnerung();
+            }
+        });
+
+        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.change')) {
+                saveDataErinnerung();
+            }
+        });
+    };
     
-    // Add event listeners to save data automatically on input change
-    document.getElementById('erinnerungListe').addEventListener('input', function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-            saveDataErinnerung();
-        }
-    });
+    if (document.body.class === "bodyTimer") {      //Timer 
+        // Load saved data when the page loads
+        loadDataTimer();
+        
+        // Add event listeners to save data automatically on input change
+        document.getElementById('timer-list').addEventListener('input', function(event) {
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+                saveDataTimer();
+            }
+        });
+        
+        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.change')) {
+                saveDataTimer();
+            }
+        });
+    };
 
-    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-    document.addEventListener('click', function(event) {
-        if (event.target.closest('.change')) {
-            saveDataErinnerung();
-        }
-    });
-});
+    if (document.body.class === "bodyTimeBlocking") {     //Blocking
+        // Load saved data when the page loads
+        loadDataBlocking();
+        
+        // Add event listeners to save data automatically on input change
+        document.getElementById('blockingListe').addEventListener('input', function(event) {
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+                saveDataBlocking();
+            }
+        });
 
-document.addEventListener('DOMContentLoaded', function() {  //Timer 
-    // Load saved data when the page loads
-    loadDataTimer();
-    
-    // Add event listeners to save data automatically on input change
-    document.getElementById('timer-list').addEventListener('input', function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-            saveDataTimer();
-        }
-    });
-    
-    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-    document.addEventListener('click', function(event) {
-        if (event.target.closest('.change')) {
-            saveDataTimer();
-        }
-    });
-});
+        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.change')) {
+                saveDataBlocking();
+            }
+        });
+    };
 
-document.addEventListener('DOMContentLoaded', function() {  //Blocking
-    // Load saved data when the page loads
-    loadDataBlocking();
-    
-    // Add event listeners to save data automatically on input change
-    document.getElementById('blockingListe').addEventListener('input', function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-            saveDataBlocking();
-        }
-    });
+    if (document.body.class === "bodyHallofShame") {     //offeneAusrede
+        // Load saved data when the page loads
+        loadDataOffeneAusrede();
+        iterate_neueAusredenZwischenspeicher();  //Erstellt alle bisher nur in "neueAusredenZwischenspeicher" speicherten offenen Ausreden. Entfernt dabei sämtliche Ausreden aus "neueAusredenZwischenspeicher".
+        saveDataOffeneAusrede();                 //Speichert die neu erstellten Ausreden. Diese sind nun bei den anderen offenen Ausreden gespeichert.  
 
-    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-    document.addEventListener('click', function(event) {
-        if (event.target.closest('.change')) {
-            saveDataBlocking();
-        }
-    });
-});
+        // Add event listeners to save data automatically on input change
+        document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
+            if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
+                saveDataOffeneAusrede();
+            }
+        });
 
-
-document.addEventListener('DOMContentLoaded', function() {  //offeneAusrede
-    // Load saved data when the page loads
-    loadDataOffeneAusrede();
-    
-    // Add event listeners to save data automatically on input change
-    document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
-        if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
-            saveDataOffeneAusrede();
-        }
-    });
-
-    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-    document.addEventListener('click', function(event) {
-        if (event.target.closest('.change')) {
-            saveDataOffeneAusrede();
-        }
-    });
+        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.change')) {
+                saveDataOffeneAusrede();
+            }
+    })
+    }
 });
 
 
 // Function to save data to localStorage 
+
 function saveDataErinnerung() {   //Erinnerung
 
     const container = document.getElementById('erinnerungListe');
@@ -499,7 +507,6 @@ function saveDataErinnerung() {   //Erinnerung
     console.log(data);
 }
 
-// Function to save data to localStorage
 function saveDataTimer() {  //Timer 
     const container = document.getElementById('timer-list');
     const timerElements = container.querySelectorAll('.timerContainer');
@@ -519,7 +526,6 @@ function saveDataTimer() {  //Timer
     localStorage.setItem('timer', JSON.stringify(data));
 }
 
-// Function to save data to localStorage 
 function saveDataBlocking() {   //Blocking
     const container = document.getElementById('blockingListe');
     const blockingElements = container.querySelectorAll('.blockingContainer');
@@ -541,7 +547,6 @@ function saveDataBlocking() {   //Blocking
 }
 
 
-// Function to save data to localStorage 
 function saveDataOffeneAusrede() {   //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const ausredeElements = container.querySelectorAll('.offeneAusredeContainer');
@@ -566,6 +571,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 
 
 // Function to load data from localStorage
+
 function loadDataErinnerung() {   //Erinnerung
     const data = JSON.parse(localStorage.getItem('erinnerungen'));
     if (data) {
@@ -575,7 +581,6 @@ function loadDataErinnerung() {   //Erinnerung
     }
 }
 
-// Function to load data from localStorage
 function loadDataTimer() {          //Timer
     const data = JSON.parse(localStorage.getItem('timer'));
     if (data) {
@@ -585,7 +590,6 @@ function loadDataTimer() {          //Timer
     }
 }
 
-// Function to load data from localStorage
 function loadDataBlocking() {   //Blocking
     const data = JSON.parse(localStorage.getItem('blocking'));
     if (data) {
@@ -595,7 +599,6 @@ function loadDataBlocking() {   //Blocking
     }
 }
 
-// Function to load data from localStorage
 function loadDataOffeneAusrede() {   //offeneAusrede
     console.log("Lade offeneAusreden")
     const data = JSON.parse(localStorage.getItem('offeneAusrede'));
@@ -611,6 +614,7 @@ function loadDataOffeneAusrede() {   //offeneAusrede
 
 
 // Function to create a new element and populate it with data
+
 function createNewElementWithDataErinnerung(data) {  //Erinnerung
     const container = document.getElementById('erinnerungListe');
     const originalDivErinnerung = document.createElement('div');
@@ -670,7 +674,6 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     container.appendChild(originalDivErinnerung);
 }
 
-// Function to create a new element and populate it with data
 function createNewElementWithDataTimer(data) {          //Timer
     const container = document.getElementById('timer-list');
     const originalDivTimer = document.createElement('div');
@@ -704,7 +707,6 @@ function createNewElementWithDataTimer(data) {          //Timer
     container.appendChild(originalDivTimer);
 }
 
-// Function to create a new element and populate it with data
 function createNewElementWithDataBlocking(data) {  //Blocking
     const container = document.getElementById('blockingListe');
     const originalDivBlocking = document.createElement('div');
@@ -783,6 +785,7 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
 
 
 // Function to create a new element when the button is pressed
+
 function createNewElementErinnerung(containerId) {   //Erinnerung
     const container = document.getElementById(containerId);
     const originalDivErinnerung = document.createElement('div');
@@ -842,7 +845,6 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     saveDataErinnerung();  
 }
 
-// Function to create a new element when the button is pressed
 function createNewElementTimer(containerId) {       //Timer
     const container = document.getElementById(containerId);
     const originalDivTimer = document.createElement('div');
@@ -875,7 +877,6 @@ function createNewElementTimer(containerId) {       //Timer
     saveDataTimer();  // Save the state immediately after creating a new element
 }
 
-// Function to create a new element when the button is pressed
 function createNewElementBlocking(containerId) {   //Blocking
     const container = document.getElementById(containerId);
     const originalDivBlocking = document.createElement('div');
@@ -937,7 +938,9 @@ function createNewElementBlocking(containerId) {   //Blocking
 }
 
         
-// Function to create a new element when the button is pressed
+// Funktionen zum erstellen sämtlicher in der Liste "neueAusredenzwischenSpeichern" zwischen gespeicherten neuen Ausreden. Wird ausgeführt, sobald HallOfShame geöffnet wird. 
+
+//erstellt neue Ausreden
 function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAusrede
     console.log(containerId) 
     const container = document.getElementById(containerId);
@@ -957,7 +960,13 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     
 }
 
-
+function iterate_neueAusredenZwischenspeicher(){  // Erstellt nacheinander für jedes Element (den Namen der Ausrede mit Datum) der Liste eine Ausrede. 
+    while(neueAusredenZwischenspeicher.length>0){
+        console.log(neueAusredenZwischenspeicher[0]);
+        createNewElementOffeneAusrede("offeneAusredeListe", neueAusredenZwischenspeicher[0]);
+        neueAusredenZwischenspeicher.shift();
+    };
+}
 
 
 
@@ -1171,3 +1180,4 @@ function call(button) {
     });
 }    
 
+ 
