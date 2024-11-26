@@ -20,7 +20,7 @@ window.location.href='TimeBlocking.html';
 }
 
 function openHallofShame(){
-window.location.href='HallofShame.html';
+window.location.href='HallOfShame.html';
 }
 function backHomepage(){
 window.location.href='index.html';
@@ -412,7 +412,7 @@ function startTimer(element) {
 //Speichern: 
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.body.class === "bodyErinnerungen") {     //Erinnerung
+    if (document.body.classList.contains("bodyErinnerungen")) {    //Erinnerung
         // Load saved data when the page loads
         loadDataErinnerung();
         
@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    if (document.body.class === "bodyTimer") {      //Timer 
+    if (document.body.classList.contains("bodyTimer")) {    //Timer 
         // Load saved data when the page loads
         loadDataTimer();
         
@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.class === "bodyTimeBlocking") {     //Blocking
+    if (document.body.classList.contains("bodyBlocking")) {    //Blocking
         // Load saved data when the page loads
         loadDataBlocking();
         
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.class === "bodyHallofShame") {     //offeneAusrede
+    if (document.body.classList.contains("bodyHallOfShame")) {     //offeneAusrede
         // Load saved data when the page loads
         loadDataOffeneAusrede();
         iterate_neueAusredenZwischenspeicher();  //Erstellt alle bisher nur in "neueAusredenZwischenspeicher" speicherten offenen Ausreden. Entfernt dabei sämtliche Ausreden aus "neueAusredenZwischenspeicher".
@@ -503,12 +503,15 @@ function saveDataErinnerung() {   //Erinnerung
         const date = element.querySelector('#inputDate').value;
         const time = element.querySelector('#inputTime').value;
         const name = element.querySelector('.erinnerungName').value;
+        const box = element. querySelector('#checkboxErinnerung')
+        const 
 
         return {
             id: index,
             date: date,
             time: time,
             name: name,
+
         };
     });
     localStorage.setItem('erinnerungen', JSON.stringify(data));
@@ -518,11 +521,13 @@ function saveDataErinnerung() {   //Erinnerung
 function saveDataTimer() {  //Timer 
     const container = document.getElementById('timer-list');
     const timerElements = container.querySelectorAll('.timerContainer');
+    console.log(timerElements)
     
     const data = Array.from(timerElements).map((element, index) => {
+        console.log(element)
         const intervall = element.querySelector('#Intervall').value;
         const wiederholungen = element.querySelector('#wiederholungen').value;
-        const nameTimer = element.querySelector('.input-name').value;
+        const nameTimer = element.querySelector('.timerName').value;
         
         return {
             id: index,
@@ -631,10 +636,10 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
         <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
-            <input class="input-nameErinnerung" placeholder="Name der Erinnerung" type="text" value="${data.name}">
-            <div class="container">
+        <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+        <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
+        <input class="input-nameErinnerung erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+        <div class="container">
         <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
                 <a onclick="löschen(this)" href="#" class="change">Löschen</a>
@@ -692,7 +697,7 @@ function createNewElementWithDataTimer(data) {          //Timer
         <div class="timerHeadline">
             <svg onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-buttonTimer" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input class="input-nameTimer" placeholder="Name Timer" type="text" id="timerName" value="${data.nameTimer}">
+            <input class="input-nameTimer timerName" placeholder="Name Timer" type="text" id="timerName" value="${data.nameTimer}">
             
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="Timermenu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
@@ -862,7 +867,7 @@ function createNewElementTimer(containerId) {       //Timer
         <div class="timerHeadline">
             <svg onclick="changeButtons(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input class="input-name" placeholder="Name Timer" type="text" id="timerName">
+            <input class="input-name timerName" placeholder="Name Timer" type="text" id="timerName">
             
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
