@@ -184,13 +184,13 @@ function changeButton(button){
         const playButton = element.querySelector("#play-button");
         const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
-        const repeatInput = element.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+        const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
         const detailsInput = element.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
 
     
-        if (!playTime || !endTime || !repeatInput || !nameZeitplanung) {
+        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
@@ -246,12 +246,12 @@ function changeButton(button){
                 if (Notification.permission === 'granted') {
                     new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
-                    if(repeatInput === 'Keine Wiederholung'){
+                    if(intervallEinheit === 'Keine Wiederholung'){
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
-                if (repeatInput !== 'Keine Wiederholung') {
-                    handleRepeats(repeatInput, detailsInput, now, endDate, playButton, element);
+                if (intervallEinheit !== 'Keine Wiederholung') {
+                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element);
                     
                 }
         
@@ -265,16 +265,16 @@ function changeButton(button){
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
     }}
-    function handleRepeats(repeatInput, detailsInput, now, endDateInput, playButton, element) {
+    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element) {
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
-        if (repeatInput === 'Täglich') {
+        if (intervallEinheit === 'Täglich') {
             repeatInterval =  1000 * 60 * 60 *24; 
-        } else if (repeatInput === 'Wöchentlich') {
+        } else if (intervallEinheit === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; 
-        } else if (repeatInput === 'Monatlich') {
+        } else if (intervallEinheit === 'Monatlich') {
             repeatInterval = 30 * 24 * 60 * 1000 * 60; 
-        } else if (repeatInput === 'Jährlich') {
+        } else if (intervallEinheit === 'Jährlich') {
             repeatInterval = 365 * 24 * 60 * 60 * 1000; 
         }
     
@@ -661,9 +661,9 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
        
      <div id="ErinnerungsDropDown">
      
-      <label class="labelErinnerung" for="repeatInput">Intervall:</label>
+      <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
       <div id="block">
-        <select class="inputErinnerungDetails" id="repeatInput" onclick="call(this)">
+        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
      <option value="" disabled selected>Bitte wählen...</option>
       <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -672,8 +672,8 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="extraOptions" style=" margin-top: 10px; display:none;">
-      <select id="details"></select>
+    <div id="intervallWert" style=" margin-top: 10px; display:none;">
+      <select id="intervallWertSelect"></select>
         </div>
          </div>
         <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
@@ -753,9 +753,9 @@ function createNewElementWithDataBlocking(data) {  //Blocking
           <div class="BlockingDropDown">
           
           
-      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
+      <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
       <div id="block">
-        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)" value="${data.repeatInput}">
+        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
      <option value="" disabled selected>Bitte wählen...</option>
        <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -764,8 +764,8 @@ function createNewElementWithDataBlocking(data) {  //Blocking
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="extraOptions" style=" margin-top: 10px; display:none;">
-      <select id="details"></select>
+    <div id="intervallWert" style=" margin-top: 10px; display:none;">
+      <select id="intervallWertSelect"></select>
         </div>
          </div>
         <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
@@ -831,9 +831,9 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
        
      <div id="ErinnerungsDropDown">
      
-      <label class="labelErinnerung" for="repeatInput">Intervall:</label>
+      <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
       <div id="block">
-        <select class="inputErinnerungDetails" id="repeatInput" onclick="call(this)">
+        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
      <option value="" disabled selected>Bitte wählen...</option>
        <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -842,8 +842,8 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="extraOptions" style=" margin-top: 10px; display:none;">
-      <select id="details"></select>
+    <div id="intervallWert" style=" margin-top: 10px; display:none;">
+      <select id="intervallWertSelect"></select>
         </div>
          </div>
         <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
@@ -921,9 +921,9 @@ function createNewElementBlocking(containerId) {   //Blocking
         
           <div class="BlockingDropDown">
          
-      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
+      <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
       <div id="block">
-        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)">
+        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)">
      <option value="" disabled selected>Bitte wählen...</option>
        <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -932,8 +932,8 @@ function createNewElementBlocking(containerId) {   //Blocking
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="extraOptions" style=" margin-top: 10px; display:none;">
-      <select id="details"></select>
+    <div id="intervallWert" style=" margin-top: 10px; display:none;">
+      <select id="intervallWertSelect"></select>
         </div>
          </div>
         <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
@@ -1027,11 +1027,11 @@ function startReminder(einheit, isRepeat = false) {
     const timeInput = einheit.querySelector('#inputTime');
     const reminderName = einheit.querySelector('.erinnerungName').value;
     const checkboxx = einheit.querySelector('#checkboxErinnerung');
-    const repeatInput = einheit.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-    const detailsInput = einheit.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+    const intervallEinheit = einheit.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+    const detailsInput = einheit.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
     const endDateInput = einheit.querySelector('#endDate').value; // Das Enddatum der Erinnerung
 
-    if (!dateInput.value || !timeInput.value || !reminderName || !repeatInput) {
+    if (!dateInput.value || !timeInput.value || !reminderName || !intervallEinheit) {
         alert("Bitte alle Felder ausfüllen.");
         stopped = true;
         changeButto(playButton);
@@ -1055,13 +1055,13 @@ function startReminder(einheit, isRepeat = false) {
     // Adjust the time for repeated reminders if time is in the past
     if (timeToReminder <= 0 && isRepeat) {
         let repeatInterval = 0;
-        if (repeatInput === 'Täglich') {
+        if (intervallEinheit === 'Täglich') {
             repeatInterval =  24 * 60 * 60 * 1000; // 1 Tag
-        } else if (repeatInput === 'Wöchentlich') {
+        } else if (intervallEinheit === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; // 1 Woche
-        } else if (repeatInput === 'Monatlich') {
+        } else if (intervallEinheit === 'Monatlich') {
             repeatInterval = 30 * 24 * 60 * 60 * 1000; // 1 Monat
-        } else if (repeatInput === 'Jährlich') {
+        } else if (intervallEinheit === 'Jährlich') {
             repeatInterval = 365 * 24 * 60 * 60 * 1000; // 1 Jahr
         }
 
@@ -1084,7 +1084,7 @@ function startReminder(einheit, isRepeat = false) {
         new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
     }
 
-    if (repeatInput !== 'Keine Wiederholung') {
+    if (intervallEinheit !== 'Keine Wiederholung') {
         
   startReminder(einheit, true); 
     }
@@ -1101,7 +1101,7 @@ function startReminder(einheit, isRepeat = false) {
             console.log(now);
             console.log(endDateTime);
     
-            if (repeatInput === 'Keine Wiederholung' || (endDateTime && now >= endDateTime)) {
+            if (intervallEinheit === 'Keine Wiederholung' || (endDateTime && now >= endDateTime)) {
                 console.log("Enddatum erreicht, Erinnerung wird gestoppt.");
                 stopped = true;  // Automatisch stoppen nach der Benachrichtigung
                 changeButto(einheit.querySelector("#stop-button"));
@@ -1116,9 +1116,9 @@ function startReminder(einheit, isRepeat = false) {
 
 
 function call(button) {
-    let repeatSelect = button.parentNode.parentNode.querySelector("#repeatInput");
-    let extraOptionsDiv = button.parentNode.parentNode.querySelector("#extraOptions");
-    let detailsSelect = button.parentNode.parentNode.querySelector("#details");
+    let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
+    let intervallWertDiv = button.parentNode.parentNode.querySelector("#intervallWert");
+    let detailsSelect = button.parentNode.parentNode.querySelector("#intervallWertSelect");
     let lastSelectedRepeat = ''; // Hier speichern wir die letzte Auswahl im Repeat-Dropdown
 
     function updateDetailsOptions(type) {
@@ -1161,7 +1161,7 @@ function call(button) {
                 options.push(`Jedes Jahr ${i}`);
             }
         } else if (type === 'nichts') {
-            extraOptionsDiv.style.display = 'none';
+            intervallWertDiv.style.display = 'none';
         }
 
         // Add options to the second dropdown
@@ -1179,18 +1179,18 @@ function call(button) {
     
         // Unabhängig von der Auswahl wird die Funktion aufgerufen
         if (selectedValue) {
-            extraOptionsDiv.style.display = 'block'; // Zeige das zweite Dropdown
+            intervallWertDiv.style.display = 'block'; // Zeige das zweite Dropdown
             updateDetailsOptions(selectedValue); // Aktualisiere die Optionen im zweiten Dropdown
             lastSelectedRepeat = selectedValue; // Speichere die Auswahl
         } else {
-            extraOptionsDiv.style.display = 'none'; // Verstecke das zweite Dropdown
+            intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown
         }
     });
     
     let lastSelectedDetail = '';
     detailsSelect.addEventListener('change', function() {
         lastSelectedDetail = detailsSelect.value;
-        extraOptionsDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
+        intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
     });
 }    
 
