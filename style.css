@@ -152,7 +152,7 @@ h2{text-align: center;
  
   
   
-  .input-nameErinnerung, .input-name{
+  .erinnerungName, .input-name{
     font-size: calc(1vh + 3.25vw);
   width: 55vw;
   text-align: center;
@@ -167,7 +167,7 @@ h2{text-align: center;
   }
   
   @media (orientation: landscape) {
-    .input-name, .input-nameErinnerung{
+    .input-name, .erinnerungName{
 font-size:calc(1vh + 2.75vw) ;
 background-color:var(--farbe);
     }    
