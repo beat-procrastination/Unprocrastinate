@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.classList.contains("bodyBlocking")) {    //Blocking
+    if (document.body.classList.contains("bodyTimeBlocking")) {    //Blocking
         // Load saved data when the page loads
         loadDataBlocking();
         
@@ -500,19 +500,23 @@ function saveDataErinnerung() {   //Erinnerung
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
     const data = Array.from(erinnerungElements).map((element, index) => {
-        const box = element. querySelector('#checkboxErinnerung').value;
         const name = element.querySelector('.erinnerungName').value;
+        const checkboxErinnerung = element.querySelector('#checkboxErinnerung').checked;
         const date = element.querySelector('#inputDate').value;
         const time = element.querySelector('#inputTime').value;
-        
-        
+        const intervallEinheit = element. querySelector('#intervallEinheit').value;
+        const intervallWert = element. querySelector('#intervallWertSelect').value;
+        const endDate = element.querySelector('#endDate').value;
 
         return {
             id: index,
+            checkboxErinnerung: checkboxErinnerung,
+            name: name,
             date: date,
             time: time,
-            name: name,
-
+            intervallEinheit: intervallEinheit,
+            intervallWert: intervallWert, 
+            endDate: endDate, 
         };
     });
     localStorage.setItem('erinnerungen', JSON.stringify(data));
@@ -538,6 +542,7 @@ function saveDataTimer() {  //Timer
         };
     });
     localStorage.setItem('timer', JSON.stringify(data));
+    console.log(data);
 }
 
 function saveDataBlocking() {   //Blocking
@@ -545,19 +550,27 @@ function saveDataBlocking() {   //Blocking
     const blockingElements = container.querySelectorAll('.blockingContainer');
     
     const data = Array.from(blockingElements).map((element, index) => {
-      
-        const startTime = element.querySelector('#start-time').value;
-        const endTime = element.querySelector('#end-time').value;
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
+        const checkboxBlocking = element.querySelector('.checkboxTimeBlocking').checked;
+        const startTime = element.querySelector('#startTime').value;
+        const endTime = element.querySelector('#endTime').value;
+        const intervallEinheit = element.querySelector('#intervallEinheit').value;
+        const intervallWert = element.querySelector('#intervallWertSelect').value;
+        const endDatum = element.querySelector('#endDate').value;
 
         return {
             id: index,
+            nameBlocking: nameBlocking,
+            checkboxBlocking: checkboxBlocking,
             startTime: startTime,
             endTime: endTime,
-            nameBlocking: nameBlocking,
+            intervallEinheit: intervallEinheit,
+            intervallWert: intervallWert,
+            endDatum: endDatum,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
+    console.log(data);
 }
 
 
@@ -636,53 +649,45 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-        <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-        <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-        <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
-        <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
-        <div class="container">
-        <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
-            <div id="dropdownMenu" class="dropdown-content hidden">
-                <a onclick="löschen(this)" href="#" class="change">Löschen</a>
-                <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
-            </div>                                                                                                       
-        </div> 
+            <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg class="hidden"  id="stop-button" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" value="true" ${data.checkboxErinnerung ? 'checked' : ''}>
+            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+            <div class="container">
+                <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+                <div id="dropdownMenu" class="dropdown-content hidden">
+                    <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                    <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
+                </div>                                                                                                       
+            </div> 
         </div>
-        
-            <div class="erinnerungDetails">
-                <div class="datumContainer">
-                
-                   <label  class="labelErinnerung"  for="inputDate">Datum:</label>
-            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
-                    <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
-            <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
-         
+        <div class="erinnerungDetails">
+            <div class="datumContainer">
+                <label  class="labelErinnerung"  for="inputDate">Datum:</label>
+                <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
+                <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
+                <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
             </div>
-       
-     <div id="ErinnerungsDropDown">
-     
-      <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
-      <div id="block">
-        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
-     <option value="" disabled selected>Bitte wählen...</option>
-      <option value="nichts">Keine Wiederholung</option>
-      <option value="Täglich">Täglich</option>
-      <option value="Wöchentlich">Wöchentlich</option>
-      <option value="Monatlich">Monatlich</option>
-      <option value="Jährlich">Jährlich</option>
-    </select>
 
-    <div id="intervallWert" style=" margin-top: 10px; display:none;">
-      <select id="intervallWertSelect"></select>
-        </div>
-         </div>
-        <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
-        <input id="endDate" type="date" class="inputErinnerungDetails">
-    
-        </div> 
-            
-                
-        
+            <div id="ErinnerungsDropDown">
+                <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
+                <div id="block">
+                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
+                        <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
+                        <option value="nichts" ${data.intervallEinheit === 'nichts' ? 'selected' : ''}>Keine Wiederholung</option>
+                        <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
+                        <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
+                        <option value="Monatlich" ${data.intervallEinheit === 'Monatlich' ? 'selected' : ''}>Monatlich</option>
+                        <option value="Jährlich" ${data.intervallEinheit === 'Jährlich' ? 'selected' : ''}>Jährlich</option>
+                    </select>
+
+                    <div id="intervallWert" style=" margin-top: 10px; display:none;">
+                        <select id="intervallWertSelect" value="${data.intervallWert}"></select>
+                    </div>
+                </div>
+                <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
+                <input id="endDate" type="date" class="inputErinnerungDetails" value="${data.endDate}">
+            </div> 
         </div>
     `;
     container.appendChild(originalDivErinnerung);
@@ -727,56 +732,48 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     originalDivBlocking.className = 'blockingContainer';
     
     originalDivBlocking.innerHTML = `
-     <div class="newTimeBlockingHeadline" >
-            <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-             <input type="checkbox" class="checkboxTimeBlocking">
-            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
-           
-            <div class="container">
-                <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
-                <div id="dropdownMenu" class="dropdown-content hidden">
-                    <a onclick="löschen(this)" href="#" class="change">Löschen</a>
-                    <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
-                </div>                                                                                                       
-            </div>                                  
-        </div>                                                                                                                                                                                                                                              
-        <div class="inputTimeBlocking-container"> 
-          <div class="datumContainer">
-            
-           
-                <label class="labelZeitplanung" for="start-time">Start:</label>
-                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
-                <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
-                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
-          </div>
-          <div class="BlockingDropDown">
-          
-          
-      <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
-      <div id="block">
-        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
-     <option value="" disabled selected>Bitte wählen...</option>
-       <option value="nichts">Keine Wiederholung</option>
-      <option value="Täglich">Täglich</option>
-      <option value="Wöchentlich">Wöchentlich</option>
-      <option value="Monatlich">Monatlich</option>
-      <option value="Jährlich">Jährlich</option>
-    </select>
-
-    <div id="intervallWert" style=" margin-top: 10px; display:none;">
-      <select id="intervallWertSelect"></select>
-        </div>
-         </div>
-        <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
-        <input id="endDate" type="date" class="inputTimeBlocking">
+    <div class="newTimeBlockingHeadline" >
+        <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+        <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+        <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
+        <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">
     
-        </div> 
-            
-                
+        <div class="container">
+            <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+            <div id="dropdownMenu" class="dropdown-content hidden">
+                <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
+            </div>                                                                                                       
+        </div>                                  
+    </div>                                                                                                                                                                                                                                              
+    <div class="inputTimeBlocking-container"> 
+        <div class="datumContainer">
+            <label class="labelZeitplanung" for="start-time">Start:</label>
+            <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
+            <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
+            <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
+        </div>
+        <div class="BlockingDropDown">
+            <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
+            <div id="block">
+                <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
+                    <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
+                        <option value="nichts" ${data.intervallEinheit === 'nichts' ? 'selected' : ''}>Keine Wiederholung</option>
+                        <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
+                        <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
+                        <option value="Monatlich" ${data.intervallEinheit === 'Monatlich' ? 'selected' : ''}>Monatlich</option>
+                        <option value="Jährlich" ${data.intervallEinheit === 'Jährlich' ? 'selected' : ''}>Jährlich</option>
+                </select>
+
+                <div id="intervallWert" style=" margin-top: 10px; display:none;">
+                    <select id="intervallWertSelect"></select>
+                </div>
+            </div>
+            <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
+            <input id="endDate" type="date" class="inputTimeBlocking" value="${data.endDatum}">
+        </div>    
     </div>
 
-    </div>
     `;
     container.appendChild(originalDivBlocking);
 }
@@ -843,7 +840,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     </select>
 
     <div id="intervallWert" style=" margin-top: 10px; display:none;">
-      <select id="intervallWertSelect"></select>
+      <select id="intervallWertSelect" ></select>
         </div>
          </div>
         <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
