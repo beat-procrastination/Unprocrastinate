@@ -780,7 +780,7 @@ function createNewElementWithDataBlocking(data) {  //Blocking
 
 
 function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
-    console.log("erstelle offeneAusrede mit Daten.");
+    console.log("erstelle offene Ausrede mit Daten.");
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
@@ -788,8 +788,10 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">
             <h3 id="ausredeName">${data.ausredeName}</h3>
-        </div>                
-        <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50">${data.ausredeDetailsInput}</textarea>
+        </div> 
+        <div class="ausredeDetailsContainer"> 
+        <textarea onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
+        </div>   
     `;
     container.appendChild(originalDivOffeneAusrede);
 }
@@ -962,9 +964,10 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
                 <h3 id="ausredeName">${ausredeName}</h3>
-            </div>                
-            <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50"></textarea>
-        </div>
+            </div>  
+            <div class="ausredeDetailsContainer">             
+            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
+            </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
     saveDataOffeneAusrede();  // Save the state immediately after creating a new element
@@ -1192,3 +1195,18 @@ function call(button) {
 }    
 
  
+
+
+
+function autoResize(textarea) {
+    
+  textarea.style.height = 'auto';
+ 
+  textarea.style.height = textarea.scrollHeight + 'px';
+ 
+  textarea.addEventListener('input', autoResize);
+}
+
+function resizeBackToNormal(textarea){
+    textarea.style.height = '50px';
+}
