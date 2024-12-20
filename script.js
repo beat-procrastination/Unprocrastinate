@@ -185,7 +185,7 @@ function changeButton(button){
         const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
         const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-        const detailsInput = element.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+        const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
 
@@ -229,18 +229,20 @@ function changeButton(button){
                     new Notification('Bestätigen Sie, dass Sie angefangen haben!');
                 }
             }
+        
     
            let timeoutCheckbox = setTimeout(() => {
-                if (!isRunningTimeBlocking) return;
+            if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
+                    console.log(checkboxx);
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
                     neueAusredenZwischenspeicher.push(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
-
+                    
                    checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
-            }, 10 * 60 * 1000);
+            }, 1 * 6 * 1000);
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
@@ -1094,7 +1096,7 @@ function startReminder(einheit, isRepeat = false) {
             if (!checkboxx.checked) {
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');
             }
-        }, 10 * 60 * 1000);
+        }, 1 * 6 * 1000);
         checkIntervalId = setInterval(() => {
             let now = new Date(); // Aktualisiere die Zeit bei jeder Wiederholung
             let endDateTime = endDateInput ? new Date(`${endDateInput}T23:59:59`) : null;
