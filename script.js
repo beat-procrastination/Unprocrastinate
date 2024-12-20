@@ -995,8 +995,7 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
             </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
-    saveDataOffeneAusrede();  // Save the state immediately after creating a new element
-    
+    saveDataOffeneAusrede();  // Save the state immediately after creating a new element 
 }
 
 
