@@ -20,7 +20,7 @@ window.location.href='TimeBlocking.html';
 }
 
 function openHallofShame(){
-window.location.href='HallofShame.html';
+window.location.href='HallOfShame.html';
 }
 function backHomepage(){
 window.location.href='index.html';
@@ -173,6 +173,7 @@ function changeButton(button){
     let isRunningTimeBlocking = false;
     let  repeat = false;
     let checkboxx = false;
+    let neueAusredenZwischenspeicher = [];
     function startTimeBlocking(element) {
         isRunningTimeBlocking = true;
         console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
@@ -183,13 +184,13 @@ function changeButton(button){
         const playButton = element.querySelector("#play-button");
         const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
-        const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-        const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+        const repeatInput = element.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+        const detailsInput = element.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
 
     
-        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung) {
+        if (!playTime || !endTime || !repeatInput || !nameZeitplanung) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
@@ -228,32 +229,29 @@ function changeButton(button){
                     new Notification('Bestätigen Sie, dass Sie angefangen haben!');
                 }
             }
-        
     
            let timeoutCheckbox = setTimeout(() => {
-            if (!isRunningTimeBlocking) return;
+                if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
-                    console.log(checkboxx);
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
-                    
-                    neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value)
+                    neueAusredenZwischenspeicher.push(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
 
-                    checkboxx =true;
+                   checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
-            }, 1 * 60 * 10);
+            }, 10 * 60 * 1000);
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
                     new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
-                    if(intervallEinheit === 'Keine Wiederholung'){
+                    if(repeatInput === 'Keine Wiederholung'){
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
-                if (intervallEinheit !== 'Keine Wiederholung') {
-                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element);
+                if (repeatInput !== 'Keine Wiederholung') {
+                    handleRepeats(repeatInput, detailsInput, now, endDate, playButton, element);
                     
                 }
         
@@ -267,16 +265,16 @@ function changeButton(button){
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
     }}
-    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element) {
+    function handleRepeats(repeatInput, detailsInput, now, endDateInput, playButton, element) {
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
-        if (intervallEinheit === 'Täglich') {
+        if (repeatInput === 'Täglich') {
             repeatInterval =  1000 * 60 * 60 *24; 
-        } else if (intervallEinheit === 'Wöchentlich') {
+        } else if (repeatInput === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; 
-        } else if (intervallEinheit === 'Monatlich') {
+        } else if (repeatInput === 'Monatlich') {
             repeatInterval = 30 * 24 * 60 * 1000 * 60; 
-        } else if (intervallEinheit === 'Jährlich') {
+        } else if (repeatInput === 'Jährlich') {
             repeatInterval = 365 * 24 * 60 * 60 * 1000; 
         }
     
@@ -315,7 +313,7 @@ function changeButton(button){
   
 
 
-//Timer Start
+    //Timer Start
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-buttonTimer");
     var stopButton = button.parentNode.querySelector("#stop-buttonTimer");
@@ -452,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.classList.contains("bodyTimeBlocking")) {    //Blocking
+    if (document.body.classList.contains("bodyBlocking")) {    //Blocking
         // Load saved data when the page loads
         loadDataBlocking();
         
@@ -474,6 +472,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.body.classList.contains("bodyHallOfShame")) {     //offeneAusrede
         // Load saved data when the page loads
         loadDataOffeneAusrede();
+        iterate_neueAusredenZwischenspeicher();  //Erstellt alle bisher nur in "neueAusredenZwischenspeicher" speicherten offenen Ausreden. Entfernt dabei sämtliche Ausreden aus "neueAusredenZwischenspeicher".
+        saveDataOffeneAusrede();                 //Speichert die neu erstellten Ausreden. Diese sind nun bei den anderen offenen Ausreden gespeichert.  
 
         // Add event listeners to save data automatically on input change
         document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
@@ -500,23 +500,19 @@ function saveDataErinnerung() {   //Erinnerung
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
     const data = Array.from(erinnerungElements).map((element, index) => {
+        const box = element. querySelector('#checkboxErinnerung').value;
         const name = element.querySelector('.erinnerungName').value;
-        const checkboxErinnerung = element.querySelector('#checkboxErinnerung').checked;
         const date = element.querySelector('#inputDate').value;
         const time = element.querySelector('#inputTime').value;
-        const intervallEinheit = element. querySelector('#intervallEinheit').value;
-        const intervallWert = element. querySelector('#intervallWertSelect').value;
-        const endDate = element.querySelector('#endDate').value;
+        
+        
 
         return {
             id: index,
-            checkboxErinnerung: checkboxErinnerung,
-            name: name,
             date: date,
             time: time,
-            intervallEinheit: intervallEinheit,
-            intervallWert: intervallWert, 
-            endDate: endDate, 
+            name: name,
+
         };
     });
     localStorage.setItem('erinnerungen', JSON.stringify(data));
@@ -542,7 +538,6 @@ function saveDataTimer() {  //Timer
         };
     });
     localStorage.setItem('timer', JSON.stringify(data));
-    console.log(data);
 }
 
 function saveDataBlocking() {   //Blocking
@@ -550,27 +545,19 @@ function saveDataBlocking() {   //Blocking
     const blockingElements = container.querySelectorAll('.blockingContainer');
     
     const data = Array.from(blockingElements).map((element, index) => {
+      
+        const startTime = element.querySelector('#start-time').value;
+        const endTime = element.querySelector('#end-time').value;
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
-        const checkboxBlocking = element.querySelector('.checkboxTimeBlocking').checked;
-        const startTime = element.querySelector('#startTime').value;
-        const endTime = element.querySelector('#endTime').value;
-        const intervallEinheit = element.querySelector('#intervallEinheit').value;
-        const intervallWert = element.querySelector('#intervallWertSelect').value;
-        const endDatum = element.querySelector('#endDate').value;
 
         return {
             id: index,
-            nameBlocking: nameBlocking,
-            checkboxBlocking: checkboxBlocking,
             startTime: startTime,
             endTime: endTime,
-            intervallEinheit: intervallEinheit,
-            intervallWert: intervallWert,
-            endDatum: endDatum,
+            nameBlocking: nameBlocking,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
-    console.log(data);
 }
 
 
@@ -594,6 +581,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     localStorage.setItem('offeneAusrede', JSON.stringify(data));
     console.log(data);
 }
+
 
 
 // Function to load data from localStorage
@@ -648,45 +636,53 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-            <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-button" onclick="changeButto(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" value="true" ${data.checkboxErinnerung ? 'checked' : ''}>
-            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
-            <div class="container">
-                <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
-                <div id="dropdownMenu" class="dropdown-content hidden">
-                    <a onclick="löschen(this)" href="#" class="change">Löschen</a>
-                    <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
-                </div>                                                                                                       
-            </div>     
+        <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+        <svg class="hidden"  id="stop-button" onclick="changeButto(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+        <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
+        <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+        <div class="container">
+        <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+            <div id="dropdownMenu" class="dropdown-content hidden">
+                <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
+            </div>                                                                                                       
+        </div> 
         </div>
-        <div class="erinnerungDetails">
-            <div class="datumContainer">
-                <label  class="labelErinnerung"  for="inputDate">Datum:</label>
-                <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
-                <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
-                <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
+        
+            <div class="erinnerungDetails">
+                <div class="datumContainer">
+                
+                   <label  class="labelErinnerung"  for="inputDate">Datum:</label>
+            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
+                    <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
+            <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
+         
             </div>
+       
+     <div id="ErinnerungsDropDown">
+     
+      <label class="labelErinnerung" for="repeatInput">Intervall:</label>
+      <div id="block">
+        <select class="inputErinnerungDetails" id="repeatInput" onclick="call(this)">
+     <option value="" disabled selected>Bitte wählen...</option>
+      <option value="nichts">Keine Wiederholung</option>
+      <option value="Täglich">Täglich</option>
+      <option value="Wöchentlich">Wöchentlich</option>
+      <option value="Monatlich">Monatlich</option>
+      <option value="Jährlich">Jährlich</option>
+    </select>
 
-            <div id="ErinnerungsDropDown">
-                <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
-                <div id="block">
-                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
-                        <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
-                        <option value="nichts" ${data.intervallEinheit === 'nichts' ? 'selected' : ''}>Keine Wiederholung</option>
-                        <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
-                        <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
-                        <option value="Monatlich" ${data.intervallEinheit === 'Monatlich' ? 'selected' : ''}>Monatlich</option>
-                        <option value="Jährlich" ${data.intervallEinheit === 'Jährlich' ? 'selected' : ''}>Jährlich</option>
-                    </select>
-
-                    <div id="intervallWert" style=" margin-top: 10px; display:none;">
-                        <select id="intervallWertSelect" value="${data.intervallWert}"></select>
-                    </div>
-                </div>
-                <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
-                <input id="endDate" type="date" class="inputErinnerungDetails" value="${data.endDate}">
-            </div> 
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
+        </div>
+         </div>
+        <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
+        <input id="endDate" type="date" class="inputErinnerungDetails">
+    
+        </div> 
+            
+                
+        
         </div>
     `;
     container.appendChild(originalDivErinnerung);
@@ -731,55 +727,63 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     originalDivBlocking.className = 'blockingContainer';
     
     originalDivBlocking.innerHTML = `
-    <div class="newTimeBlockingHeadline" id=${data.id}>
-        <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-        <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
-        <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
-        <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">
-    
-        <div class="container">
-            <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
-            <div id="dropdownMenu" class="dropdown-content hidden">
-                <a onclick="löschen(this)" href="#" class="change">Löschen</a>
-                <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
-            </div>                                                                                                       
-        </div>                                  
-    </div>                                                                                                                                                                                                                                              
-    <div class="inputTimeBlocking-container"> 
-        <div class="datumContainer">
-            <label class="labelZeitplanung" for="start-time">Start:</label>
-            <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
-            <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
-            <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
-        </div>
-        <div class="BlockingDropDown">
-            <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
-            <div id="block">
-                <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
-                    <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
-                        <option value="nichts" ${data.intervallEinheit === 'nichts' ? 'selected' : ''}>Keine Wiederholung</option>
-                        <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
-                        <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
-                        <option value="Monatlich" ${data.intervallEinheit === 'Monatlich' ? 'selected' : ''}>Monatlich</option>
-                        <option value="Jährlich" ${data.intervallEinheit === 'Jährlich' ? 'selected' : ''}>Jährlich</option>
-                </select>
+     <div class="newTimeBlockingHeadline" >
+            <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+             <input type="checkbox" class="checkboxTimeBlocking">
+            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
+           
+            <div class="container">
+                <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
+                <div id="dropdownMenu" class="dropdown-content hidden">
+                    <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                    <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
+                </div>                                                                                                       
+            </div>                                  
+        </div>                                                                                                                                                                                                                                              
+        <div class="inputTimeBlocking-container"> 
+          <div class="datumContainer">
+            
+           
+                <label class="labelZeitplanung" for="start-time">Start:</label>
+                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
+                <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
+                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
+          </div>
+          <div class="BlockingDropDown">
+          
+          
+      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
+      <div id="block">
+        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)" value="${data.repeatInput}">
+     <option value="" disabled selected>Bitte wählen...</option>
+       <option value="nichts">Keine Wiederholung</option>
+      <option value="Täglich">Täglich</option>
+      <option value="Wöchentlich">Wöchentlich</option>
+      <option value="Monatlich">Monatlich</option>
+      <option value="Jährlich">Jährlich</option>
+    </select>
 
-                <div id="intervallWert" style=" margin-top: 10px; display:none;">
-                    <select id="intervallWertSelect"></select>
-                </div>
-            </div>
-            <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
-            <input id="endDate" type="date" class="inputTimeBlocking" value="${data.endDatum}">
-        </div>    
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
+        </div>
+         </div>
+        <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
+        <input id="endDate" type="date" class="inputTimeBlocking">
+    
+        </div> 
+            
+                
     </div>
 
+    </div>
     `;
     container.appendChild(originalDivBlocking);
 }
 
 
 function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
-    console.log("erstelle offene Ausrede mit Daten.");
+    console.log("erstelle offeneAusrede mit Daten.");
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
@@ -787,10 +791,8 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">
             <h3 id="ausredeName">${data.ausredeName}</h3>
-        </div> 
-        <div class="ausredeDetailsContainer"> 
-        <textarea onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
-        </div>   
+        </div>                
+        <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50">${data.ausredeDetailsInput}</textarea>
     `;
     container.appendChild(originalDivOffeneAusrede);
 }
@@ -829,9 +831,9 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
        
      <div id="ErinnerungsDropDown">
      
-      <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
+      <label class="labelErinnerung" for="repeatInput">Intervall:</label>
       <div id="block">
-        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
+        <select class="inputErinnerungDetails" id="repeatInput" onclick="call(this)">
      <option value="" disabled selected>Bitte wählen...</option>
        <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -840,8 +842,8 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="intervallWert" style=" margin-top: 10px; display:none;">
-      <select id="intervallWertSelect" ></select>
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
         </div>
          </div>
         <label  class="labelErinnerung" id="labelEndDate" for="endDate">Ende:</label>
@@ -919,9 +921,9 @@ function createNewElementBlocking(containerId) {   //Blocking
         
           <div class="BlockingDropDown">
          
-      <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
+      <label class="labelZeitplanung" for="repeatInput">Intervall:</label>
       <div id="block">
-        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)">
+        <select class="inputTimeBlocking" id="repeatInput" onclick="call(this)">
      <option value="" disabled selected>Bitte wählen...</option>
        <option value="nichts">Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
@@ -930,8 +932,8 @@ function createNewElementBlocking(containerId) {   //Blocking
       <option value="Jährlich">Jährlich</option>
     </select>
 
-    <div id="intervallWert" style=" margin-top: 10px; display:none;">
-      <select id="intervallWertSelect"></select>
+    <div id="extraOptions" style=" margin-top: 10px; display:none;">
+      <select id="details"></select>
         </div>
          </div>
         <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
@@ -949,53 +951,35 @@ function createNewElementBlocking(containerId) {   //Blocking
     
 }
 
-function neueOffeneAusrede(neueAusredeName){
-    console.log("neueOffeneAusrede");
-    
-    // Retrieve the existing data from localStorage
-    let existingData = localStorage.getItem('offeneAusrede');
-    
-    if (existingData) {
-        // Parse the existing data into an array
-        existingData = JSON.parse(existingData);
-    } else {
-        // If no data exists, initialize as an empty array
-        existingData = [];
-    }
-    
-    // New data to be added
-    const newData = {
-        id: existingData.length, // Incremental ID
-        ausredeDetailsInput: '', // Blank value, as in the existing data
-        ausredeName: neueAusredeName // New value
-    };
-
-    // Add the new data object to the array
-    existingData.push(newData);
-    
-    // Save the updated array back to localStorage
-    localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
-    
-    console.log('Data saved successfully:', existingData);
-}
         
+// Funktionen zum erstellen sämtlicher in der Liste "neueAusredenzwischenSpeichern" zwischen gespeicherten neuen Ausreden. Wird ausgeführt, sobald HallOfShame geöffnet wird. 
 
-//erstellt neue Ausreden nur zum Testen der App
+//erstellt neue Ausreden
 function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAusrede
+    console.log(containerId) 
     const container = document.getElementById(containerId);
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
+    console.log(container);
     
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
                 <h3 id="ausredeName">${ausredeName}</h3>
-            </div>  
-            <div class="ausredeDetailsContainer">             
-            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
-            </div>
+            </div>                
+            <textarea class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput" rows="7" cols="50"></textarea>
+        </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
-    saveDataOffeneAusrede();  // Save the state immediately after creating a new element 
+    saveDataOffeneAusrede();  // Save the state immediately after creating a new element
+    
+}
+
+function iterate_neueAusredenZwischenspeicher(){  // Erstellt nacheinander für jedes Element (den Namen der Ausrede mit Datum) der Liste eine Ausrede. 
+    while(neueAusredenZwischenspeicher.length>0){
+        console.log(neueAusredenZwischenspeicher[0]);
+        createNewElementOffeneAusrede("offeneAusredeListe", neueAusredenZwischenspeicher[0]);
+        neueAusredenZwischenspeicher.shift();
+    };
 }
 
 
@@ -1043,11 +1027,11 @@ function startReminder(einheit, isRepeat = false) {
     const timeInput = einheit.querySelector('#inputTime');
     const reminderName = einheit.querySelector('.erinnerungName').value;
     const checkboxx = einheit.querySelector('#checkboxErinnerung');
-    const intervallEinheit = einheit.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-    const detailsInput = einheit.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+    const repeatInput = einheit.querySelector('#repeatInput').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+    const detailsInput = einheit.querySelector('#details').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
     const endDateInput = einheit.querySelector('#endDate').value; // Das Enddatum der Erinnerung
 
-    if (!dateInput.value || !timeInput.value || !reminderName || !intervallEinheit) {
+    if (!dateInput.value || !timeInput.value || !reminderName || !repeatInput) {
         alert("Bitte alle Felder ausfüllen.");
         stopped = true;
         changeButto(playButton);
@@ -1071,13 +1055,13 @@ function startReminder(einheit, isRepeat = false) {
     // Adjust the time for repeated reminders if time is in the past
     if (timeToReminder <= 0 && isRepeat) {
         let repeatInterval = 0;
-        if (intervallEinheit === 'Täglich') {
+        if (repeatInput === 'Täglich') {
             repeatInterval =  24 * 60 * 60 * 1000; // 1 Tag
-        } else if (intervallEinheit === 'Wöchentlich') {
+        } else if (repeatInput === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; // 1 Woche
-        } else if (intervallEinheit === 'Monatlich') {
+        } else if (repeatInput === 'Monatlich') {
             repeatInterval = 30 * 24 * 60 * 60 * 1000; // 1 Monat
-        } else if (intervallEinheit === 'Jährlich') {
+        } else if (repeatInput === 'Jährlich') {
             repeatInterval = 365 * 24 * 60 * 60 * 1000; // 1 Jahr
         }
 
@@ -1100,7 +1084,7 @@ function startReminder(einheit, isRepeat = false) {
         new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
     }
 
-    if (intervallEinheit !== 'Keine Wiederholung') {
+    if (repeatInput !== 'Keine Wiederholung') {
         
   startReminder(einheit, true); 
     }
@@ -1108,16 +1092,16 @@ function startReminder(einheit, isRepeat = false) {
        
             setTimeout(() => {
             if (!checkboxx.checked) {
-                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
+                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');
             }
-        }, 1 * 6 * 1000);
+        }, 10 * 60 * 1000);
         checkIntervalId = setInterval(() => {
             let now = new Date(); // Aktualisiere die Zeit bei jeder Wiederholung
             let endDateTime = endDateInput ? new Date(`${endDateInput}T23:59:59`) : null;
             console.log(now);
             console.log(endDateTime);
     
-            if (intervallEinheit === 'Keine Wiederholung' || (endDateTime && now >= endDateTime)) {
+            if (repeatInput === 'Keine Wiederholung' || (endDateTime && now >= endDateTime)) {
                 console.log("Enddatum erreicht, Erinnerung wird gestoppt.");
                 stopped = true;  // Automatisch stoppen nach der Benachrichtigung
                 changeButto(einheit.querySelector("#stop-button"));
@@ -1132,9 +1116,9 @@ function startReminder(einheit, isRepeat = false) {
 
 
 function call(button) {
-    let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
-    let intervallWertDiv = button.parentNode.parentNode.querySelector("#intervallWert");
-    let detailsSelect = button.parentNode.parentNode.querySelector("#intervallWertSelect");
+    let repeatSelect = button.parentNode.parentNode.querySelector("#repeatInput");
+    let extraOptionsDiv = button.parentNode.parentNode.querySelector("#extraOptions");
+    let detailsSelect = button.parentNode.parentNode.querySelector("#details");
     let lastSelectedRepeat = ''; // Hier speichern wir die letzte Auswahl im Repeat-Dropdown
 
     function updateDetailsOptions(type) {
@@ -1177,7 +1161,7 @@ function call(button) {
                 options.push(`Jedes Jahr ${i}`);
             }
         } else if (type === 'nichts') {
-            intervallWertDiv.style.display = 'none';
+            extraOptionsDiv.style.display = 'none';
         }
 
         // Add options to the second dropdown
@@ -1195,34 +1179,19 @@ function call(button) {
     
         // Unabhängig von der Auswahl wird die Funktion aufgerufen
         if (selectedValue) {
-            intervallWertDiv.style.display = 'block'; // Zeige das zweite Dropdown
+            extraOptionsDiv.style.display = 'block'; // Zeige das zweite Dropdown
             updateDetailsOptions(selectedValue); // Aktualisiere die Optionen im zweiten Dropdown
             lastSelectedRepeat = selectedValue; // Speichere die Auswahl
         } else {
-            intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown
+            extraOptionsDiv.style.display = 'none'; // Verstecke das zweite Dropdown
         }
     });
     
     let lastSelectedDetail = '';
     detailsSelect.addEventListener('change', function() {
         lastSelectedDetail = detailsSelect.value;
-        intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
+        extraOptionsDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
     });
 }    
 
  
-
-
-
-function autoResize(textarea) {
-    
-  textarea.style.height = 'auto';
- 
-  textarea.style.height = textarea.scrollHeight + 'px';
- 
-  textarea.addEventListener('input', autoResize);
-}
-
-function resizeBackToNormal(textarea){
-    textarea.style.height = '50px';
-}
