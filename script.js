@@ -20,7 +20,7 @@ window.location.href='TimeBlocking.html';
 }
 
 function openHallofShame(){
-window.location.href='HallOfShame.html';
+window.location.href='HallofShame.html';
 }
 function backHomepage(){
 window.location.href='index.html';
