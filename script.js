@@ -237,12 +237,22 @@ function changeButton(button){
                     console.log(checkboxx);
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
+<<<<<<< HEAD
                     neueAusredenZwischenspeicher.push(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
                     
                    checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
             }, 1 * 6 * 1000);
+=======
+                    
+                    neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value)
+
+                   checkboxx =true;
+                    clearTimeout(timeoutCheckbox);}
+                }
+            }, 1 * 60 * 10);
+>>>>>>> workingNilsnew
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
@@ -597,6 +607,37 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     console.log(data);
 }
 
+function neueOffeneAusrede(neueAusredeName){
+    console.log("neueOffeneAusrede");
+    
+    // Retrieve the existing data from localStorage
+    let existingData = localStorage.getItem('offeneAusrede');
+    
+    if (existingData) {
+        // Parse the existing data into an array
+        existingData = JSON.parse(existingData);
+    } else {
+        // If no data exists, initialize as an empty array
+        existingData = [];
+    }
+    
+    // New data to be added
+    const newData = {
+        id: existingData.length, // Incremental ID
+        ausredeDetailsInput: '', // Blank value, as in the existing data
+        ausredeName: neueAusredeName // New value
+    };
+
+    // Add the new data object to the array
+    existingData.push(newData);
+    
+    // Save the updated array back to localStorage
+    localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
+    
+    console.log('Data saved successfully:', existingData);
+}
+
+
 
 
 // Function to load data from localStorage
@@ -734,7 +775,7 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     originalDivBlocking.className = 'blockingContainer';
     
     originalDivBlocking.innerHTML = `
-    <div class="newTimeBlockingHeadline" >
+    <div class="newTimeBlockingHeadline" id=${data.id}>
         <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
         <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
         <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
@@ -977,12 +1018,20 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
 }
 
 function iterate_neueAusredenZwischenspeicher(){  // Erstellt nacheinander für jedes Element (den Namen der Ausrede mit Datum) der Liste eine Ausrede. 
+    console.log("erstelle gespeicherte Ausreden.")
+    console.log(neueAusredenZwischenspeicher)
     while(neueAusredenZwischenspeicher.length>0){
         console.log(neueAusredenZwischenspeicher[0]);
         createNewElementOffeneAusrede("offeneAusredeListe", neueAusredenZwischenspeicher[0]);
         neueAusredenZwischenspeicher.shift();
     };
 }
+
+function testAusredeErstellen(){
+    neueAusredenZwischenspeicher.push("AusredeTest");
+}
+
+
 
 
 
@@ -1094,7 +1143,7 @@ function startReminder(einheit, isRepeat = false) {
        
             setTimeout(() => {
             if (!checkboxx.checked) {
-                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');
+                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
             }
         }, 1 * 6 * 1000);
         checkIntervalId = setInterval(() => {
