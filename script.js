@@ -173,7 +173,6 @@ function changeButton(button){
     let isRunningTimeBlocking = false;
     let  repeat = false;
     let checkboxx = false;
-    let neueAusredenZwischenspeicher = [];
     function startTimeBlocking(element) {
         isRunningTimeBlocking = true;
         console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
@@ -240,7 +239,7 @@ function changeButton(button){
                     
                     neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value)
 
-                   checkboxx =true;
+                    checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
             }, 1 * 60 * 10);
@@ -316,7 +315,7 @@ function changeButton(button){
   
 
 
-    //Timer Start
+//Timer Start
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-buttonTimer");
     var stopButton = button.parentNode.querySelector("#stop-buttonTimer");
@@ -475,8 +474,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.body.classList.contains("bodyHallOfShame")) {     //offeneAusrede
         // Load saved data when the page loads
         loadDataOffeneAusrede();
-        iterate_neueAusredenZwischenspeicher();  //Erstellt alle bisher nur in "neueAusredenZwischenspeicher" speicherten offenen Ausreden. Entfernt dabei sämtliche Ausreden aus "neueAusredenZwischenspeicher".
-        saveDataOffeneAusrede();                 //Speichert die neu erstellten Ausreden. Diese sind nun bei den anderen offenen Ausreden gespeichert.  
 
         // Add event listeners to save data automatically on input change
         document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
@@ -597,38 +594,6 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     localStorage.setItem('offeneAusrede', JSON.stringify(data));
     console.log(data);
 }
-
-function neueOffeneAusrede(neueAusredeName){
-    console.log("neueOffeneAusrede");
-    
-    // Retrieve the existing data from localStorage
-    let existingData = localStorage.getItem('offeneAusrede');
-    
-    if (existingData) {
-        // Parse the existing data into an array
-        existingData = JSON.parse(existingData);
-    } else {
-        // If no data exists, initialize as an empty array
-        existingData = [];
-    }
-    
-    // New data to be added
-    const newData = {
-        id: existingData.length, // Incremental ID
-        ausredeDetailsInput: '', // Blank value, as in the existing data
-        ausredeName: neueAusredeName // New value
-    };
-
-    // Add the new data object to the array
-    existingData.push(newData);
-    
-    // Save the updated array back to localStorage
-    localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
-    
-    console.log('Data saved successfully:', existingData);
-}
-
-
 
 
 // Function to load data from localStorage
@@ -984,16 +949,42 @@ function createNewElementBlocking(containerId) {   //Blocking
     
 }
 
-        
-// Funktionen zum erstellen sämtlicher in der Liste "neueAusredenzwischenSpeichern" zwischen gespeicherten neuen Ausreden. Wird ausgeführt, sobald HallOfShame geöffnet wird. 
+function neueOffeneAusrede(neueAusredeName){
+    console.log("neueOffeneAusrede");
+    
+    // Retrieve the existing data from localStorage
+    let existingData = localStorage.getItem('offeneAusrede');
+    
+    if (existingData) {
+        // Parse the existing data into an array
+        existingData = JSON.parse(existingData);
+    } else {
+        // If no data exists, initialize as an empty array
+        existingData = [];
+    }
+    
+    // New data to be added
+    const newData = {
+        id: existingData.length, // Incremental ID
+        ausredeDetailsInput: '', // Blank value, as in the existing data
+        ausredeName: neueAusredeName // New value
+    };
 
-//erstellt neue Ausreden
+    // Add the new data object to the array
+    existingData.push(newData);
+    
+    // Save the updated array back to localStorage
+    localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
+    
+    console.log('Data saved successfully:', existingData);
+}
+        
+
+//erstellt neue Ausreden nur zum Testen der App
 function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAusrede
-    console.log(containerId) 
     const container = document.getElementById(containerId);
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
-    console.log(container);
     
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
@@ -1007,22 +998,6 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     saveDataOffeneAusrede();  // Save the state immediately after creating a new element
     
 }
-
-function iterate_neueAusredenZwischenspeicher(){  // Erstellt nacheinander für jedes Element (den Namen der Ausrede mit Datum) der Liste eine Ausrede. 
-    console.log("erstelle gespeicherte Ausreden.")
-    console.log(neueAusredenZwischenspeicher)
-    while(neueAusredenZwischenspeicher.length>0){
-        console.log(neueAusredenZwischenspeicher[0]);
-        createNewElementOffeneAusrede("offeneAusredeListe", neueAusredenZwischenspeicher[0]);
-        neueAusredenZwischenspeicher.shift();
-    };
-}
-
-function testAusredeErstellen(){
-    neueAusredenZwischenspeicher.push("AusredeTest");
-}
-
-
 
 
 
