@@ -237,14 +237,6 @@ function changeButton(button){
                     console.log(checkboxx);
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
-<<<<<<< HEAD
-                    neueAusredenZwischenspeicher.push(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
-                    
-                   checkboxx =true;
-                    clearTimeout(timeoutCheckbox);}
-                }
-            }, 1 * 6 * 1000);
-=======
                     
                     neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value)
 
@@ -252,7 +244,6 @@ function changeButton(button){
                     clearTimeout(timeoutCheckbox);}
                 }
             }, 1 * 60 * 10);
->>>>>>> workingNilsnew
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
