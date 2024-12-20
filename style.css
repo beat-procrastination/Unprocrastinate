@@ -606,14 +606,14 @@ option {
 }
 
 
-#endDate,#intervallEinheit{
+#endDate,#repeatInput{
   margin-left: 1vw;
   margin-right: 1vw;
 }
 #labelEndDate{
   margin: 0vh 0vw 0vh 2vw;
 }
-#intervallEinheit{
+#repeatInput{
   border:1px solid transparent;
   box-shadow: 0 0 0 1.5px black;
   width: 85%;
