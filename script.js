@@ -7,6 +7,18 @@ const stopButton = document.getElementById('stop-button');
 
 
 
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch(error => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
 function openErinnerungen() {
    window.location.href = 'Erinnerungen.html';
 }
@@ -27,12 +39,13 @@ window.location.href='index.html';
 }
  
 
-function schließeAlleDropdownMenüs(containerListe){
+function schließeAlleDropdownMenues(containerListe){
+   // document.addEventListener('click', function(){
     let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
     dropdownMenus.forEach(menu => {
     menu.classList.add('hidden');
-    });
-}
+    });}
+
 
 function details(button){
     let parent = button.parentNode.parentNode.querySelector('.details');
@@ -50,6 +63,8 @@ function dropDownMenu(button) {
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
       dropdownMenu.classList.remove('hidden');
+     // schließeAlleDropdownMenues(button.parentNode.parentNode.parentNode.parentNode);
+      
     } else {
       dropdownMenu.classList.add('hidden');
     }
@@ -374,10 +389,16 @@ function startTimer(element) {
 
 //Speichern: 
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     if (document.body.classList.contains("bodyErinnerungen")) {    //Erinnerung
+        document.addEventListener('click', function() {
+            schließeAlleDropdownMenues(document.querySelector('#erinnerungListe'));
+        },true);
         // Load saved data when the page loads
         loadDataErinnerung();
+     
         
         // Add event listeners to save data automatically on input change
         document.getElementById('erinnerungListe').addEventListener('input', function(event) {
@@ -394,13 +415,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    if (document.body.classList.contains("bodyTimer")) {    //Timer 
+    if (document.body.classList.contains("bodyTimer")) { //timer 
+        document.addEventListener('click', function() {
+            schließeAlleDropdownMenues(document.querySelector('#timer-list'));
+        },true);   
         // Load saved data when the page loads
         loadDataTimer();
         
         // Add event listeners to save data automatically on input change
         document.getElementById('timer-list').addEventListener('input', function(event) {
             if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+                
                 saveDataTimer();
             }
         });
@@ -414,6 +439,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     if (document.body.classList.contains("bodyTimeBlocking")) {    //Blocking
+        document.addEventListener('click', function() {
+            schließeAlleDropdownMenues(document.querySelector('#blockingListe'));
+        },true);
         // Load saved data when the page loads
         loadDataBlocking();
         
@@ -432,7 +460,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.classList.contains("bodyHallOfShame")) {     //offeneAusrede
+    if (document.body.classList.contains("bodyHallOfShame")) { //offeneAusrede
+        document.addEventListener('click', function() {
+            schließeAlleDropdownMenues(document.querySelector('#offeneAusredeListe'));
+        },true);    
         // Load saved data when the page loads
         loadDataOffeneAusrede();
 
@@ -651,6 +682,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
         </div>
     `;
     container.appendChild(originalDivErinnerung);
+    
 }
 
 function createNewElementWithDataTimer(data) {          //Timer
@@ -680,6 +712,7 @@ function createNewElementWithDataTimer(data) {          //Timer
             </div>             
     `;
     container.appendChild(originalDivTimer);
+
 }
 
 function createNewElementWithDataBlocking(data) {  //Blocking
@@ -768,7 +801,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
             <input class="erinnerungName" placeholder="Name der Erinnerung" type="text">
             <div class="container">
         <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
-            <div id="dropdownMenu" class="dropdown-content hidden">
+            <div id="dropdownMenu" onblur=" class="dropdown-content hidden">
                 <a onclick="löschen(this)" href="#" class="change">Löschen</a>
                 <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
             </div>                                                                                                       
