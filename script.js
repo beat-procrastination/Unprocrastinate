@@ -27,37 +27,11 @@ window.location.href='index.html';
 }
  
 
-function createNewElement(id, containerId){
-    let originalDiv = document.getElementById(id); 
-let clonedDiv = originalDiv.cloneNode(true)
-let container = document.getElementById(containerId);
-let firstChild = container.firstChild;
-let inputElements = clonedDiv.querySelectorAll('input');
-let dropdownMenus = container.querySelectorAll('.dropdown-content');
-dropdownMenus.forEach(menu => {
+function schließeAlleDropdownMenüs(containerListe){
+    let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
+    dropdownMenus.forEach(menu => {
     menu.classList.add('hidden');
-});
-
-inputElements.forEach(input => {
-        input.value = '';
     });
-
- 
-
-
-
-container.insertBefore(clonedDiv, firstChild);
-let newDropdownMenu = clonedDiv.querySelector('.dropdown-content');
-newDropdownMenu.classList.add('hidden');
-let playButton = clonedDiv.querySelector('#play-button');
-let stopButton = clonedDiv.querySelector('#stop-button');
-if (playButton && stopButton) {
-    playButton.classList.remove('hidden');
-    stopButton.classList.add('hidden');
-}
-
-
-
 }
 
 function details(button){
@@ -85,17 +59,8 @@ function dropDownMenu(button) {
 
 
 function löschen(button) {
-    
     var parentElement = button.parentNode.parentNode.parentNode.parentNode;
-
-    if (parentElement.parentNode.children.length > 1) {
-       
-        parentElement.remove();
-    } else {
-       
-        createNewElement('newTimeBlocking', 'timeBlockingList');
-        parentElement.remove();
-    }
+    parentElement.remove();
 }
 
   
@@ -177,7 +142,6 @@ function changeButton(button){
         isRunningTimeBlocking = true;
         console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
        
-        
         const playTime = element.querySelector("#startTime").value;
         const endTime = element.querySelector("#endTime").value;
         const playButton = element.querySelector("#play-button");
@@ -212,8 +176,6 @@ function changeButton(button){
                 return;
           
          }
-            
-    
             const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
@@ -222,14 +184,13 @@ function changeButton(button){
             const startTotalMinutes = startHours * 60 + startMinutes;
             const endTotalMinutes = endHours * 60 + endMinutes;
            
-    
             if (currentTime === startTotalMinutes) {
                 if (Notification.permission === 'granted') {  
                     new Notification('Bestätigen Sie, dass Sie angefangen haben!');
+                    console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
                 }
             }
         
-    
            let timeoutCheckbox = setTimeout(() => {
             if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
@@ -237,7 +198,7 @@ function changeButton(button){
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
                     
-                    neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value)
+                    neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
 
                     checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
@@ -698,7 +659,6 @@ function createNewElementWithDataTimer(data) {          //Timer
     originalDivTimer.className = 'timerContainer';
     
     originalDivTimer.innerHTML = `
-    
         <div class="timerHeadline">
             <svg onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-buttonTimer" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
@@ -717,10 +677,7 @@ function createNewElementWithDataTimer(data) {          //Timer
                 <input class="input-timer" type="number" name="Intervall" id="Intervall" min="1" value="${data.intervall}">
                 <label class="wiederholungen" for="wiederholungen">Wiederholungen:</label>
                 <input class="input-timer" type="number" name="Wiederholungen" id="wiederholungen" min="1" value="${data.wiederholungen}">
-           
-              </div>  
-        
-                
+            </div>             
     `;
     container.appendChild(originalDivTimer);
 }
@@ -1038,8 +995,6 @@ function stopReminder() {
     console.log("Die Erinnerung wurde angehalten.");
 }
 function startReminder(einheit, isRepeat = false) {
-    console.log("2.1");
-
     const playButton = einheit.querySelector("#play-button");
     const dateInput = einheit.querySelector('#inputDate');
     const timeInput = einheit.querySelector('#inputTime');
@@ -1084,9 +1039,6 @@ function startReminder(einheit, isRepeat = false) {
             // Füge das Intervall hinzu, bis die Zeit in der Zukunft liegt
             reminderDateTime = new Date(reminderDateTime.getTime() + repeatInterval);
             timeToReminder = reminderDateTime - now;
-            console.log(timeToReminder);
-            console.log(reminderDateTime);
-            console.log(now);
         }
     }
     timerId = setTimeout(() => {
@@ -1105,6 +1057,8 @@ function startReminder(einheit, isRepeat = false) {
             if (!checkboxx.checked) {
                 console.log("Checkbox wurde nicht abgehakt.");
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
+                neueOffeneAusrede(reminderName);
+                console.log(reminderName);
             }
         }, 1 * 6 * 1000);
         checkIntervalId = setInterval(() => {
@@ -1122,7 +1076,6 @@ function startReminder(einheit, isRepeat = false) {
         }, 60 * 1000);
 
     }, timeToReminder);
-    console.log("4");
 }
 
 
