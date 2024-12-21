@@ -985,8 +985,8 @@ function changeButto(button) {
         if (Notification.permission !== 'granted') {
             Notification.requestPermission();
         } else {
-            console.log(button.parentNode.parentNode.parentNode.parentNode);
-            startReminder(button.parentNode.parentNode.parentNode.parentNode);
+            console.log(button.parentNode.parentNode);
+            startReminder(button.parentNode.parentNode);
         }
 
         // EventListener hinzufügen, um auf das Stoppen zu reagieren
