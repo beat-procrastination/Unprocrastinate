@@ -964,8 +964,11 @@ let timerId = null;
 function changeButto(button) {
     const playButton = button.parentNode.querySelector("#play-button");
     const stopButton = button.parentNode.querySelector("#stop-button");
+    console.log(button.parentNode);
+    console.log(playButton);
 
     if (playButton.classList.contains('hidden')) {
+        console.log("4");
         // Stoppen des Timers und Umschalten auf Play-Button
         stopped = true;
         clearTimeout(timerId); // Timer stoppen, falls er läuft
@@ -973,6 +976,7 @@ function changeButto(button) {
         stopButton.classList.add('hidden');
        
     } else {
+        console.log("5");
         // Starten der Erinnerung und Umschalten auf Stop-Button
         stopped = false;
         stopButton.classList.remove('hidden');
@@ -981,6 +985,7 @@ function changeButto(button) {
         if (Notification.permission !== 'granted') {
             Notification.requestPermission();
         } else {
+            console.log(button.parentNode.parentNode.parentNode.parentNode);
             startReminder(button.parentNode.parentNode.parentNode.parentNode);
         }
 
@@ -990,6 +995,7 @@ function changeButto(button) {
 }
 
 function stopReminder() {
+    console.log("3");
     stopped = true;
     clearTimeout(timerId); // Timer stoppen
     console.log("Die Erinnerung wurde angehalten.");
@@ -1003,10 +1009,14 @@ function startReminder(einheit, isRepeat = false) {
     const intervallEinheit = einheit.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
     const detailsInput = einheit.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
     const endDateInput = einheit.querySelector('#endDate').value; // Das Enddatum der Erinnerung
+    
+    console.log(dateInput.value, timeInput.value, reminderName, intervallEinheit);
     if (!dateInput.value || !timeInput.value || !reminderName || !intervallEinheit) {
         alert("Bitte alle Felder ausfüllen.");
+        console.log("1");
         stopped = true;
         changeButto(playButton);
+        console.log("2");
         return;
     }
     let reminderDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
