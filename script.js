@@ -5,40 +5,42 @@ const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 
-// App installieren
+// App installieren 
 let deferredPrompt;
 const installButton = document.getElementById('install-button');
 
-// Listen for the `beforeinstallprompt` event
+// Listen for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent the default prompt
   e.preventDefault();
-
+  
   // Save the event for later use
   deferredPrompt = e;
 
-  // Add click event listener to the install button
+  // Show the install button
+  installButton.style.display = 'block';
+
+  // When the button is clicked, trigger the install prompt
   installButton.addEventListener('click', () => {
-    if (deferredPrompt) {
-      // Show the install prompt
-      deferredPrompt.prompt();
+    // Show the install prompt
+    deferredPrompt.prompt();
 
-      // Wait for the user to respond to the prompt
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
 
-        // Reset the deferred prompt variable
-        deferredPrompt = null;
-      });
-    } else {
-      console.log('Install prompt not available');
-    }
+      // Reset the deferred prompt variable
+      deferredPrompt = null;
+      // Optionally hide the install button again
+      installButton.style.display = 'none';
+    });
   });
 });
+
 
 
 
