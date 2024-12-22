@@ -5,7 +5,44 @@ const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 
+// App installieren 
+let deferredPrompt;
+const installButton = document.getElementById('install-button');
 
+// Listen for the `beforeinstallprompt` event
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the default prompt
+  e.preventDefault();
+  
+  // Save the event for later use
+  deferredPrompt = e;
+
+  // Show the install button
+  installButton.style.display = 'block';
+
+  // When the button is clicked, trigger the install prompt
+  installButton.addEventListener('click', () => {
+    // Show the install prompt
+    deferredPrompt.prompt();
+
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+
+      // Reset the deferred prompt variable
+      deferredPrompt = null;
+      // Optionally hide the install button again
+      installButton.style.display = 'none';
+    });
+  });
+});
+
+
+// Service Worker für irgendwas
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -18,6 +55,25 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+function benachrichtigungenBerechtigungPrüfen(){     //Prüft ob die App die Berechtigung für Benachrichtigungen hat. 
+    if (Notification.permission === "granted") {     // Falls Benachrichtigungen erlaubt sind, passiert nichts. 
+        console.log("Permission already granted!");
+      } else if (Notification.permission === "denied") {  //Falls Benachrichtigungen blockiert, also einmal bereits abgelehnt wurde, wird der Nutzer darauf hingewiesen. In diesem Fall ist es nicht möglich, den Nutzer erneut um die Erlaubnis zu fragen.  
+        console.log("Permission was denied previously.");
+        alert("Benachrichtigungen sind blockiert. Sie können diese in den Einstellungen ihres Browsers wieder aktivieren.");
+      } else {                                            // Falls keine der beiden Fälle zutrifft, wird um die Erlaubnis gefragt. 
+        Notification.requestPermission().then(permission => {    
+          if (permission === "granted") {
+            console.log("Permission granted!");
+          }
+        });
+      }      
+}
+
+
+
+
 
 function openErinnerungen() {
    window.location.href = 'Erinnerungen.html';
