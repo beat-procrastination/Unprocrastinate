@@ -12,9 +12,9 @@
 
 .body1{ 
   
-background-image: url( https://wallup.net/wp-content/uploads/2019/10/336103-sky-clouds-scenery-sunset-beautiful-nature-landscape.jpg);
+background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
 background-size: cover;
-background-position: center;
+background-position: center center;
 background-repeat: no-repeat;
 height: 100vh;
 overflow: hidden;
