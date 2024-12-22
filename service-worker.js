@@ -1,7 +1,7 @@
 // Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
-    '/',
+
     '/index.html',
     '/Erinnerungen.html',
     '/HallofShame.html',
