@@ -611,11 +611,11 @@ option {
   margin-right: 1vw;
 }
 #labelEndDate{
-  margin: 0vh 0vw 0vh 2vw;
+  margin: 0vh 0vw 0vh 1.75vw;
 }
 #intervallEinheit{
-  border:1px solid transparent;
-  box-shadow: 0 0 0 1.5px black;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 1.75px black;
   width: 85%;
   box-sizing: border-box;
   height: 100%;
