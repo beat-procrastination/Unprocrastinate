@@ -1,7 +1,6 @@
 // Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
-
     '/index.html',
     '/Erinnerungen.html',
     '/HallofShame.html',
@@ -10,7 +9,20 @@ const urlsToCache = [
     '/style.css',
     '/script.js',
     '/settings.json',
+    '/service-worker.js',
+    '/icons/favicon.svg',
+    '/icons/favicon.ico',
+    '/icons/apple-touch-icon.png',
+    '/icons/512x512.png',
+    '/icons/192x192.png',
+    '/icons/96x96.png',
+    '/bilder/screenshotHandy.png',
+    '/bilder/screenshotDeskop.png',
+    '/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
 ];
+
+// Entferne Duplikate
+const uniqueUrlsToCache = [...new Set(urlsToCache)];
 
 // 1. Install-Event - Dateien in den Cache legen
 self.addEventListener('install', event => {
@@ -18,7 +30,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('[Service Worker] Caching all files');
-            return cache.addAll(urlsToCache);
+            return cache.addAll(uniqueUrlsToCache);
         })
     );
 });
