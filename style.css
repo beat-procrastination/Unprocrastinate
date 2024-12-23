@@ -162,7 +162,7 @@ h2{text-align: center;
   }
 
   #nameZeitplanung{
-    width: 65vw;
+    width: 55vw;
   }
 
   #inputTime, #inputDate, #start-time, #end-time{
@@ -239,10 +239,7 @@ background-color:var(--farbe);
       width: calc(2.75vh + 3vw); /* Kleinere Skalierung für breitere Bildschirme */
       height: calc(2.75vh + 4vw);
     }
-    #play-buttonZeitplanung, #stop-buttonZeitplanung {
-      width: calc(2.75vh + 3vw); /* Kleinere Skalierung für breitere Bildschirme */
-      height: calc(2.75vh + 4vw);
-    }
+   
 
     
     .timerContainer{
@@ -603,10 +600,10 @@ width: 80%;
     position: relative;
   }
   .checkboxTimeBlocking{
-    width: 4vw;
+    width: 5vw;
     min-width: 25px;
     aspect-ratio: 1 / 1;
-    margin: auto;
+    margin: 2vw 2vw 2vw 2vw;
     height:auto;
     border: 3px solid black;
     box-shadow: none; 
@@ -618,6 +615,10 @@ width: 80%;
     display: inline-block;
     position: relative;
 
+  }
+
+  #timeBlockingDatum{
+    margin-right: 2vw;
   }
 
   .checkboxTimeBlocking:checked , .checkboxErinnerung:checked{
