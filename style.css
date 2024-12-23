@@ -322,7 +322,7 @@ background-color:var(--farbe);
     }
 
     .inputTimeBlocking{
-    height: 50%;
+    height: 50% !important;
     margin: 0 2.5vh 0 2.5vh;
     }
   }
@@ -440,7 +440,7 @@ background-color:var(--farbe);
   }
   @media  (orientation: landscape){
   .checkboxTimeBlocking{
-    width: 4vw !important; }
+    width: 3.75vw !important; }
     
    
     .menuBlocking{
@@ -713,7 +713,7 @@ option {
   box-shadow: 0 0 0 1.75px black;
   width: 85%;
   box-sizing: border-box;
-  height: 70%;
+  height: 70% !important;
   margin-top: 1vh;
   
 }
