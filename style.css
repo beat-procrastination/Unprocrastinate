@@ -440,12 +440,12 @@ background-color:var(--farbe);
   }
   @media  (orientation: landscape){
   .checkboxTimeBlocking{
-    width: 4vw;}
+    width: 4vw !important; }
     
    
     .menuBlocking{
-      height: 9vw;
-      width: 5.25vw;
+      height: 9vw !important;
+      width: 5.25vw !important;
     }
 
     
