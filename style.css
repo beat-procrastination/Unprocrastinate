@@ -438,7 +438,19 @@ background-color:var(--farbe);
   padding: 3vw;
   display: inline-block;
   }
-  
+  @media  (orientation: landscape){
+  .checkboxTimeBlocking{
+    width: 4vw;}
+    
+   
+    .menuBlocking{
+      height: 9vw;
+      width: 5.25vw;
+    }
+
+    
+
+        }
   @media  (orientation: landscape){
    .offeneAusredeContainer{
       margin-bottom: 3vw;
@@ -451,15 +463,6 @@ background-color:var(--farbe);
       font-size: calc(0.75vw + 1.5vh);
     }
 
-    .checkboxTimeBlocking{
-width: 4vw;
-    }
-    .menuBlocking{
-      height: 9vw;
-      width: 5.25vw;
-    }
-
-    
     
     .ausredeDetailsContainer{
 height: 6vw;
