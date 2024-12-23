@@ -280,7 +280,7 @@ background-color:var(--farbe);
     margin-bottom: 8vh;
     margin-top: 5vh;
     min-height: fit-content;
-    max-height: 26vh;
+    max-height: fit-content;
   }
 
   .erinnerungÜbersicht, .newTimeBlockingHeadline{
@@ -304,7 +304,7 @@ background-color:var(--farbe);
       width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
   margin-left: auto;
   margin-right: auto;
-   height: 35vh;
+   height: 34vh;
    margin-top: 10vh;
     
     }
@@ -343,12 +343,12 @@ background-color:var(--farbe);
   }
    @media (orientation: landscape){
     .datumContainer{
-      height: 9vh;
-      margin-top: 2vh;
+      height: 8vh;
+      margin-top: 1.25vh;
     }
     .datumContainer2{
-      height: 9vh;
-      margin-top: 2vh;
+      height: 8vh;
+      margin-top: 1.25vh;
     }
    }
   
@@ -621,8 +621,11 @@ option {
  align-items: center;
 }
  @media  (orientation: landscape){
-.BlockingDropDown, #ErinnerungsDropDown{
+ #ErinnerungsDropDown{
   height: 9vh;
+}
+.BlockingDropDown{
+ height:8vh;
 }
  }
   
