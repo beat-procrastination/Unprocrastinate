@@ -1,4 +1,4 @@
- //Name des Caches
+//Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
     '/index.html',
