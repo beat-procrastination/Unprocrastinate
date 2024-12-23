@@ -262,7 +262,7 @@ background-color:var(--farbe);
 
   
 
-  .erinnerungContainer, .blockingContainer {
+  .erinnerungContainer{
   height: 22vh;
   width: auto;
   padding: calc(0.75vw + 0.5vh);
@@ -271,6 +271,16 @@ background-color:var(--farbe);
   margin-top: 5vh;
   min-height: fit-content;
   max-height: 26vh;
+  }
+  .blockingContainer{
+    height: 24vh;
+    width: auto;
+    padding: calc(0.75vw + 0.5vh);
+    border: calc(0.3vw + 0.3vh) solid black;
+    margin-bottom: 8vh;
+    margin-top: 5vh;
+    min-height: fit-content;
+    max-height: 26vh;
   }
 
   .erinnerungÜbersicht, .newTimeBlockingHeadline{
@@ -283,14 +293,24 @@ background-color:var(--farbe);
   
   }
   @media (orientation: landscape) {
-    .erinnerungContainer, .blockingContainer {
+    .erinnerungContainer{
       width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
   margin-left: auto;
   margin-right: auto;
    height: 30vh;
    margin-top: 10vh;
     }
+    .blockingContainer{
+      width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
+  margin-left: auto;
+  margin-right: auto;
+   height: 35vh;
+   margin-top: 10vh;
+    
+    }
   }
+
+ 
  
   
   
