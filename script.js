@@ -45,13 +45,25 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 
 // Service Worker für irgendwas
-
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
                 console.log('Service Worker registered:', registration);
+
+                // Trigger an update for the Service Worker
                 registration.update();
+
+                // Request notification permission
+                if (Notification.permission !== 'granted') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            console.log('Notification permission granted.');
+                        } else {
+                            console.log('Notification permission denied.');
+                        }
+                    });
+                }
             })
             .catch(error => {
                 console.log('Service Worker registration failed:', error);
@@ -59,19 +71,20 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-function benachrichtigungenBerechtigungPrüfen(){     //Prüft ob die App die Berechtigung für Benachrichtigungen hat. 
-    if (Notification.permission === "granted") {     // Falls Benachrichtigungen erlaubt sind, passiert nichts. 
-        console.log("Permission already granted!");
-      } else if (Notification.permission === "denied") {  //Falls Benachrichtigungen blockiert, also einmal bereits abgelehnt wurde, wird der Nutzer darauf hingewiesen. In diesem Fall ist es nicht möglich, den Nutzer erneut um die Erlaubnis zu fragen.  
-        console.log("Permission was denied previously.");
-        alert("Benachrichtigungen sind blockiert. Sie können diese in den Einstellungen ihres Browsers wieder aktivieren.");
-      } else {                                            // Falls keine der beiden Fälle zutrifft, wird um die Erlaubnis gefragt. 
-        Notification.requestPermission().then(permission => {    
-          if (permission === "granted") {
-            console.log("Permission granted!");
-          }
+// Function to send a notification
+function sendNotification(title, body) {
+    console.log("g");
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        // Send a message to the Service Worker
+        console.log("h");
+        navigator.serviceWorker.controller.postMessage({
+            type: 'show-notification',
+            title: title,
+            body: body,
         });
-      }      
+    } else {
+        console.error('Service Worker not controlling the page.');
+    }
 }
 
 
@@ -187,13 +200,7 @@ function changeButton(button){
   }
 
   function NotificatioPermission(element) {
-
-    if (!("Notification" in window)) {
-        alert("Dieser Browser unterstützt keine Benachrichtigungen");
-    } else {
-        alert("Benachrichtigungen sind aktiviert");
-    }
-    if (Notification.permission === "default") {
+  if (Notification.permission === "default") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                
@@ -260,7 +267,7 @@ function changeButton(button){
            
             if (currentTime === startTotalMinutes) {
                 if (Notification.permission === 'granted') {  
-                    new Notification('Bestätigen Sie, dass Sie angefangen haben!');
+                    sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
                     console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
                 }
             }
@@ -281,7 +288,7 @@ function changeButton(button){
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
-                    new Notification(`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
+                    sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
                     if(intervallEinheit === 'Keine Wiederholung'){
                     changeButton(playButton);
@@ -384,17 +391,9 @@ function startTimer(element) {
     });
     
     const playButton = element.querySelector("#play-buttonTimer");
-   
-    if (!("Notification" in window)) {
-        alert("Dieser Browser unterstützt keine Benachrichtigungen");
-    } else {
-        alert("Benachrichtigungen sind aktiviert");
-    }
-    
     const intervalInput = element.querySelector("#Intervall");
     const Wiederholungen = element.querySelector("#wiederholungen");
     const timerName = element.querySelector("#timerName");
-
     const TimerNameValue = timerName.value;
     const WiederholungenValue = parseInt(Wiederholungen.value);
     const intervalValue = intervalInput.value * 60000;
@@ -432,13 +431,13 @@ function startTimer(element) {
             clearInterval(myVar);
                 return; }
             
-            new Notification(`Ihr Timer ${TimerNameValue} ist abgelaufen`);
+            sendNotification('Timer abgelaufen!',`Ihr Timer ${TimerNameValue} ist abgelaufen`);
             Wiederholungencounter++;
             if (Wiederholungencounter >= WiederholungenValue) {
                 clearInterval(myVar);
                 isRunning = false;  
                 changeButtons(playButton);
-                new Notification(`Timer hat angehalten nach ${Wiederholungencounter} Wiederholungen.`);
+                console.log(`Timer hat angehalten nach ${Wiederholungencounter} Wiederholungen.`);
             }
         }
     }
@@ -1146,7 +1145,7 @@ function startReminder(einheit, isRepeat = false) {
 
     if (!stopped) {
         console.log("Benachrichtigung: Es ist Zeit für deine Erinnerung:...");
-        new Notification(`Es ist Zeit für deine Erinnerung: ${reminderName}`);
+        sendNotification('Erinnerung fällig!',`Es ist Zeit für deine Erinnerung: ${reminderName}`);
         console.log("Benachrichtigung: Es ist Zeit für deine Erinnerung:... wurde gesendet");
     }
     console.log(intervallEinheit);
