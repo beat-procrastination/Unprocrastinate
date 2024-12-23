@@ -11,35 +11,30 @@ const installButton = document.getElementById('install-button');
 
 // Listen for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the default prompt
-  e.preventDefault();
-  
-  // Save the event for later use
-  deferredPrompt = e;
+    // Prevent the default prompt
+    e.preventDefault();
+    
+    // Save the event for later use
+    deferredPrompt = e;
 
-  // Show the install button
-  installButton.style.display = 'block';
+    // When the button is clicked, trigger the install prompt
+    installButton.addEventListener('click', () => {
+      // Show the install prompt
+      deferredPrompt.prompt();
 
-  // When the button is clicked, trigger the install prompt
-  installButton.addEventListener('click', () => {
-    // Show the install prompt
-    deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
 
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-
-      // Reset the deferred prompt variable
-      deferredPrompt = null;
-      // Optionally hide the install button again
-      installButton.style.display = 'none';
+        // Reset the deferred prompt variable
+        deferredPrompt = null;
+      });
     });
   });
-});
 
 
 
