@@ -162,7 +162,7 @@ h2{text-align: center;
   }
 
   #nameZeitplanung{
-    width: 55vw;
+    width: 67vw;
   }
 
   #inputTime, #inputDate, #start-time, #end-time{
@@ -572,8 +572,8 @@ width: 80%;
 
 
 .menuErinnerung, .menuBlocking, .Timermenu{
-  height: 8vh;
-  width: 9vw;
+  height: 10vh;
+  width: 11vw;
   cursor: pointer;
   margin: auto;
   min-height: 37px;
@@ -618,7 +618,7 @@ width: 80%;
   }
 
   #timeBlockingDatum{
-    margin-right: 2vw;
+    margin-right: 5vw;
   }
 
   .checkboxTimeBlocking:checked , .checkboxErinnerung:checked{
