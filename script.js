@@ -271,7 +271,6 @@ function changeButton(button){
                 return;
           
          }
-            const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
     
