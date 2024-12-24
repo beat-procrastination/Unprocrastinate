@@ -229,6 +229,7 @@ function changeButton(button){
         const timeBlockingDatum = element.querySelector('#timeBlockingDatum').value;
         const now = new Date();
         const DatumBlocking = new Date(timeBlockingDatum) - now;
+        console.log(DatumBlocking);
     
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatum) {
             alert('Bitte alle Felder ausfüllen.');
@@ -239,11 +240,13 @@ function changeButton(button){
         const [startHours, startMinutes] = playTime.split(':').map(Number);
         const [endHours, endMinutes] = endTime.split(':').map(Number);
      
+        console.log(startMinutes, endMinutes);
         if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
             alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
             changeButton(playButton);
             return;
         }
+        console.log(repeat);
        if(repeat === true){
         DateBlocking = 1;
         startMinutes = startMinutes + 3;
@@ -286,7 +289,7 @@ function changeButton(button){
                     checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
-            }, 1 * 60 * 10);
+            }, 1 * 60 * 100);
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {

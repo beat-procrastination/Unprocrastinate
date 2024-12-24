@@ -44,7 +44,6 @@ self.addEventListener('fetch', event => {
         caches.match(event.request).then(cachedResponse => {
           return cachedResponse || fetch(event.request).catch(() => {
             // Optionally, return a fallback page or asset
-            return caches.match('/fallback.html');
           });
         })
       );      
@@ -76,7 +75,7 @@ self.addEventListener('message', event => {
          console.log("a");
         self.registration.showNotification(event.data.title, {
             body: event.data.body,
-            icon: '/icons/192x192.png',
+            icon: '/Niklas-Nils-new/icons/192x192.png',
         });
     }
 });
