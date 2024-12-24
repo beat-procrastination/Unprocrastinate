@@ -241,6 +241,7 @@ function changeButton(button){
         const [endHours, endMinutes] = endTime.split(':').map(Number);
      
         console.log(startMinutes, endMinutes);
+        const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
         if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
             alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
             changeButton(playButton);
@@ -300,7 +301,7 @@ function changeButton(button){
                     stopTimeBlocking();
                 }
                 if (intervallEinheit !== 'Keine Wiederholung') {
-                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element);
+                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element, Differenz);
                     
                 }
         
@@ -314,7 +315,7 @@ function changeButton(button){
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
     }}
-    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element) {
+    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element, Differenz) {
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
         if (intervallEinheit === 'Täglich') {
@@ -347,7 +348,7 @@ function changeButton(button){
     
 
         if (nextRepeatDate <= endDateInput) {
-            const delayUntilNextRepeat = nextRepeatDate - now;
+            const delayUntilNextRepeat = nextRepeatDate - now - Differenz;
             setTimeout(() => {
                 
                 startTimeBlocking(element,true); // Start der Hauptfunktion erneut
