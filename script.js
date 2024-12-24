@@ -232,7 +232,7 @@ function changeButton(button){
         const timeBlockingDatum = new Date(timeBlockingDatumValue);
         timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
         const now = new Date();
-        const DatumBlocking = timeBlockingDatum - now - 60000;
+        const DatumBlocking = timeBlockingDatum - now;
         console.log(DatumBlocking);
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
