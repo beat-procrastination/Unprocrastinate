@@ -232,7 +232,7 @@ function changeButton(button){
         const timeBlockingDatum = new Date(timeBlockingDatumValue);
         timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
         const now = new Date();
-        const DatumBlocking = timeBlockingDatum - now;
+        const DatumBlocking = timeBlockingDatum - now - 60000;
         
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
@@ -279,6 +279,7 @@ function changeButton(button){
             const startTotalMinutes = startHours * 60 + startMinutes;
             const endTotalMinutes = endHours * 60 + endMinutes;
            
+            console.log(currentTime, startTotalMinutes);
             if (currentTime === startTotalMinutes) {
                 if (Notification.permission === 'granted') {  
                     sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
@@ -316,7 +317,7 @@ function changeButton(button){
             }
            
 
-        }, 60000);
+        }, 30000);
     
         },DatumBlocking);
     
