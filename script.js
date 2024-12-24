@@ -228,13 +228,13 @@ function changeButton(button){
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
         const [startHours, startMinutes] = playTime.split(':').map(Number);
         const [endHours, endMinutes] = endTime.split(':').map(Number);
-        const timeBlockingDatum = element.querySelector('#timeBlockingDatum').value;
+        const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
+        const timeBlockingDatum = new Date(timeBlockingDatumValue);
         timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
         const now = new Date();
-        const DatumBlocking = (new Date(timeBlockingDatum) )- now;
-        console.log(DatumBlocking);
+        const DatumBlocking = timeBlockingDatum - now;
         
-        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatum) {
+        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
@@ -247,7 +247,7 @@ function changeButton(button){
         changeButton(playButton);
         return;
      }
-     
+
         console.log(startMinutes, endMinutes);
         const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
         if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
