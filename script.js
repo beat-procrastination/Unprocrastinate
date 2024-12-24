@@ -189,7 +189,7 @@ function changeButton(button){
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-        NotificatioPermission(button.parentNode.parentNode);
+        NotificatioPermission(button.parentNode.parentNode.parentNode);
         
     }
   }
@@ -246,6 +246,10 @@ function changeButton(button){
         }
        if(repeat === true){
         DateBlocking = 1;
+        startMinutes = startMinutes + 3;
+        endMinutes = endMinutes + 3;
+        console.log(startMinutes, endMinutes);
+
        }
         let DateBlocking = setInterval(() =>{
         let timeBlockingInterval = setInterval(() => {
@@ -255,7 +259,7 @@ function changeButton(button){
                 return;
           
          }
-            
+            const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
     
@@ -311,7 +315,7 @@ function changeButton(button){
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
         if (intervallEinheit === 'Täglich') {
-            repeatInterval =  1000 * 60 * 60 *24; 
+            repeatInterval =  1000 * 20; 
         } else if (intervallEinheit === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; 
         } else if (intervallEinheit === 'Monatlich') {
