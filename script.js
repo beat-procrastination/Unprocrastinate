@@ -241,7 +241,7 @@ function changeButton(button){
         }
     
         
-     if(DateBlocking <= 0){
+     if(DatumBlocking <= 0){
         alert('Die eingegebene Zeit liegt in der Vergangenheit.');
         isRunningTimeBlocking = false;
         changeButton(playButton);
@@ -257,7 +257,7 @@ function changeButton(button){
         }
         console.log(repeat);
        if(repeat === true){
-        DateBlocking = 1;
+        DatumBlocking = 1;
         startMinutes = startMinutes + 3;
         endMinutes = endMinutes + 3;
         console.log(startMinutes, endMinutes);
