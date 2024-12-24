@@ -171,6 +171,9 @@ function fixieren(button) {
 // Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
+    clearInterval(timeBlockingInterval);
+                clearTimeout(DateBlocking);
+                return;
     alert('Zeitplanung wurde gestoppt.');
     
 }
@@ -263,14 +266,15 @@ function changeButton(button){
         console.log(startMinutes, endMinutes);
 
        }
-        let DateBlocking = setInterval(() =>{
+        let DateBlocking = setTimeout(() =>{
         let timeBlockingInterval = setInterval(() => {
             if (!isRunningTimeBlocking) {
-            clearInterval(DateBlocking);
-             clearInterval(timeBlockingInterval);
+                clearInterval(timeBlockingInterval);
+                clearTimeout(DateBlocking);
                 return;
           
          }
+            const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
     
@@ -305,6 +309,7 @@ function changeButton(button){
                     sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
                     if(intervallEinheit === 'Keine Wiederholung'){
+                        clearTimeout
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
