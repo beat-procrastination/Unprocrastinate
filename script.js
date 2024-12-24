@@ -233,7 +233,7 @@ function changeButton(button){
         timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
         const now = new Date();
         const DatumBlocking = timeBlockingDatum - now - 60000;
-        
+        consol.log(DatumBlocking);
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
@@ -285,7 +285,7 @@ function changeButton(button){
                     sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
                     console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
                 }
-            }
+            
         
            let timeoutCheckbox = setTimeout(() => {
             if (!isRunningTimeBlocking) return;
@@ -299,7 +299,7 @@ function changeButton(button){
                     checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
-            }, 1 * 60 * 100);
+            }, 10 * 60 * 1000);}
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
@@ -317,7 +317,7 @@ function changeButton(button){
             }
            
 
-        }, 30000);
+        }, 60000);
     
         },DatumBlocking);
     
