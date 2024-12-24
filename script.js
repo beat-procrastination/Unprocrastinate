@@ -226,19 +226,27 @@ function changeButton(button){
         const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
+        const [startHours, startMinutes] = playTime.split(':').map(Number);
+        const [endHours, endMinutes] = endTime.split(':').map(Number);
         const timeBlockingDatum = element.querySelector('#timeBlockingDatum').value;
+        timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
         const now = new Date();
-        const DatumBlocking = new Date(timeBlockingDatum) - now;
+        const DatumBlocking = (new Date(timeBlockingDatum) )- now;
         console.log(DatumBlocking);
-    
+        
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatum) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
         }
     
-        const [startHours, startMinutes] = playTime.split(':').map(Number);
-        const [endHours, endMinutes] = endTime.split(':').map(Number);
+        
+     if(DateBlocking <= 0){
+        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+        isRunningTimeBlocking = false;
+        changeButton(playButton);
+        return;
+     }
      
         console.log(startMinutes, endMinutes);
         const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
