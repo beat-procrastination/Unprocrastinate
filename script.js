@@ -171,10 +171,9 @@ function fixieren(button) {
 // Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
-    clearInterval(timeBlockingInterval);
-                clearTimeout(DateBlocking);
+                alert('Zeitplanung wurde gestoppt.');
                 return;
-    alert('Zeitplanung wurde gestoppt.');
+  
     
 }
 
@@ -309,7 +308,8 @@ function changeButton(button){
                     sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
                     if(intervallEinheit === 'Keine Wiederholung'){
-                        clearTimeout
+                        clearTimeout(DateBlocking);
+                        clearInterval(timeBlockingInterval);
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
