@@ -212,9 +212,8 @@ function changeButton(button){
     }
 
     let isRunningTimeBlocking = false;
-    let  repeat = false;
     let checkboxx = false;
-    function startTimeBlocking(element) {
+    function startTimeBlocking(element, repeat = false) {
         isRunningTimeBlocking = true;
         console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
        
@@ -227,9 +226,11 @@ function changeButton(button){
         const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
-
+        const timeBlockingDatum = element.querySelector('#timeBlockingDatum').value;
+        const now = new Date();
+        const DatumBlocking = new Date(timeBlockingDatum) - now;
     
-        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung) {
+        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatum) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
@@ -243,16 +244,18 @@ function changeButton(button){
             changeButton(playButton);
             return;
         }
-    
-        
+       if(repeat === true){
+        DateBlocking = 1;
+       }
+        let DateBlocking = setInterval(() =>{
         let timeBlockingInterval = setInterval(() => {
             if (!isRunningTimeBlocking) {
-                
+            clearInterval(DateBlocking);
              clearInterval(timeBlockingInterval);
                 return;
           
          }
-            const now = new Date();
+            
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
     
@@ -299,7 +302,7 @@ function changeButton(button){
 
         }, 60000);
     
-    
+        },DatumBlocking);
     
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
@@ -340,7 +343,7 @@ function changeButton(button){
             const delayUntilNextRepeat = nextRepeatDate - now;
             setTimeout(() => {
                 
-                startTimeBlocking(element); // Start der Hauptfunktion erneut
+                startTimeBlocking(element,true); // Start der Hauptfunktion erneut
             }, delayUntilNextRepeat);
         }else{
             changeButton(playButton);

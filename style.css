@@ -588,6 +588,7 @@ width: 80%;
   cursor: pointer;
   margin: auto;
   min-height: 37px;
+  max-height: 55px;
 
 }
 
