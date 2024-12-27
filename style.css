@@ -10,7 +10,7 @@
 
 
 
-.body1{ 
+/* .bodyIndex{ 
   
 background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
 background-size: cover;
@@ -19,7 +19,7 @@ background-repeat: no-repeat;
 height: 100vh;
 overflow: hidden;
 
-}
+}*/
 .ellipse{
   height: 15vh;
   width: 40%;
@@ -93,7 +93,7 @@ h2{text-align: center;
 }
 }
 
-  .bodyTimer, .bodyHallOfShame ,.bodyTimeBlocking, .inputTimeBlocking, .bodyErinnerungen{
+  .bodyTimer, .bodyHallOfShame ,.bodyTimeBlocking, .bodyErinnerungen, .bodyIndex{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
