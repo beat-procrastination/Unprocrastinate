@@ -44,13 +44,17 @@ height: 100vh;
 }
 }
 h1{ text-align: center; 
-  font-size: calc(5vw + 5vh);
+  justify-content: center;
+  font-size: calc(4vw + 4vh);
+  flex-grow: 1;
+  text-align: center;
+  margin: 0 auto;
   
 }
 
 button{
   
-  width: 23vw;
+  width: 25vw;
   height: 5vh;
   margin-bottom: 2vh;
   font-size: calc(1vh + 1.5vw);
@@ -61,10 +65,12 @@ button{
   display: flex;
   align-items: center;
   justify-content: center;
-  
+  position: fixed;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 h2{text-align: center; 
-  font-size: calc(4vw + 4vh);
+  font-size: calc(3vw + 3vh);
  }
 
  .container{
@@ -84,14 +90,20 @@ h2{text-align: center;
   
   } .back-button{
   border-radius: 5%;
-  height: 12vh;
+  height: auto;
   width: 12vw;
   cursor: pointer;
+  margin-left: 1%; 
+  position: absolute;
+  }
   
-  } .headline{
+  .headline{
   display: flex;
   align-items: center;
   gap: 4%;
+  height: 8vh;
+  margin-top: 1vh;
+  justify-content: space-between;
   }
 
   @media (orientation: landscape){
@@ -141,7 +153,7 @@ h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerC
   
   .timerHeadline{
     display: flex;
-    height: 7vh;
+    height: 4vh;
     justify-content: center;
     align-items: center;
     min-height: 4vw;
