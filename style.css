@@ -93,11 +93,11 @@ h2{text-align: center;
 }
 }
 
-  .bodyTimer, .bodyHallOfShame ,.bodyTimeBlocking, .bodyErinnerungen, .bodyIndex{
+  .bodyIndex{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color:var(--farbe);
+  background-color:red;
   
   }
   svg{
