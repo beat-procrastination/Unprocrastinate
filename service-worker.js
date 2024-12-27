@@ -22,16 +22,31 @@ const uniqueUrlsToCache = [...new Set(urlsToCache)];
 
 // 1. Install-Event - Dateien in den Cache legen
 self.addEventListener('install', event => {
-    console.log('[Service Worker] Install');
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
+  console.log('[Service Worker] Install');
+  event.waitUntil(
+      caches.open(CACHE_NAME).then(cache => {
           console.log('[Service Worker] Caching all files');
-          return cache.addAll(uniqueUrlsToCache);
-        }).catch(error => {
+          return Promise.all(
+              uniqueUrlsToCache.map(url => {
+                  return fetch(url)
+                      .then(response => {
+                          if (!response.ok) {
+                              // Log the failed response status
+                              throw new Error(`Failed to fetch: ${url} - ${response.status} ${response.statusText}`);
+                          }
+                          return cache.add(url);
+                      })
+                      .catch(error => {
+                          console.error('[Service Worker] Caching failed for:', url, error);
+                      });
+              })
+          );
+      }).catch(error => {
           console.error('[Service Worker] Caching failed:', error);
-        })
-      );      
+      })
+  );
 });
+
 
 // 2. Fetch-Event - Dateien aus dem Cache abrufen
 self.addEventListener('fetch', event => {
