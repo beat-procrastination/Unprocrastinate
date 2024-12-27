@@ -75,7 +75,7 @@ self.addEventListener('message', event => {
          console.log("a");
         self.registration.showNotification(event.data.title, {
             body: event.data.body,
-            icon: '/Niklas-Nils-new/icons/192x192.png',
+            icon: '/icons/192x192.png',
         });
     }
 });
