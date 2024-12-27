@@ -269,12 +269,7 @@ function changeButton(button){
         }
     
         
-     if(DatumBlocking <= 0){
-        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
-        isRunningTimeBlocking = false;
-        changeButton(playButton);
-        return;
-     }
+     
 
         console.log(startMinutes, endMinutes);
         const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
@@ -283,6 +278,8 @@ function changeButton(button){
             changeButton(playButton);
             return;
         }
+
+       
         console.log(repeat);
        if(repeat === true){
         DatumBlocking = 1;
@@ -291,6 +288,13 @@ function changeButton(button){
         console.log(startMinutes, endMinutes);
 
        }
+
+       if(DatumBlocking <= 0){
+        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+        isRunningTimeBlocking = false;
+        changeButton(playButton);
+        return;
+     }
         let DateBlocking = setTimeout(() =>{
         let timeBlockingInterval = setInterval(() => {
             if (!isRunningTimeBlocking) {
