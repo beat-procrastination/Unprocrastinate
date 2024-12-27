@@ -67,7 +67,7 @@ button{
   justify-content: center;
   position: fixed;
   z-index: 1000;
-  width: 96vw;
+  margin-left: -2vw;
 }
 h2{text-align: center; 
   font-size: calc(2.75vw + 3vh) !important;
@@ -103,7 +103,7 @@ h2{text-align: center;
   align-items: center;
   gap: 4%;
   height: 8vh;
-  padding-top: 7vh;
+  padding-top: calc(7vh + 2vw);
   justify-content: space-between;
 
   }
@@ -121,6 +121,7 @@ h2{text-align: center;
 
   button{
     height: 6vh;
+    min-height: 30px;
   }
 .neuesElement{
   width: 80vw;
@@ -133,7 +134,7 @@ svg{
   height: 13vh;
 }
 #nav{
-  margin-left: 10vw;
+  margin-left: 9vw;
   margin-right: 10vw;
   width: 80vw;
 }
@@ -306,14 +307,15 @@ background-color:var(--farbe);
       min-height: 100px;
     }
     .detailsTimer{
-      margin-top: 1.5vh;
+      margin-top: 3.5vh;
       height:8vh ;
     }
     #timerName{
       margin-left: 0vw;
       margin-right: 2.5vw;
       width: 70%;
-      height: calc(2.75vh + 3vw);
+      height: calc(2.75vh + 2.5w);
+      font-size: calc(2vh + 2vw);
 
     }
     .Timermenu{
@@ -323,7 +325,7 @@ background-color:var(--farbe);
 
     .input-timer{
       height: 4vh;
-      font-size: medium;
+      
     }
   }
   
@@ -448,6 +450,7 @@ background-color:var(--farbe);
   width: 30%;
   margin:1vh 3vw 1vh 3vw;
   background-color: var(--farbe);
+  min-height: 17px;
   }
 
   .inputTimeBlocking{
@@ -509,7 +512,7 @@ background-color:var(--farbe);
    
     .menuBlocking{
       height: 7vw !important;
-      width: 5.25vw !important;
+      width: 6.25vw !important;
     }
 
     
@@ -643,8 +646,9 @@ width: 80%;
   .dropdown-content a{
     padding: 1.25vw 1.25vh;
   }
-  .menuErinnerung, .Timermenu, .menuBlocking, #play-button, #stop-button, #play-buttonZeitplanung, #stop-buttonZeitplanung, .play-button, .stop-button{
-    min-height: 70px;
+  .menuErinnerung, .Timermenu, .menuBlocking{
+    min-height: 45px !important;
+    max-height: 70px !important;
   }
 }
 
@@ -795,6 +799,7 @@ option {
   box-sizing: border-box;
   height: 70% !important;
   margin-top: 1vh;
+  min-height: 20px;
   
 }
 
