@@ -27,6 +27,72 @@
     <div class="ellipse" onclick="openTimer()">Timer</div>
     <div class="ellipse" onclick="openTimeBlocking()">Zeitplanung</div>
     <div class="ellipse" onclick="openHallofShame()">Hall of Shame</div>
+
+    <div id="nav">
+        <button class="ellipse" onclick="showTool('tool1')">Tool 1 (Erinnerung)</button>
+        <button class="ellipse" onclick="showTool('tool2')">Tool 2 (Timer)</button>
+        <button class="ellipse" onclick="showTool('tool3')">Tool 3 (Zeitplanung)</button>
+        <button class="ellipse" onclick="showTool('tool4')">Tool 4 (Hall of Shame)</button>
+    </div>
+      
+    <div id="tool1" class="tool">
+        <div class="headline">
+            <img onclick="backHomepage()" class="back-button" src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="back-button">
+            <h1 class="bigHeadlines">Erinnerungen</h1>
+            </div>
+        <div class="neuesElement"> 
+            <svg onclick="createNewElementErinnerung('erinnerungListe')"  class="icon-svg" id="symbolButton"   viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 3)"> <path d="m8 16c4.4380025 0 8-3.5262833 8-7.96428571 0-4.43800246-3.5619975-8.03571429-8-8.03571429-4.43800245 0-8 3.59771183-8 8.03571429 0 4.43800241 3.56199755 7.96428571 8 7.96428571z"></path> <path d="m4 8h8"></path> <path d="m8 12.0563492v-8.0563492z"></path> </g> </g></svg>
+            <h2 class="bigWords">Neue Erinnerung</h2>
+        </div>
+        <div class="erinnerungListe" id="erinnerungListe"> 
+        
+        </div>
+    </div>
+
+    <div id="tool2" class="tool">
+        <div class="headline">
+            <img class="back-button" src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="back-button" onclick="backHomepage()">
+            <h1>Timer</h1>
+        </div>
+        <div class="neuesElement"> 
+            <svg onclick="createNewElementTimer('timer-list')"  id="symbolButton"  viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 3)"> <path d="m8 16c4.4380025 0 8-3.5262833 8-7.96428571 0-4.43800246-3.5619975-8.03571429-8-8.03571429-4.43800245 0-8 3.59771183-8 8.03571429 0 4.43800241 3.56199755 7.96428571 8 7.96428571z"></path> <path d="m4 8h8"></path> <path d="m8 12.0563492v-8.0563492z"></path> </g> </g></svg>
+            <h2>Neuer Timer</h2>
+        </div>
+        <div id="timer-list">
+        
+        </div>
+    </div>
+
+    <div id="tool3" class="tool">
+        <div class="headline">
+            <img onclick="backHomepage()" class="back-button" src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="back-button">
+            <h1 class="bigHeadlines">Zeitplanung</h1>
+        </div>
+        <div class="neuesElement"> 
+                <svg  onclick="createNewElementBlocking('blockingListe')" id="symbolButton" class="icon-svg"   viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 3)"> <path d="m8 16c4.4380025 0 8-3.5262833 8-7.96428571 0-4.43800246-3.5619975-8.03571429-8-8.03571429-4.43800245 0-8 3.59771183-8 8.03571429 0 4.43800241 3.56199755 7.96428571 8 7.96428571z"></path> <path d="m4 8h8"></path> <path d="m8 12.0563492v-8.0563492z"></path> </g> </g></svg>
+                <h2 class="bigWords">Neue Zeitplanung </h2> 
+        </div>
+        <div id="blockingListe">
+    
+        </div>
+    </div>
+
+    <div id="tool4" class="tool">
+        <div class="headline">
+            <img onclick="backHomepage()" class="back-button" src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="back-button">
+            <h1 class="bigHeadlines">Hall of Shame</h1>
+        </div>
+        <div class="neuesElement"> 
+            <svg onclick="createNewElementOffeneAusrede('offeneAusredeListe', 'Name Timeblocking Test')"  class="icon-svg" id="symbolButton"   viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 3)"> <path d="m8 16c4.4380025 0 8-3.5262833 8-7.96428571 0-4.43800246-3.5619975-8.03571429-8-8.03571429-4.43800245 0-8 3.59771183-8 8.03571429 0 4.43800241 3.56199755 7.96428571 8 7.96428571z"></path> <path d="m4 8h8"></path> <path d="m8 12.0563492v-8.0563492z"></path> </g> </g></svg>
+            <h2 class="bigWords">Neue offene Ausrede</h2>
+        </div>
+        <div class="ausredeListe">
+            <div class="offeneAusredeListe" id="offeneAusredeListe">
+        
+            </div>
+        </div>
+    </div>
+      
 <script src="script.js"></script>
 </body>
 </html>

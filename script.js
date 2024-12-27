@@ -86,8 +86,7 @@ function sendNotification(title, body) {
 
 
 
-
-
+/*
 function openErinnerungen() {
    window.location.href = 'Erinnerungen.html';
 }
@@ -106,7 +105,32 @@ window.location.href='HallofShame.html';
 function backHomepage(){
 window.location.href='index.html';
 }
- 
+*/
+
+function showTool(toolId) {
+    const tools = document.querySelectorAll('.tool');
+    tools.forEach(tool => tool.style.display = 'none');
+  
+    document.getElementById(toolId).style.display = 'block';
+  
+    // Update the browser history
+    history.pushState({tool: toolId}, toolId, `#${toolId}`);
+}
+  
+// Handle back and forward buttons
+window.onpopstate = (event) => {
+if (event.state) {
+    showTool(event.state.tool);
+}
+};
+
+// Initialize the first tool as visible on page load
+if (location.hash) {
+showTool(location.hash.substring(1));
+} else {
+showTool('tool1');
+}
+  
 
 function schließeAlleDropdownMenues(containerListe){
    // document.addEventListener('click', function(){
@@ -475,16 +499,15 @@ function startTimer(element) {
 //Speichern: 
 
 
-
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.body.classList.contains("bodyErinnerungen")) {    //Erinnerung
+    if (true) {    //Erinnerung
         document.addEventListener('click', function() {
             schließeAlleDropdownMenues(document.querySelector('#erinnerungListe'));
         },true);
+        
         // Load saved data when the page loads
         loadDataErinnerung();
      
-        
         // Add event listeners to save data automatically on input change
         document.getElementById('erinnerungListe').addEventListener('input', function(event) {
             if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
@@ -500,10 +523,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    if (document.body.classList.contains("bodyTimer")) { //timer 
+    if (true) { //timer 
         document.addEventListener('click', function() {
             schließeAlleDropdownMenues(document.querySelector('#timer-list'));
         },true);   
+        
         // Load saved data when the page loads
         loadDataTimer();
         
@@ -523,10 +547,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.classList.contains("bodyTimeBlocking")) {    //Blocking
+    if (true) {    //Blocking
         document.addEventListener('click', function() {
             schließeAlleDropdownMenues(document.querySelector('#blockingListe'));
         },true);
+        
         // Load saved data when the page loads
         loadDataBlocking();
         
@@ -545,10 +570,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    if (document.body.classList.contains("bodyHallOfShame")) { //offeneAusrede
+    if (true) { //offeneAusrede
         document.addEventListener('click', function() {
             schließeAlleDropdownMenues(document.querySelector('#offeneAusredeListe'));
         },true);    
+        
         // Load saved data when the page loads
         loadDataOffeneAusrede();
 
