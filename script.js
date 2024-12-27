@@ -171,14 +171,16 @@ function fixieren(button) {
 // Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
-    alert('Zeitplanung wurde gestoppt.');
+                alert('Zeitplanung wurde gestoppt.');
+                return;
+  
     
 }
 
 
 function changeButton(button){
-    var playButton = button.parentNode.querySelector("#play-button");
-    var stopButton = button.parentNode.querySelector("#stop-button");
+    var playButton = button.parentNode.querySelector("#play-buttonZeitplanung");
+    var stopButton = button.parentNode.querySelector("#stop-buttonZeitplanung");
     
     
     if(playButton.classList.contains('hidden')){
@@ -189,7 +191,7 @@ function changeButton(button){
     } else if (stopButton.classList.contains('hidden')) {
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-        NotificatioPermission(button.parentNode.parentNode);
+        NotificatioPermission(button.parentNode.parentNode.parentNode);
         
     }
   }
@@ -212,43 +214,62 @@ function changeButton(button){
     }
 
     let isRunningTimeBlocking = false;
-    let  repeat = false;
     let checkboxx = false;
-    function startTimeBlocking(element) {
+    function startTimeBlocking(element, repeat = false) {
         isRunningTimeBlocking = true;
         console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
        
         const playTime = element.querySelector("#startTime").value;
         const endTime = element.querySelector("#endTime").value;
-        const playButton = element.querySelector("#play-button");
+        const playButton = element.querySelector("#play-buttonZeitplanung");
         const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
         const checkbox = element.querySelector('.checkboxTimeBlocking');
         const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
         const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
-
-    
-        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung) {
+        const [startHours, startMinutes] = playTime.split(':').map(Number);
+        const [endHours, endMinutes] = endTime.split(':').map(Number);
+        const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
+        const timeBlockingDatum = new Date(timeBlockingDatumValue);
+        timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
+        const now = new Date();
+        const DatumBlocking = timeBlockingDatum - now;
+        console.log(DatumBlocking);
+        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
             changeButton(playButton);
             return;
         }
     
-        const [startHours, startMinutes] = playTime.split(':').map(Number);
-        const [endHours, endMinutes] = endTime.split(':').map(Number);
-     
+        
+     if(DatumBlocking <= 0){
+        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+        isRunningTimeBlocking = false;
+        changeButton(playButton);
+        return;
+     }
+
+        console.log(startMinutes, endMinutes);
+        const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
         if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
             alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
             changeButton(playButton);
             return;
         }
-    
-        
+        console.log(repeat);
+       if(repeat === true){
+        DatumBlocking = 1;
+        startMinutes = startMinutes + 3;
+        endMinutes = endMinutes + 3;
+        console.log(startMinutes, endMinutes);
+
+       }
+        let DateBlocking = setTimeout(() =>{
         let timeBlockingInterval = setInterval(() => {
             if (!isRunningTimeBlocking) {
-                
-             clearInterval(timeBlockingInterval);
+                clearInterval(timeBlockingInterval);
+                clearTimeout(DateBlocking);
                 return;
           
          }
@@ -260,12 +281,13 @@ function changeButton(button){
             const startTotalMinutes = startHours * 60 + startMinutes;
             const endTotalMinutes = endHours * 60 + endMinutes;
            
+            console.log(currentTime, startTotalMinutes);
             if (currentTime === startTotalMinutes) {
                 if (Notification.permission === 'granted') {  
                     sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
                     console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
                 }
-            }
+            
         
            let timeoutCheckbox = setTimeout(() => {
             if (!isRunningTimeBlocking) return;
@@ -279,18 +301,20 @@ function changeButton(button){
                     checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
                 }
-            }, 1 * 60 * 10);
+            }, 10 * 60 * 1000);}
         
             if (currentTime === endTotalMinutes) {
                 if (Notification.permission === 'granted') {
                     sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
                     if(intervallEinheit === 'Keine Wiederholung'){
+                        clearTimeout(DateBlocking);
+                        clearInterval(timeBlockingInterval);
                     changeButton(playButton);
                     stopTimeBlocking();
                 }
                 if (intervallEinheit !== 'Keine Wiederholung') {
-                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element);
+                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element, Differenz);
                     
                 }
         
@@ -299,16 +323,16 @@ function changeButton(button){
 
         }, 60000);
     
-    
+        },DatumBlocking);
     
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
     }}
-    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element) {
+    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element, Differenz) {
         let repeatInterval = 0;
         // Bestimmen des Wiederholungsintervalls
         if (intervallEinheit === 'Täglich') {
-            repeatInterval =  1000 * 60 * 60 *24; 
+            repeatInterval =  1000 * 20; 
         } else if (intervallEinheit === 'Wöchentlich') {
             repeatInterval = 7 * 24 * 60 * 60 * 1000; 
         } else if (intervallEinheit === 'Monatlich') {
@@ -337,10 +361,10 @@ function changeButton(button){
     
 
         if (nextRepeatDate <= endDateInput) {
-            const delayUntilNextRepeat = nextRepeatDate - now;
+            const delayUntilNextRepeat = nextRepeatDate - now - Differenz;
             setTimeout(() => {
                 
-                startTimeBlocking(element); // Start der Hauptfunktion erneut
+                startTimeBlocking(element,true); // Start der Hauptfunktion erneut
             }, delayUntilNextRepeat);
         }else{
             changeButton(playButton);
@@ -775,20 +799,23 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     
     originalDivBlocking.innerHTML = `
     <div class="newTimeBlockingHeadline" id=${data.id}>
-        <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-        <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+         <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">                           
+    </div>                                                                                                                                                                                                                                              
+    <div class="inputTimeBlocking-container"> 
+    <div class="datumContainer2">
+     <svg onclick="changeButton(this)"  id="play-buttonZeitplanung" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+        <svg class="hidden"  id="stop-buttonZeitplanung" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
         <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
-        <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">
-    
-        <div class="container">
+        <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
+                <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum">
+         <div class="container">
             <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
                 <a onclick="löschen(this)" href="#" class="change">Löschen</a>
                 <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
             </div>                                                                                                       
-        </div>                                  
-    </div>                                                                                                                                                                                                                                              
-    <div class="inputTimeBlocking-container"> 
+        </div>      
+                </div>
         <div class="datumContainer">
             <label class="labelZeitplanung" for="start-time">Start:</label>
             <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
@@ -942,10 +969,10 @@ function createNewElementBlocking(containerId) {   //Blocking
             </div>                                                                                                                                                                                                                                             
         <div class="inputTimeBlocking-container"> 
         <div class="datumContainer2">
-         <svg onclick="changeButton(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-button" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+         <svg onclick="changeButton(this)"  id="play-buttonZeitplanung" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg class="hidden"  id="stop-buttonZeitplanung" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
             <input type="checkbox" class="checkboxTimeBlocking">
-        <label class="labelZeitplanung" for="timeBlockingDatum">Datum:</label>
+        <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
                 <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum">
                  <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
