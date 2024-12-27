@@ -91,7 +91,7 @@ h2{text-align: center;
   } .back-button{
   border-radius: 5%;
   height: auto;
-  width: 12vw;
+  width: 7vw;
   cursor: pointer;
   margin-left: 1%; 
   position: absolute;
@@ -105,20 +105,25 @@ h2{text-align: center;
   height: 8vh;
   padding-top: 7vh;
   justify-content: space-between;
+
   }
 
 
   @media (orientation: landscape){
   .headline{
-    width: 95vw;
+    width: 80vw;
     margin-left: auto;
     margin-right: auto;
     gap: 2%;
     height: 13vh;
  
   }
+
+  button{
+    height: 6vh;
+  }
 .neuesElement{
-  width: 95vw;
+  width: 80vw;
   margin-left: auto;
   margin-right: auto;
   gap: 2%;
@@ -126,6 +131,11 @@ h2{text-align: center;
 }
 svg{
   height: 13vh;
+}
+#nav{
+  margin-left: 10vw;
+  margin-right: 10vw;
+  width: 80vw;
 }
 
 
@@ -163,6 +173,7 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
     align-items: center;
     min-height: 4vw;
     margin-bottom: 2vh;
+    margin-top: 2vh;
   }
   
   .timerContainer{
@@ -241,7 +252,7 @@ background-color:var(--farbe);
   .detailsTimer{
     display: flex;
     width: 100%;
-    height:7.25vh;
+    height:5.25vh;
     flex-wrap: nowrap;
    justify-content: center;
    align-items: center;
@@ -292,10 +303,11 @@ background-color:var(--farbe);
       width: 80vw;
       margin-left: auto;
       margin-right: auto;
+      min-height: 100px;
     }
     .detailsTimer{
-      margin-top: 3vh;
-      height:9vh ;
+      margin-top: 1.5vh;
+      height:8vh ;
     }
     #timerName{
       margin-left: 0vw;
@@ -311,7 +323,7 @@ background-color:var(--farbe);
 
     .input-timer{
       height: 4vh;
-      font-size: large;
+      font-size: medium;
     }
   }
   
@@ -324,7 +336,7 @@ background-color:var(--farbe);
   width: auto;
   padding: calc(0.75vw + 0.5vh);
   border: calc(0.3vw + 0.3vh) solid black;
-  margin-bottom: 8vh;
+  margin-bottom: 5vh;
   margin-top: 5vh;
   min-height: fit-content;
   max-height: 26vh;
@@ -356,6 +368,7 @@ background-color:var(--farbe);
   margin-right: auto;
    height: 30vh;
    margin-top: 10vh;
+   min-height: 115px;
     }
     .blockingContainer{
       width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
@@ -363,11 +376,16 @@ background-color:var(--farbe);
   margin-right: auto;
    height: 34vh;
    margin-top: 10vh;
+   min-height: 165px;
     }
 
     .inputTimeBlocking{
     height: 50% !important;
     margin: 0 2.5vh 0 2.5vh;
+    }
+    .erinnerungÜbersicht, .newTimeBlockingHeadline{
+      height: 10vh;
+      min-height: 40px;
     }
   }
 
@@ -395,7 +413,7 @@ background-color:var(--farbe);
   .datumContainer2{
     display: flex;
     width: 100%;
-    height:6vh;
+    height:7vh;
     flex-wrap: nowrap;
    justify-content: center;
    align-items: center;
@@ -406,10 +424,12 @@ background-color:var(--farbe);
     .datumContainer{
       height: 8vh;
       margin-top: 1.25vh;
+      min-height: 40px;
     }
     .datumContainer2{
       height: 8vh;
       margin-top: 1.25vh;
+      min-height: 40px;
     }
    }
   
@@ -488,7 +508,7 @@ background-color:var(--farbe);
     
    
     .menuBlocking{
-      height: 9vw !important;
+      height: 7vw !important;
       width: 5.25vw !important;
     }
 
@@ -623,14 +643,14 @@ width: 80%;
   .dropdown-content a{
     padding: 1.25vw 1.25vh;
   }
-  .menuErinnerung, .Timermenu, .menuBlocking, #play-button, #stop-button, #play-buttonZeitplanung, #stop-buttonZeitplanung{
-    min-height: 80px;
+  .menuErinnerung, .Timermenu, .menuBlocking, #play-button, #stop-button, #play-buttonZeitplanung, #stop-buttonZeitplanung, .play-button, .stop-button{
+    min-height: 70px;
   }
 }
 
 
 .menuErinnerung, .Timermenu{
-  height: 10vh;
+  height: 9vh;
   width: 11vw;
   cursor: pointer;
   margin: auto;
@@ -742,6 +762,7 @@ option {
 }
 .BlockingDropDown{
  height:8vh;
+ min-height: 40px;
 }
  }
   
