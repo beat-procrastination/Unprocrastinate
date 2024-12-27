@@ -1,37 +1,53 @@
 //Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
-    '/index.html',
-    '/style.css',
-    '/script.js',
-    '/settings.json',
-    '/service-worker.js',
-    '/icons/favicon.svg',
-    '/icons/favicon.ico',
-    '/icons/apple-touch-icon.png',
-    '/icons/512x512.png',
-    '/icons/192x192.png',
-    '/icons/96x96.png',
-    '/bilder/screenshotHandy.png',
-    '/bilder/screenshotDeskop.png',
-    '/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
+  '/Niklas-Nils-new/index.html',
+  '/Niklas-Nils-new/style.css',
+  '/Niklas-Nils-new/script.js',
+  '/Niklas-Nils-new/settings.json',
+  '/Niklas-Nils-new/service-worker.js',
+  '/Niklas-Nils-new/icons/favicon.svg',
+  '/Niklas-Nils-new/icons/favicon.ico',
+  '/Niklas-Nils-new/icons/apple-touch-icon.png',
+  '/Niklas-Nils-new/icons/512x512.png',
+  '/Niklas-Nils-new/icons/192x192.png',
+  '/Niklas-Nils-new/icons/96x96.png',
+  '/Niklas-Nils-new/bilder/screenshotHandy.png',
+  '/Niklas-Nils-new/bilder/screenshotDeskop.png',
+  '/Niklas-Nils-new/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
 ];
+
 
 // Entferne Duplikate
 const uniqueUrlsToCache = [...new Set(urlsToCache)];
 
 // 1. Install-Event - Dateien in den Cache legen
 self.addEventListener('install', event => {
-    console.log('[Service Worker] Install');
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
+  console.log('[Service Worker] Install');
+  event.waitUntil(
+      caches.open(CACHE_NAME).then(cache => {
           console.log('[Service Worker] Caching all files');
-          return cache.addAll(uniqueUrlsToCache);
-        }).catch(error => {
+          return Promise.all(
+              uniqueUrlsToCache.map(url => {
+                  return fetch(url)
+                      .then(response => {
+                          if (!response.ok) {
+                              // Log the failed response status
+                              throw new Error(`Failed to fetch: ${url} - ${response.status} ${response.statusText}`);
+                          }
+                          return cache.add(url);
+                      })
+                      .catch(error => {
+                          console.error('[Service Worker] Caching failed for:', url, error);
+                      });
+              })
+          );
+      }).catch(error => {
           console.error('[Service Worker] Caching failed:', error);
-        })
-      );      
+      })
+  );
 });
+
 
 // 2. Fetch-Event - Dateien aus dem Cache abrufen
 self.addEventListener('fetch', event => {
