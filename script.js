@@ -36,7 +36,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   });
 
-
+function installButtonPressed(){
+    console.log("Install Button Pressed.")
+}
 
 
 // Service Worker für irgendwas
