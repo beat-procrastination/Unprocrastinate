@@ -23,18 +23,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
       deferredPrompt.prompt();
 
       // Wait for the user to respond to the prompt
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+            } else {
+            console.log('User dismissed the install prompt');
+            }
 
-        // Reset the deferred prompt variable
-        deferredPrompt = null;
-      });
+            // Reset the deferred prompt variable
+            deferredPrompt = null;
+        });
     });
-  });
+});
 
 
 
