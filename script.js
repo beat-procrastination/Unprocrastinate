@@ -228,13 +228,13 @@ function changeButton(button){
         const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
         const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
         const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
-        const [startHours, startMinutes] = playTime.split(':').map(Number);
-        const [endHours, endMinutes] = endTime.split(':').map(Number);
+        const [startHours, startMinutes, startSeconds] = playTime.split(':').map(Number).concat(0); // Default seconds to 0
+        const [endHours, endMinutes, endSeconds] = endTime.split(':').map(Number).concat(0); // Default seconds to 0
         const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
         const timeBlockingDatum = new Date(timeBlockingDatumValue);
-        timeBlockingDatum.setHours(startHours, startMinutes, 0, 0);
+        timeBlockingDatum.setHours(startHours, startMinutes,  startSeconds, 0);
         const now = new Date();
-        const DatumBlocking = timeBlockingDatum - now;
+        const DatumBlocking = timeBlockingDatum - now - 1500;
         console.log(DatumBlocking);
         if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
             alert('Bitte alle Felder ausfüllen.');
@@ -276,13 +276,14 @@ function changeButton(button){
             const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
+            const currentSeconds = now.getSeconds();
     
-            const currentTime = currentHours * 60 + currentMinutes;
-            const startTotalMinutes = startHours * 60 + startMinutes;
-            const endTotalMinutes = endHours * 60 + endMinutes;
+            const currentTime = currentHours * 60 * 60 + currentMinutes * 60 + currentSeconds;
+            const startToTalSeconds = startHours * 60 * 60 + startMinutes * 60 + startSeconds;
+            const endTotalSeconds = endHours * 60 * 60 + endMinutes * 60 + endSeconds;
            
-            console.log(currentTime, startTotalMinutes);
-            if (currentTime === startTotalMinutes) {
+            console.log(currentTime, startToTalSeconds);
+            if (currentTime === startToTalSeconds) {
                 if (Notification.permission === 'granted') {  
                     sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
                     console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
@@ -303,7 +304,7 @@ function changeButton(button){
                 }
             }, 10 * 60 * 1000);}
         
-            if (currentTime === endTotalMinutes) {
+            if (currentTime === endTotalSeconds) {
                 if (Notification.permission === 'granted') {
                     sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
                     checkbox.checked = false; 
@@ -321,8 +322,13 @@ function changeButton(button){
             }
            
 
-        }, 60000);
+        }, 1000);
     
+
+
+
+
+        //probleme: zeigt den start nicht an nur ende, vermutung: die 60000 millisekunden zu lange mit den dateblocking lösung: mehr console logs vermututng überprüfen, und dann weniger machen was aber problematisch sein könnte da die minutenzahl sich in dieser zeit nicht ändern würde und 2 benachrichtigun die folge wäre
         },DatumBlocking);
     
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
