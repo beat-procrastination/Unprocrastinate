@@ -59,6 +59,7 @@ h2{text-align: center;
   align-items: center;
   gap: 4%;
   height: 8vh;
+  margin-top: -3px;
   
   }
   .bigWords{
@@ -102,7 +103,7 @@ h2{text-align: center;
   }
 
 
-h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeListe{
+h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer{
   background-color:var(--farbe) ;
 }
   svg{
