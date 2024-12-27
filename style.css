@@ -15,9 +15,9 @@
 background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
 background-size: cover;
 background-position: center center;
-background-repeat: no-repeat;
+
 height: 100vh;
-overflow: hidden;
+
 
 }
 .ellipse{
@@ -45,6 +45,22 @@ overflow: hidden;
 }
 h1{ text-align: center; 
   font-size: calc(5vw + 5vh);
+  
+}
+
+button{
+  
+  width: 23vw;
+  height: 5vh;
+  margin-bottom: 2vh;
+  font-size: calc(1vh + 1.5vw);
+  
+}
+
+#nav{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
 }
 h2{text-align: center; 
@@ -91,6 +107,10 @@ h2{text-align: center;
   margin-left: auto;
   margin-right: auto;
   gap: 2%;
+  height: 13vh !important;
+}
+svg{
+  height: 13vh;
 }
 }
  /*
@@ -103,7 +123,7 @@ h2{text-align: center;
   } */
 
 
-h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer{
+h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
   background-color:var(--farbe) ;
 }
   svg{

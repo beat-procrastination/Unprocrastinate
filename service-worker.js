@@ -2,10 +2,6 @@
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
     '/index.html',
-    '/Erinnerungen.html',
-    '/HallofShame.html',
-    '/TimeBlocking.html',
-    '/Timer.html',
     '/style.css',
     '/script.js',
     '/settings.json',
