@@ -102,7 +102,7 @@ h2{text-align: center;
   }
 
 
-h1, h2, svg, label, img, div{
+h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeListe{
   background-color:var(--farbe) ;
 }
   svg{
