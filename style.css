@@ -66,11 +66,11 @@ button{
   align-items: center;
   justify-content: center;
   position: fixed;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  width: 96vw;
 }
 h2{text-align: center; 
-  font-size: calc(3vw + 3vh);
+  font-size: calc(2.75vw + 3vh) !important;
  }
 
  .container{
@@ -81,7 +81,7 @@ h2{text-align: center;
   align-items: center;
   gap: 4%;
   height: 8vh;
-  margin-top: -3px;
+  margin-top: -1vh;
   
   }
   .bigWords{
@@ -95,6 +95,7 @@ h2{text-align: center;
   cursor: pointer;
   margin-left: 1%; 
   position: absolute;
+  max-height: 100px;
   }
   
   .headline{
@@ -102,9 +103,10 @@ h2{text-align: center;
   align-items: center;
   gap: 4%;
   height: 8vh;
-  padding-top: 8vh;
+  padding-top: 7vh;
   justify-content: space-between;
   }
+
 
   @media (orientation: landscape){
   .headline{
@@ -112,7 +114,8 @@ h2{text-align: center;
     margin-left: auto;
     margin-right: auto;
     gap: 2%;
-
+    height: 13vh;
+ 
   }
 .neuesElement{
   width: 95vw;
@@ -124,6 +127,8 @@ h2{text-align: center;
 svg{
   height: 13vh;
 }
+
+
 }
  /*
   .bodyIndex{
@@ -296,6 +301,7 @@ background-color:var(--farbe);
       margin-left: 0vw;
       margin-right: 2.5vw;
       width: 70%;
+      height: calc(2.75vh + 3vw);
 
     }
     .Timermenu{
@@ -616,6 +622,9 @@ width: 80%;
 @media (orientation:landscape){
   .dropdown-content a{
     padding: 1.25vw 1.25vh;
+  }
+  .menuErinnerung, .Timermenu, .menuBlocking, #play-button, #stop-button, #play-buttonZeitplanung, #stop-buttonZeitplanung{
+    min-height: 80px;
   }
 }
 
