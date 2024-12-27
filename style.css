@@ -10,7 +10,7 @@
 
 
 
-/* .bodyIndex{ 
+ .bodyIndex{ 
   
 background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
 background-size: cover;
@@ -19,7 +19,7 @@ background-repeat: no-repeat;
 height: 100vh;
 overflow: hidden;
 
-}*/
+}
 .ellipse{
   height: 15vh;
   width: 40%;
@@ -93,14 +93,14 @@ h2{text-align: center;
   gap: 2%;
 }
 }
-
+ /*
   .bodyIndex{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-color:red;
   
-  }
+  } */
 
 
 h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer{
@@ -108,7 +108,7 @@ h1, h2, svg, label, img, .neuesElement, .headline, .erinnerungContainer, .timerC
 }
   svg{
   width: 12vw;
-  height: 10vh;
+  height: 8vh;
   cursor: pointer;
   }
   .bigHeadlines{
@@ -588,8 +588,19 @@ width: 80%;
 }
 
 
-.menuErinnerung, .menuBlocking, .Timermenu{
+.menuErinnerung, .Timermenu{
   height: 10vh;
+  width: 11vw;
+  cursor: pointer;
+  margin: auto;
+  min-height: 37px;
+  max-height: 55px;
+
+}
+
+.menuBlocking {
+
+  height: 7vh;
   width: 11vw;
   cursor: pointer;
   margin: auto;
