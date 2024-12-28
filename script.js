@@ -9,6 +9,7 @@ const stopButton = document.getElementById('stop-button');
 let deferredPrompt;
 const installButton = document.getElementById('install-button');
 
+/*
 // Listen for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
     // Prevent the default prompt
@@ -39,7 +40,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 function installButtonPressed(){
     console.log("Install Button Pressed.")
 }
-
+*/
 
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
@@ -502,6 +503,7 @@ function startTimer(element) {
 
 //Speichern: 
 
+let uniqueIdCounter = parseInt(localStorage.getItem('uniqueIdCounter')) || 0;  //ID counter für alle Elemente 
 
 document.addEventListener('DOMContentLoaded', function() {
     if (true) {    //Erinnerung
@@ -616,7 +618,7 @@ function saveDataErinnerung() {   //Erinnerung
         const endDate = element.querySelector('#endDate').value;
 
         return {
-            id: index,
+            id: element.id,
             checkboxErinnerung: checkboxErinnerung,
             name: name,
             date: date,
@@ -642,7 +644,7 @@ function saveDataTimer() {  //Timer
         const nameTimer = element.querySelector('.timerName').value;
         
         return {
-            id: index,
+            id: element.id,
             intervall: intervall,
             wiederholungen: wiederholungen,
             nameTimer: nameTimer,
@@ -666,7 +668,7 @@ function saveDataBlocking() {   //Blocking
         const endDatum = element.querySelector('#endDate').value;
 
         return {
-            id: index,
+            id: element.id,
             nameBlocking: nameBlocking,
             checkboxBlocking: checkboxBlocking,
             startTime: startTime,
@@ -693,7 +695,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
         const ausredeName = element.querySelector('#ausredeName').innerText;
 
         return {
-            id: index,
+            id: element.id,
             ausredeDetailsInput: ausredeDetailsInput,
             ausredeName: ausredeName,
         };
@@ -752,6 +754,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     const container = document.getElementById('erinnerungListe');
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
+    originalDivErinnerung.id = `erinnerung-${data.id}` 
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
@@ -797,6 +800,9 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
         </div>
     `;
     container.appendChild(originalDivErinnerung);
+
+    const idNumber = parseInt(data.id.split('-')[1]);
+    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
     
 }
 
@@ -804,6 +810,7 @@ function createNewElementWithDataTimer(data) {          //Timer
     const container = document.getElementById('timer-list');
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
+    originalDivTimer.id = `timer-${data.id}`
     
     originalDivTimer.innerHTML = `
         <div class="timerHeadline">
@@ -828,12 +835,15 @@ function createNewElementWithDataTimer(data) {          //Timer
     `;
     container.appendChild(originalDivTimer);
 
+    const idNumber = parseInt(data.id.split('-')[1]);
+    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
 }
 
 function createNewElementWithDataBlocking(data) {  //Blocking
     const container = document.getElementById('blockingListe');
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
+    originalDivBlocking.id = `erinnerung-${data.id}`
     
     originalDivBlocking.innerHTML = `
     <div class="newTimeBlockingHeadline" id=${data.id}>
@@ -883,6 +893,9 @@ function createNewElementWithDataBlocking(data) {  //Blocking
 
     `;
     container.appendChild(originalDivBlocking);
+
+    const idNumber = parseInt(data.id.split('-')[1]);
+    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
 }
 
 
@@ -891,6 +904,7 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
+    originalDivOffeneAusrede.id = `erinnerung-${data.id}`
     
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">
@@ -901,6 +915,9 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
         </div>   
     `;
     container.appendChild(originalDivOffeneAusrede);
+
+    const idNumber = parseInt(data.id.split('-')[1]);
+    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
 }
 
 
@@ -910,10 +927,14 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     const container = document.getElementById(containerId);
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
+
+    originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Increment the counter
+    // Save the updated counter value in localStorage
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-                        <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg onclick="changeButto(this)"  id="play-button" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
             <svg class="hidden"  id="stop-button" onclick="changeButto(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
             <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
             <input class="erinnerungName" placeholder="Name der Erinnerung" type="text">
@@ -970,6 +991,10 @@ function createNewElementTimer(containerId) {       //Timer
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
     
+    originalDivErinnerung.id = `timer-${uniqueIdCounter++}`; // Increment the counter
+    // Save the updated counter value in localStorage
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
+
     originalDivTimer.innerHTML = `
         <div class="timerHeadline">
             <svg onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
@@ -1000,6 +1025,10 @@ function createNewElementBlocking(containerId) {   //Blocking
     const container = document.getElementById(containerId);
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
+    
+    originalDivErinnerung.id = `blocking-${uniqueIdCounter++}`; // Increment the counter
+    // Save the updated counter value in localStorage
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivBlocking.innerHTML = `
         <div class="newTimeBlockingHeadline" >
@@ -1059,6 +1088,7 @@ function createNewElementBlocking(containerId) {   //Blocking
     
 }
 
+// Muss entfernt und mit createElementOffeneAusrede() ersetzt werden. 
 function neueOffeneAusrede(neueAusredeName){
     console.log("neueOffeneAusrede");
     
@@ -1095,14 +1125,18 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     const container = document.getElementById(containerId);
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
+
+    originalDivErinnerung.id = `ausrede-${uniqueIdCounter++}`; // Increment the counter
+    // Save the updated counter value in localStorage
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
-                <h3 id="ausredeName">${ausredeName}</h3>
-            </div>  
-            <div class="ausredeDetailsContainer">             
+            <h3 id="ausredeName">${ausredeName}</h3>
+        </div>  
+        <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
-            </div>
+        </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
     saveDataOffeneAusrede();  // Save the state immediately after creating a new element 
