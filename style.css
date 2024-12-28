@@ -81,7 +81,7 @@ h2{text-align: center;
   align-items: center;
   gap: 4%;
   height: 8vh;
-  margin-top: -1vh;
+  margin-top: -1.5vh;
   
   }
   .bigWords{
@@ -351,7 +351,6 @@ background-color:var(--farbe);
     margin-bottom: 8vh;
     margin-top: 5vh;
     min-height: fit-content;
-    max-height: fit-content;
   }
 
   .erinnerungÜbersicht, .newTimeBlockingHeadline{
@@ -376,9 +375,9 @@ background-color:var(--farbe);
       width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
   margin-left: auto;
   margin-right: auto;
-   height: 34vh;
+   height: 36vh;
    margin-top: 10vh;
-   min-height: 165px;
+   min-height: 175px;
     }
 
     .inputTimeBlocking{
@@ -419,7 +418,7 @@ background-color:var(--farbe);
     flex-wrap: nowrap;
    justify-content: center;
    align-items: center;
-   margin-top: 0.5vh;
+   margin-top: 2.5vh;
 
   }
    @media (orientation: landscape){
@@ -511,7 +510,7 @@ background-color:var(--farbe);
     
    
     .menuBlocking{
-      height: 7vw !important;
+      height: 6vw !important;
       width: 6.25vw !important;
     }
 
