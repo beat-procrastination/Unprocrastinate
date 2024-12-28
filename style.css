@@ -692,7 +692,7 @@ width: 80%;
     display: inline-block;
     position: relative;
   }
-  .checkboxTimeBlocking{
+  .checkboxTimeBlocking, .checkboxAusrede{
     width: 5vw;
     min-width: 25px;
     aspect-ratio: 1 / 1;
@@ -714,14 +714,14 @@ width: 80%;
     margin-right: 5vw;
   }
 
-  .checkboxTimeBlocking:checked , .checkboxErinnerung:checked{
+  .checkboxTimeBlocking:checked , .checkboxErinnerung:checked, .checkboxAusrede:checked{
     
     border: 3px solid black;
   }
   
-  .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before{
+  .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before, .checkboxAusrede:checked::before{
     content: '✔'; 
-    font-size: 4vh; 
+    font-size: 3vh; 
     position: absolute;
     left: 50%;
     top: 50%;

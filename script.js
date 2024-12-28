@@ -1128,6 +1128,8 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
+            <label for="checkboxAusrede">Später erledigt:</label>
+            <input type="checkbox" class="checkboxAusrede">
         </div>  
         <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
