@@ -1119,7 +1119,7 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
 
-    originalDivErinnerung.id = `ausrede-${uniqueIdCounter++}`; // Increment the counter
+    originalDivOffeneAusrede.id = `ausrede-${uniqueIdCounter++}`; // Increment the counter
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
