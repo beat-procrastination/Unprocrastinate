@@ -1116,7 +1116,7 @@ let stopped = false;
 let timerId = null;
 
 function changeButto(button) {
-    showTool('tool1');
+    showTool('tool4');
     const playButton = button.parentNode.querySelector("#play-button");
     const stopButton = button.parentNode.querySelector("#stop-button");
     console.log(button.parentNode);
@@ -1222,7 +1222,7 @@ function startReminder(einheit, isRepeat = false) {
             if (!checkboxx.checked) {
                 console.log("Checkbox wurde nicht abgehakt.");
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
-                showTool('tool1');
+                showTool('tool4');
                 neueOffeneAusrede(reminderName);
                 console.log(reminderName);
             }
