@@ -1086,6 +1086,8 @@ function neueOffeneAusrede(neueAusredeName){
     
     // Save the updated array back to localStorage
     localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
+
+    alert('Bitte geben Sie ihren Grund für die verpasste Aufgabe ein! Falls sie die Aufgabe jetzt doch noch machen können sie die Checkbox abhaken. ')
     
     console.log('Data saved successfully:', existingData);
 }
