@@ -921,6 +921,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     originalDivErinnerung.className = 'erinnerungContainer';
 
     originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Increment the counter
+    console.log("erinnerung-${uniqueIdCounter++}");
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
