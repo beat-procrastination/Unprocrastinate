@@ -636,10 +636,8 @@ function saveDataErinnerung() {   //Erinnerung
 function saveDataTimer() {  //Timer 
     const container = document.getElementById('timer-list');
     const timerElements = container.querySelectorAll('.timerContainer');
-    console.log(timerElements)
     
     const data = Array.from(timerElements).map((element, index) => {
-        console.log(element)
         const intervall = element.querySelector('#Intervall').value;
         const wiederholungen = element.querySelector('#wiederholungen').value;
         const nameTimer = element.querySelector('.timerName').value;
@@ -687,12 +685,9 @@ function saveDataBlocking() {   //Blocking
 function saveDataOffeneAusrede() {   //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const ausredeElements = container.querySelectorAll('.offeneAusredeContainer');
-    console.log(ausredeElements);
 
     const data = Array.from(ausredeElements).map((element, index) => {
-        console.log("element" + element + "index" + index);
         const ausredeDetailsInput = element.querySelector('#ausredeDetailsInput').value;
-        console.log("ausredeDetailsInput " + ausredeDetailsInput);
         const ausredeName = element.querySelector('#ausredeName').innerText;
 
         return {
@@ -736,11 +731,8 @@ function loadDataBlocking() {   //Blocking
 }
 
 function loadDataOffeneAusrede() {   //offeneAusrede
-    console.log("Lade offeneAusreden")
     const data = JSON.parse(localStorage.getItem('offeneAusrede'));
-    console.log(data);
     if (data) {
-        console.log("Data zum laden vorhanden.")
         data.forEach(item => {
             createNewElementWithDataOffeneAusrede(item);
         });
@@ -901,7 +893,6 @@ function createNewElementWithDataBlocking(data) {  //Blocking
 
 
 function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
-    console.log("erstelle offene Ausrede mit Daten.");
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
