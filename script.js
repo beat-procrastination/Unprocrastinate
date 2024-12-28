@@ -86,28 +86,6 @@ function sendNotification(title, body) {
 }
 
 
-
-/*
-function openErinnerungen() {
-   window.location.href = 'Erinnerungen.html';
-}
-
-function openTimer(){
-window.location.href='Timer.html';
-}
-
-function openTimeBlocking(){
-window.location.href='TimeBlocking.html';
-}
-
-function openHallofShame(){
-window.location.href='HallofShame.html';
-}
-function backHomepage(){
-window.location.href='index.html';
-}
-*/
-
 function showTool(toolId) {
     const tools = document.querySelectorAll('.tool');
     tools.forEach(tool => tool.style.display = 'none');
@@ -328,7 +306,7 @@ function changeButton(button){
                     if(!checkboxx){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
                     
-                    neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
+                    createNewElementOffeneAusrede(nameZeitplanung);
                     showTool('tool4');
 
                     checkboxx =true;
@@ -941,7 +919,6 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
         </div>
          <div class="erinnerungDetails">
                 <div class="datumContainer">
-                
                    <label  class="labelErinnerung" for="inputDate">Datum:</label>
             <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date">
                     <label  class="labelErinnerung" id="labelTime for="inputTime">Uhrzeit:</label>
@@ -984,7 +961,7 @@ function createNewElementTimer(containerId) {       //Timer
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
     
-    originalDivErinnerung.id = `timer-${uniqueIdCounter++}`; // Increment the counter
+    originalDivTimer.id = `timer-${uniqueIdCounter++}`; // Increment the counter
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
 
@@ -1003,7 +980,6 @@ function createNewElementTimer(containerId) {       //Timer
             </div>      
         </div>
         <div class="detailsTimer">
-             
                 <label class="intervall" for="Intervall">Intervall(min):</label>
                 <input class="input-timer" type="number"  id="Intervall" min="1"  >
                 <label class="wiederholungen" for="wiederholungen">Wiederholungen:</label>
@@ -1019,14 +995,14 @@ function createNewElementBlocking(containerId) {   //Blocking
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
     
-    originalDivErinnerung.id = `blocking-${uniqueIdCounter++}`; // Increment the counter
+    originalDivBlocking.id = `blocking-${uniqueIdCounter++}`; // Increment the counter
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivBlocking.innerHTML = `
         <div class="newTimeBlockingHeadline" >
             <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
-            </div>                                                                                                                                                                                                                                             
+        </div>                                                                                                                                                                                                                                             
         <div class="inputTimeBlocking-container"> 
         <div class="datumContainer2">
          <svg onclick="changeButton(this)"  id="play-buttonZeitplanung" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
@@ -1065,7 +1041,7 @@ function createNewElementBlocking(containerId) {   //Blocking
     <div id="intervallWert" style=" margin-top: 10px; display:none;">
       <select id="intervallWertSelect"></select>
         </div>
-         </div>
+        </div>
         <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
         <input id="endDate" type="date" class="inputTimeBlocking">
     
@@ -1081,43 +1057,9 @@ function createNewElementBlocking(containerId) {   //Blocking
     
 }
 
-// Muss entfernt und mit createElementOffeneAusrede() ersetzt werden. 
-function neueOffeneAusrede(neueAusredeName){
-    console.log("neueOffeneAusrede");
-    
-    // Retrieve the existing data from localStorage
-    let existingData = localStorage.getItem('offeneAusrede');
-    
-    if (existingData) {
-        // Parse the existing data into an array
-        existingData = JSON.parse(existingData);
-    } else {
-        // If no data exists, initialize as an empty array
-        existingData = [];
-    }
-    
-    // New data to be added
-    const newData = {
-        id: existingData.length, // Incremental ID
-        ausredeDetailsInput: '', // Blank value, as in the existing data
-        ausredeName: neueAusredeName // New value
-    };
-
-    // Add the new data object to the array
-    existingData.push(newData);
-    
-    // Save the updated array back to localStorage
-    localStorage.setItem('offeneAusrede', JSON.stringify(existingData));
-
-    alert('Bitte geben Sie ihren Grund für die verpasste Aufgabe ein! Falls sie die Aufgabe jetzt doch noch machen können sie die Checkbox abhaken. ')
-    
-    console.log('Data saved successfully:', existingData);
-}
-        
-
 //erstellt neue Ausreden nur zum Testen der App
-function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAusrede
-    const container = document.getElementById(containerId);
+function createNewElementOffeneAusrede(ausredeName) {   //offeneAusrede
+    const container = document.getElementById("offeneAusredeListe");
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
 
@@ -1252,7 +1194,7 @@ function startReminder(einheit, isRepeat = false) {
                 console.log("Checkbox wurde nicht abgehakt.");
                 showTool('tool4');
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
-                neueOffeneAusrede(reminderName);
+                createNewElementOffeneAusrede(reminderName);
                 console.log(reminderName);
             }
         }, 1 * 6 * 1000);
