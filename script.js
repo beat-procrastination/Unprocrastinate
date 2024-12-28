@@ -329,6 +329,7 @@ function changeButton(button){
                     alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
                     
                     neueOffeneAusrede(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);
+                    showTool('tool4');
 
                     checkboxx =true;
                     clearTimeout(timeoutCheckbox);}
@@ -1253,6 +1254,7 @@ function startReminder(einheit, isRepeat = false) {
             setTimeout(() => {
             if (!checkboxx.checked) {
                 console.log("Checkbox wurde nicht abgehakt.");
+                showTool('tool4');
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
                 neueOffeneAusrede(reminderName);
                 console.log(reminderName);
