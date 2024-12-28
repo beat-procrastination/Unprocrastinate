@@ -1128,7 +1128,7 @@ function createNewElementOffeneAusrede(containerId, ausredeName) {   //offeneAus
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
-            <label for="checkboxAusrede">Später erledigt:</label>
+            <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
         </div>  
         <div class="ausredeDetailsContainer">             

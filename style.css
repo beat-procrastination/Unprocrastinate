@@ -607,7 +607,7 @@ width: 80%;
 
 
 
-.labelErinnerung, .labelZeitplanung{
+.labelErinnerung, .labelZeitplanung, .labelAusrede{
   font-size: calc(1.25vh + 1.25vw);
   
   align-items: center;
@@ -707,7 +707,8 @@ width: 80%;
     cursor: pointer; 
     display: inline-block;
     position: relative;
-
+    max-width: 40px;
+    max-height: 40px ;
   }
 
   #timeBlockingDatum{
@@ -721,7 +722,7 @@ width: 80%;
   
   .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before, .checkboxAusrede:checked::before{
     content: '✔'; 
-    font-size: 3vh; 
+    font-size: 2.5vh; 
     position: absolute;
     left: 50%;
     top: 50%;
@@ -732,6 +733,9 @@ width: 80%;
   @media (orientation: landscape) {
     .checkboxErinnerung {
         width: 3vw; /* Etwas kleiner für Querformat */
+    }
+    .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before, .checkboxAusrede:checked::before{
+    font-size: 5vh;
     }
     
 
