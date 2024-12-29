@@ -146,7 +146,7 @@ function dropDownMenu(button) {
 
 
 function löschen(button) {
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode.;
+    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
     parentElement.remove();
 }
 
