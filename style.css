@@ -208,12 +208,16 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
   
   
   .erinnerungName, .input-name, #ausredeName{
+    display: flex;
     font-size: calc(1vh + 3.25vw);
-  width: 55vw;
+  width: 33vw;
   text-align: center;
   margin: auto;
   height:calc(4vh + 1.5vw);
   background-color:var(--farbe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   }
 
   #nameZeitplanung{
@@ -289,13 +293,16 @@ background-color:var(--farbe);
   }
 
   .ausredeDates{
-  margin: auto;
+  width:18vw ;
   font-size: small;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   }
 
   .ausredeDatesContainer{
-    width: 10vw;
+    width: 20vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -620,14 +627,16 @@ width: 80%;
 
 
 
-.labelErinnerung, .labelZeitplanung, .labelAusrede{
+.labelErinnerung, .labelZeitplanung{
   font-size: calc(1.25vh + 1.25vw);
   
   align-items: center;
 
 }
 
-
+.labelAusrede{
+  font-size: small;
+}
 
 
 
@@ -690,7 +699,7 @@ width: 80%;
   margin-left: 2.5vw; ;
 }
 
-.checkboxErinnerung{
+.checkboxErinnerung,  .checkboxAusrede{
     width: 4vw;
     min-width: 25px;
     aspect-ratio: 1 / 1;
@@ -705,7 +714,7 @@ width: 80%;
     display: inline-block;
     position: relative;
   }
-  .checkboxTimeBlocking, .checkboxAusrede{
+  .checkboxTimeBlocking{
     width: 5vw;
     min-width: 25px;
     aspect-ratio: 1 / 1;
