@@ -382,7 +382,7 @@ function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playBu
 }
 
 
-
+/*
 const millisekundenBisAusrede = 10 * 1000;
 
 function timeBlockingCheck(){
@@ -428,7 +428,7 @@ function timeBlockingCheckTime(data){
     }
     console.log("timeBlockingCheckTime ist um")
 }
-
+*/
 
 
 
