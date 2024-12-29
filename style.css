@@ -288,6 +288,11 @@ background-color:var(--farbe);
 
   }
 
+  .ausredeDates{
+  margin: auto;
+  
+  }
+
   .ausredeDatesContainer{
     height: 5vh;
     display: flex;

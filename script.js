@@ -1074,8 +1074,8 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) { 
             <input type="checkbox" class="checkboxAusrede">
         </div>  
         <div class="ausredeDatesContainer">
-        <div>${ausredeDate}</div>
-        <div>${ausredeTime}</div>
+        <div class="ausredeDates">${ausredeDate.value}</div>
+        <div class="ausredeDates">${ausredeTime.value}</div>
         </div>
         <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
