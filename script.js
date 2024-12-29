@@ -1058,7 +1058,7 @@ function createNewElementBlocking(containerId) {   //Blocking
 }
 
 //erstellt neue Ausreden nur zum Testen der App
-function createNewElementOffeneAusrede(ausredeName) {   //offeneAusrede
+function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {   //offeneAusrede
     const container = document.getElementById("offeneAusredeListe");
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
@@ -1073,6 +1073,10 @@ function createNewElementOffeneAusrede(ausredeName) {   //offeneAusrede
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
         </div>  
+        <div class="ausredeDatesContainer">
+        <div>${ausredeDate}</div>
+        <div>${ausredeTime}</div>
+        </div>
         <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
         </div>
@@ -1194,7 +1198,7 @@ function startReminder(einheit, isRepeat = false) {
                 console.log("Checkbox wurde nicht abgehakt.");
                 showTool('tool4');
                 alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
-                createNewElementOffeneAusrede(reminderName);
+                createNewElementOffeneAusrede(reminderName, timeInput, dateInput);
                 console.log(reminderName);
             }
         }, 1 * 6 * 1000);

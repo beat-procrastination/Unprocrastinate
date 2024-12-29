@@ -282,10 +282,17 @@ background-color:var(--farbe);
   #play-buttonZeitplanung, #stop-buttonZeitplanung{
     width: calc(3.5vh + 4vw);
     height: calc(3.5vh + 5vw);
-    margin:1vh 1vh 1vh 1vh  ;
+    margin:1vh 11vh 1vh 1vh  ;
     max-width: 60px;
     max-height: 60px;
 
+  }
+
+  .ausredeDatesContainer{
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   /* Anpassung für Querformat */
