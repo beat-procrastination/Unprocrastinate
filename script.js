@@ -397,41 +397,45 @@ function timeBlockingCheck(){
             timeBlockingCheckTime(item);
         });
     }
+    console.log("timeBlockingCheck() komplett ausgeführt.")
 }
 
 function convertToMilliseconds(datum, zeit){
-    console.log(datum);
-    console.log(zeit);
+    console.log("convertToMilliseconds() datum:" + datum);
+    console.log("convertToMilliseconds() zeit:" + zeit);
     if (datum && zeit) {
         const datumZeitString = `${datum}T${zeit}:00`;
         const datumZeit = new Date(datumZeitString);
         return Math.floor(datumZeit.getTime());
-    } else {
-        console.error('Datum oder Zeit nicht vorhanden.');
-        return null; 
     }
 }
 
 function timeBlockingCheckTime(data){
     console.log("timeBlockingCheckTime")
-    const startTime = convertToMilliseconds(data.startDate, data.startTime);
-    console.log(startTime);
-    const endTime = convertToMilliseconds(data.startDate, data.endTime);
-    console.log(endTime);
+    if(data.startDate && data.EndDate && data.EndeTime){           
+        const startTime = convertToMilliseconds(data.startDate, data.startTime);
+        console.log("startTime:" + startTime);
+        const endTime = convertToMilliseconds(data.startDate, data.endTime);
+        console.log("endTime:" + endTime);
 
-    if(Date.now() > startTime && Date.now() < endTime){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
-        //Benachrichtigung muss hier gesendet werden. 
-        console.log("Zeitblock hat") 
+        if(Date.now() > startTime && Date.now() < endTime){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
+            //Benachrichtigung muss hier gesendet werden. 
+            console.log("Zeitblock hat") 
+        }
+
+        if(Date.now() > endTime && Date.now() - 600 * 1000 < endTime){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
+            //Benachrichtigung muss hier gesendet werden. 
+            console.log("Zeitblock ist um.")
+        }
+
+        if(Date.now() - millisekundenBisAusrede > startTime && data.checkboxBlocking == false){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
+            //Ausrede erstellen 
+            console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.")
+        }
+        console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.")
     }
-
-    if(Date.now() > endTime && Date.now() - 600 * 1000 < endTime){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
-        //Benachrichtigung muss hier gesendet werden. 
-        console.log("Zeitblock ist um.")
-    }
-
-    if(Date.now() - millisekundenBisAusrede > startTime && data.checkboxBlocking == false){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
-        //Ausrede erstellen 
-        console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.")
+    else{
+        console.log("Datum oder Zeit nicht vorhanden. ")
     }
     console.log("timeBlockingCheckTime ist um")
 }
@@ -689,7 +693,7 @@ function saveDataBlocking() {   //Blocking
     const data = Array.from(blockingElements).map((element) => {
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
         const checkboxBlocking = element.querySelector('.checkboxTimeBlocking').checked;
-        const startDate = element.querySelector('#timeBlockingDatum');
+        const startDate = element.querySelector('#timeBlockingDatum').value;
         const startTime = element.querySelector('#startTime').value;
         const endTime = element.querySelector('#endTime').value;
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
