@@ -174,15 +174,15 @@ function fixieren(button) {
 
 
 // Zeitplanung
-/*function stopTimeBlocking() {
+function stopTimeBlocking() {
     isRunningTimeBlocking = false;
                 alert('Zeitplanung wurde gestoppt.');
                 return;
   
     
 }
-*/
-/*
+
+
 function changeButton(button){
     var playButton = button.parentNode.querySelector("#play-buttonZeitplanung");
     var stopButton = button.parentNode.querySelector("#stop-buttonZeitplanung");
@@ -200,7 +200,7 @@ function changeButton(button){
         
     }
   }
-*/  
+
   function NotificatioPermission(element) {         //Berechtigung für Benachrichtigungen prüfen/fragen
   if (Notification.permission === "default") {
         Notification.requestPermission().then(permission => {
