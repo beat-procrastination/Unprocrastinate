@@ -146,7 +146,7 @@ function dropDownMenu(button) {
 
 
 function löschen(button) {
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
+    var parentElement = button.parentNode.parentNode.parentNode.parentNode.;
     parentElement.remove();
 }
 
@@ -172,7 +172,7 @@ function fixieren(button) {
     }
 }
 
-
+/*
 // Zeitplanung
 function stopTimeBlocking() {
     isRunningTimeBlocking = false;
@@ -380,9 +380,11 @@ function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playBu
         return;
     }
 }
+*/
+
+//Neue Zeitplanung Benachrichtigungen ohne Play Button. 
 
 
-/*
 const millisekundenBisAusrede = 10 * 1000;
 
 function timeBlockingCheck(){
@@ -428,7 +430,7 @@ function timeBlockingCheckTime(data){
     }
     console.log("timeBlockingCheckTime ist um")
 }
-*/
+
 
 
 
@@ -872,7 +874,7 @@ function createNewElementWithDataBlocking(data) {  //Blocking
         <svg class="hidden"  id="stop-buttonZeitplanung" onclick="changeButton(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
         <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
-                <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum">
+        <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" value=${data.startDate}>
          <div class="container">
             <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
