@@ -174,15 +174,15 @@ function fixieren(button) {
 
 
 // Zeitplanung
-function stopTimeBlocking() {
+/*function stopTimeBlocking() {
     isRunningTimeBlocking = false;
                 alert('Zeitplanung wurde gestoppt.');
                 return;
   
     
 }
-
-
+*/
+/*
 function changeButton(button){
     var playButton = button.parentNode.querySelector("#play-buttonZeitplanung");
     var stopButton = button.parentNode.querySelector("#stop-buttonZeitplanung");
@@ -200,8 +200,8 @@ function changeButton(button){
         
     }
   }
-
-  function NotificatioPermission(element) {
+*/  
+  function NotificatioPermission(element) {         //Berechtigung für Benachrichtigungen prüfen/fragen
   if (Notification.permission === "default") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
@@ -218,79 +218,77 @@ function changeButton(button){
     }
     }
 
-    let isRunningTimeBlocking = false;
-    let checkboxx = false;
-    function startTimeBlocking(element, repeat = false) {
-        isRunningTimeBlocking = true;
-        console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
-       
-        const playTime = element.querySelector("#startTime").value;
-        const endTime = element.querySelector("#endTime").value;
-        const playButton = element.querySelector("#play-buttonZeitplanung");
-        const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
-        const checkbox = element.querySelector('.checkboxTimeBlocking');
-        const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-        const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
-        const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
-        const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
-        const [startHours, startMinutes, startSeconds] = playTime.split(':').map(Number).concat(0); // Default seconds to 0
-        const [endHours, endMinutes, endSeconds] = endTime.split(':').map(Number).concat(0); // Default seconds to 0
-        const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
-        const timeBlockingDatum = new Date(timeBlockingDatumValue);
-        timeBlockingDatum.setHours(startHours, startMinutes,  startSeconds, 0);
-        const now = new Date();
-        const DatumBlocking = timeBlockingDatum - now - 1500;
-        console.log(DatumBlocking);
-        if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
-            alert('Bitte alle Felder ausfüllen.');
-            changeButton(playButton);
-            return;
-        }
+
+
+let isRunningTimeBlocking = false;
+let checkboxx = false;
+function startTimeBlocking(element, repeat = false) {
+    isRunningTimeBlocking = true;
+    console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
     
-        
-     
-
-        console.log(startMinutes, endMinutes);
-        const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
-        if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
-            alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
-            changeButton(playButton);
-            return;
-        }
-
-       
-        console.log(repeat);
-       if(repeat === true){
-        DatumBlocking = 1;
-        startMinutes = startMinutes + 3;
-        endMinutes = endMinutes + 3;
-        console.log(startMinutes, endMinutes);
-
-       }
-
-       if(DatumBlocking <= 0){
-        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
-        isRunningTimeBlocking = false;
+    const playTime = element.querySelector("#startTime").value;
+    const endTime = element.querySelector("#endTime").value;
+    const playButton = element.querySelector("#play-buttonZeitplanung");
+    const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
+    const checkbox = element.querySelector('.checkboxTimeBlocking');
+    const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
+    const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
+    const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
+    const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
+    const [startHours, startMinutes, startSeconds] = playTime.split(':').map(Number).concat(0); // Default seconds to 0
+    const [endHours, endMinutes, endSeconds] = endTime.split(':').map(Number).concat(0); // Default seconds to 0
+    const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
+    const timeBlockingDatum = new Date(timeBlockingDatumValue);
+    timeBlockingDatum.setHours(startHours, startMinutes,  startSeconds, 0);
+    const now = new Date();
+    const DatumBlocking = timeBlockingDatum - now - 1500;
+    console.log(DatumBlocking);
+    if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
+        alert('Bitte alle Felder ausfüllen.');
         changeButton(playButton);
         return;
-     }
-        let DateBlocking = setTimeout(() =>{
+    }
+    
+    console.log(startMinutes, endMinutes);
+    const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+    if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
+        alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
+        changeButton(playButton);
+        return;
+    }
+
+    console.log(repeat);
+    if(repeat === true){
+    DatumBlocking = 1;
+    startMinutes = startMinutes + 3;
+    endMinutes = endMinutes + 3;
+    console.log(startMinutes, endMinutes);
+
+    }
+
+    if(DatumBlocking <= 0){
+    alert('Die eingegebene Zeit liegt in der Vergangenheit.');
+    isRunningTimeBlocking = false;
+    changeButton(playButton);
+    return;
+    }
+    let DateBlocking = setTimeout(() =>{
         let timeBlockingInterval = setInterval(() => {
             if (!isRunningTimeBlocking) {
                 clearInterval(timeBlockingInterval);
                 clearTimeout(DateBlocking);
                 return;
-          
-         }
+            
+            }
             const now = new Date();
             const currentHours = now.getHours();
             const currentMinutes = now.getMinutes();
             const currentSeconds = now.getSeconds();
-    
+
             const currentTime = currentHours * 60 * 60 + currentMinutes * 60 + currentSeconds;
             const startToTalSeconds = startHours * 60 * 60 + startMinutes * 60 + startSeconds;
             const endTotalSeconds = endHours * 60 * 60 + endMinutes * 60 + endSeconds;
-           
+            
             console.log(currentTime, startToTalSeconds);
             if (currentTime === startToTalSeconds) {
                 if (Notification.permission === 'granted') {  
@@ -299,7 +297,7 @@ function changeButton(button){
                 }
             
         
-           let timeoutCheckbox = setTimeout(() => {
+            let timeoutCheckbox = setTimeout(() => {
             if (!isRunningTimeBlocking) return;
                 if (!checkbox.checked) {
                     console.log(checkboxx);
@@ -328,41 +326,37 @@ function changeButton(button){
                     handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element, Differenz);
                     
                 }
-        
-            }
-           
-
+            }  
         }, 1000);
-    
-
 
 
 
         //probleme: zeigt den start nicht an nur ende, vermutung: die 60000 millisekunden zu lange mit den dateblocking lösung: mehr console logs vermututng überprüfen, und dann weniger machen was aber problematisch sein könnte da die minutenzahl sich in dieser zeit nicht ändern würde und 2 benachrichtigun die folge wäre
         },DatumBlocking);
-    
+
     if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
-    }}
-    function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element, Differenz) {
-        let repeatInterval = 0;
-        // Bestimmen des Wiederholungsintervalls
-        if (intervallEinheit === 'Täglich') {
-            repeatInterval =  1000 * 20; 
-        } else if (intervallEinheit === 'Wöchentlich') {
-            repeatInterval = 7 * 24 * 60 * 60 * 1000; 
-        } else if (intervallEinheit === 'Monatlich') {
-            repeatInterval = 30 * 24 * 60 * 1000 * 60; 
-        } else if (intervallEinheit === 'Jährlich') {
-            repeatInterval = 365 * 24 * 60 * 60 * 1000; 
-        }
-    
-        if (detailsInput) {
-            const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
-            repeatInterval *= detailsNumber;
-            
-        }
-        let nextRepeatDate = new Date(now.getTime() + repeatInterval);
+}}
+
+function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element, Differenz) {
+    let repeatInterval = 0;
+    // Bestimmen des Wiederholungsintervalls
+    if (intervallEinheit === 'Täglich') {
+        repeatInterval =  1000 * 20; 
+    } else if (intervallEinheit === 'Wöchentlich') {
+        repeatInterval = 7 * 24 * 60 * 60 * 1000; 
+    } else if (intervallEinheit === 'Monatlich') {
+        repeatInterval = 30 * 24 * 60 * 1000 * 60; 
+    } else if (intervallEinheit === 'Jährlich') {
+        repeatInterval = 365 * 24 * 60 * 60 * 1000; 
+    }
+
+    if (detailsInput) {
+        const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
+        repeatInterval *= detailsNumber;
+        
+    }
+    let nextRepeatDate = new Date(now.getTime() + repeatInterval);
 
     // Startzeit für `nextRepeatDate` festlegen
     const [startHours, startMinutes] = element.querySelector("#startTime").value.split(':').map(Number);
@@ -374,22 +368,56 @@ function changeButton(button){
     console.log("Next Repeat Date:", nextRepeatDate);
     console.log("End Date:", endDateInput);
 
-    
-
-        if (nextRepeatDate <= endDateInput) {
-            const delayUntilNextRepeat = nextRepeatDate - now - Differenz;
-            setTimeout(() => {
-                
-                startTimeBlocking(element,true); // Start der Hauptfunktion erneut
-            }, delayUntilNextRepeat);
-        }else{
-            changeButton(playButton);
-            stopTimeBlocking();
-            return;
-        }
+    if (nextRepeatDate <= endDateInput) {
+        const delayUntilNextRepeat = nextRepeatDate - now - Differenz;
+        setTimeout(() => {
+            
+            startTimeBlocking(element,true); // Start der Hauptfunktion erneut
+        }, delayUntilNextRepeat);
+    }else{
+        changeButton(playButton);
+        stopTimeBlocking();
+        return;
     }
-  
-  
+}
+
+
+function timeBlocking(){
+    const data = JSON.parse(localStorage.getItem('blocking'));
+    if (data) {
+        data.forEach(item => {
+            checkStartTime(item);
+        });
+    }
+    if (data) {
+        data.forEach(item => {
+            checkEndTime(item);
+        });
+    }
+}
+
+function convertToSeconds(datum, zeit){
+    if (datum && zeit) {
+        const datumZeitString = `${datum}T${zeit}:00`;
+        const datumZeit = new Date(datumZeitString);
+        return Math.floor(datumZeit.getTime() / 1000);
+    } else {
+        console.error('Datum oder Zeit nicht vorhanden.');
+        return null; 
+    }
+}
+
+function checkStartTime(data){
+    const startTime = convertToSeconds(data.startDate, startTime)
+}
+
+
+
+function checkEndTime(data){
+
+}
+
+
 
 
 //Timer Start
@@ -587,7 +615,7 @@ function saveDataErinnerung() {   //Erinnerung
     const container = document.getElementById('erinnerungListe');
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
-    const data = Array.from(erinnerungElements).map((element, index) => {
+    const data = Array.from(erinnerungElements).map((element) => {
         const name = element.querySelector('.erinnerungName').value;
         const checkboxErinnerung = element.querySelector('#checkboxErinnerung').checked;
         const date = element.querySelector('#inputDate').value;
@@ -615,7 +643,7 @@ function saveDataTimer() {  //Timer
     const container = document.getElementById('timer-list');
     const timerElements = container.querySelectorAll('.timerContainer');
     
-    const data = Array.from(timerElements).map((element, index) => {
+    const data = Array.from(timerElements).map((element) => {
         const intervall = element.querySelector('#Intervall').value;
         const wiederholungen = element.querySelector('#wiederholungen').value;
         const nameTimer = element.querySelector('.timerName').value;
@@ -635,9 +663,10 @@ function saveDataBlocking() {   //Blocking
     const container = document.getElementById('blockingListe');
     const blockingElements = container.querySelectorAll('.blockingContainer');
     
-    const data = Array.from(blockingElements).map((element, index) => {
+    const data = Array.from(blockingElements).map((element) => {
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
         const checkboxBlocking = element.querySelector('.checkboxTimeBlocking').checked;
+        const startDate = element.querySelector('#timeBlockingDatum');
         const startTime = element.querySelector('#startTime').value;
         const endTime = element.querySelector('#endTime').value;
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
@@ -648,6 +677,7 @@ function saveDataBlocking() {   //Blocking
             id: element.id,
             nameBlocking: nameBlocking,
             checkboxBlocking: checkboxBlocking,
+            startDate: startDate,
             startTime: startTime,
             endTime: endTime,
             intervallEinheit: intervallEinheit,
