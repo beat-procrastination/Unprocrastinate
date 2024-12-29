@@ -290,11 +290,12 @@ background-color:var(--farbe);
 
   .ausredeDates{
   margin: auto;
-  
+  font-size: small;
+
   }
 
   .ausredeDatesContainer{
-    height: 5vh;
+    width: 10vw;
     display: flex;
     justify-content: center;
     align-items: center;
