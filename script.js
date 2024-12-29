@@ -1070,14 +1070,12 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) { 
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
+             <div class="ausredeDates">${ausredeTime.value}</div>
+             <div class="ausredeDates">${ausredeDate.value}</div>
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
         </div>  
-        <div class="ausredeDatesContainer">
-        <div class="ausredeDates">${ausredeDate.value}</div>
-        <div class="ausredeDates">${ausredeTime.value}</div>
-        </div>
-        <div class="ausredeDetailsContainer">             
+         <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
         </div>
     `;
