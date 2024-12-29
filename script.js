@@ -388,9 +388,10 @@ function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playBu
 //Neue Zeitplanung Benachrichtigungen ohne Play Button. 
 
 
-const millisekundenBisAusrede = 10 * 1000;
+const millisekundenBisAusrede = 600 * 1000;
 
-function timeBlockingCheck(){
+//Hauptfunktion, steuert den Rest. 
+function timeBlockingCheck(){                          
     const data = JSON.parse(localStorage.getItem('blocking'));
     if (data) {
         data.forEach(item => {
@@ -400,14 +401,30 @@ function timeBlockingCheck(){
     console.log("timeBlockingCheck() komplett ausgeführt.")
 }
 
+
+//Konvertiert Datum und Zeit in Millisekunden seit 1970. 
 function convertToMilliseconds(datum, zeit){
     if (datum && zeit) {
         const datumZeitString = `${datum}T${zeit}:00`;
         const datumZeit = new Date(datumZeitString);
         return Math.floor(datumZeit.getTime());
     }
+}  
+
+
+//Wird verwendet um Werte im Local Storage zu ändern. 
+function updateStringInLocalStorage(key, id, newValue) {      
+    const data = JSON.parse(localStorage.getItem(key));
+    data.forEach(item => {
+        if (item.id === id) {
+            Object.assign(item, newValue);
+        }
+    });
+    localStorage.setItem(key, JSON.stringify(data));
 }
 
+
+//Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf um diese zu senden. 
 function timeBlockingCheckTime(data){
     console.log("timeBlockingCheckTime()")
     console.log(data);
@@ -434,13 +451,13 @@ function timeBlockingCheckTime(data){
         if(Date.now() - millisekundenBisAusrede > startTime && data.checkboxBlocking == false){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.")
+            updateStringInLocalStorage("blocking", data.id, { notificationSend: "true"})
         }
         console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.")
     }
     else{
         console.log("Datum oder Zeit nicht vorhanden. ")
     }
-    console.log("timeBlockingCheckTime ist um")
 }
 
 
@@ -833,7 +850,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     container.appendChild(originalDivErinnerung);
 
     const idNumber = parseInt(data.id.split('-')[1]);
-    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
+    uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. Kann man das +1 aber nicht weglassen, da vor dem erstellen eines neuen Elementes der Counter ja auch um +1 erhöht wird? Macht aber dennoch keine Probleme. 
     
 }
 
@@ -959,7 +976,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     originalDivErinnerung.className = 'erinnerungContainer';
 
     originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Increment the counter
-    console.log("erinnerung-${uniqueIdCounter++}");
+    console.log(`erinnerung-${uniqueIdCounter++}`);
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
