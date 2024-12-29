@@ -1114,9 +1114,9 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) { 
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivOffeneAusrede.innerHTML = `
-        < class="ausredeÜbersicht">   
+        <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
-            < class ="ausredeDatesContainer">
+            <div class ="ausredeDatesContainer">
             <div class="ausredeDates">${ausredeDate.value}</div>
             <div class="ausredeDates">${ausredeTime.value}</div>
             </div>
