@@ -410,6 +410,7 @@ function convertToMilliseconds(datum, zeit){
 
 function timeBlockingCheckTime(data){
     console.log("timeBlockingCheckTime()")
+    console.log(data);
     console.log(data.startDate);
     console.log(data.startTime);
     console.log(data.endTime);
