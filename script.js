@@ -401,8 +401,6 @@ function timeBlockingCheck(){
 }
 
 function convertToMilliseconds(datum, zeit){
-    console.log("convertToMilliseconds() datum:" + datum);
-    console.log("convertToMilliseconds() zeit:" + zeit);
     if (datum && zeit) {
         const datumZeitString = `${datum}T${zeit}:00`;
         const datumZeit = new Date(datumZeitString);
@@ -411,8 +409,11 @@ function convertToMilliseconds(datum, zeit){
 }
 
 function timeBlockingCheckTime(data){
-    console.log("timeBlockingCheckTime")
-    if(data.startDate && data.EndDate && data.EndeTime){           
+    console.log("timeBlockingCheckTime()")
+    console.log(data.startDate);
+    console.log(data.startTime);
+    console.log(data.endTime);
+    if(data.startDate && data.startTime && data.EndeTime){           
         const startTime = convertToMilliseconds(data.startDate, data.startTime);
         console.log("startTime:" + startTime);
         const endTime = convertToMilliseconds(data.startDate, data.endTime);
