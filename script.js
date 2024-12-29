@@ -414,7 +414,7 @@ function timeBlockingCheckTime(data){
     console.log(data.startDate);
     console.log(data.startTime);
     console.log(data.endTime);
-    if(data.startDate && data.startTime && data.EndeTime){           
+    if(data.startDate && data.startTime && data.endTime){           
         const startTime = convertToMilliseconds(data.startDate, data.startTime);
         console.log("startTime:" + startTime);
         const endTime = convertToMilliseconds(data.startDate, data.endTime);
