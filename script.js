@@ -686,7 +686,7 @@ function saveDataBlocking() {   //Blocking
     const data = Array.from(blockingElements).map((element) => {
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
         const checkboxBlocking = element.querySelector('.checkboxTimeBlocking').checked;
-        const startDate = element.querySelector('#timeBlockingDatum');
+        const startDate = element.querySelector('#timeBlockingDatum').value;
         const startTime = element.querySelector('#startTime').value;
         const endTime = element.querySelector('#endTime').value;
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
