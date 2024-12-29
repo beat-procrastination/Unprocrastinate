@@ -382,40 +382,56 @@ function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playBu
 }
 
 
-function timeBlocking(){
+
+const millisekundenBisAusrede = 10 * 1000;
+
+function timeBlockingCheck(){
     const data = JSON.parse(localStorage.getItem('blocking'));
     if (data) {
         data.forEach(item => {
-            checkStartTime(item);
-        });
-    }
-    if (data) {
-        data.forEach(item => {
-            checkEndTime(item);
+            timeBlockingCheckTime(item);
         });
     }
 }
 
-function convertToSeconds(datum, zeit){
+function convertToMilliseconds(datum, zeit){
     if (datum && zeit) {
         const datumZeitString = `${datum}T${zeit}:00`;
         const datumZeit = new Date(datumZeitString);
-        return Math.floor(datumZeit.getTime() / 1000);
+        return Math.floor(datumZeit.getTime());
     } else {
         console.error('Datum oder Zeit nicht vorhanden.');
         return null; 
     }
 }
 
-function checkStartTime(data){
-    const startTime = convertToSeconds(data.startDate, startTime)
+function timeBlockingCheckTime(data){
+    console.log("timeBlockingCheckTime")
+    const startTime = convertToMilliseconds(data.startDate, data.startTime);
+    console.log(startTime);
+    const endTime = convertToMilliseconds(data.startDate, data.endTime);
+    console.log(endTime);
+
+    if(Date.now() > startTime && Date.now() < endTime){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
+        //Benachrichtigung muss hier gesendet werden. 
+        console.log("Zeitblock hat") 
+    }
+
+    if(Date.now() > endTime && Date.now() - 600 * 1000 < endTime){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
+        //Benachrichtigung muss hier gesendet werden. 
+        console.log("Zeitblock ist um.")
+    }
+
+    if(Date.now() - millisekundenBisAusrede > startTime && data.checkboxBlocking == false){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
+        //Ausrede erstellen 
+        console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.")
+    }
+    console.log("timeBlockingCheckTime ist um")
 }
 
 
 
-function checkEndTime(data){
 
-}
 
 
 
