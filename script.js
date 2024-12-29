@@ -1370,5 +1370,5 @@ function autoResize(textarea) {
 }
 
 function resizeBackToNormal(textarea){
-    textarea.style.height = '50px';
+    textarea.style.height = '35px';
 }
