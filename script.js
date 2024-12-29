@@ -132,6 +132,9 @@ function details(button){
 }
   
 function dropDownMenu(button) {
+    console.log(button);
+    console.log(button.parentNode.parentNode.parentNode);
+
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
       dropdownMenu.classList.remove('hidden');
