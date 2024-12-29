@@ -414,6 +414,7 @@ function timeBlockingCheckTime(data){
     console.log(data.startDate);
     console.log(data.startTime);
     console.log(data.endTime);
+    console.log(Date.now());
     if(data.startDate && data.startTime && data.endTime){           
         const startTime = convertToMilliseconds(data.startDate, data.startTime);
         console.log("startTime:" + startTime);
@@ -422,7 +423,7 @@ function timeBlockingCheckTime(data){
 
         if(Date.now() > startTime && Date.now() < endTime){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
             //Benachrichtigung muss hier gesendet werden. 
-            console.log("Zeitblock hat") 
+            console.log("Zeitblock hat begonnen.") 
         }
 
         if(Date.now() > endTime && Date.now() - 600 * 1000 < endTime){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
