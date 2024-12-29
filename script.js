@@ -400,6 +400,8 @@ function timeBlockingCheck(){
 }
 
 function convertToMilliseconds(datum, zeit){
+    console.log(datum);
+    console.log(zeit);
     if (datum && zeit) {
         const datumZeitString = `${datum}T${zeit}:00`;
         const datumZeit = new Date(datumZeitString);
