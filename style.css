@@ -89,9 +89,8 @@ h2{text-align: center;
   font-size: calc(4vw + 2vh);
   
   } .back-button{
-  border-radius: 5%;
-  height: auto;
-  width: 7vw;
+  height: 5vh;
+  width: 11vw;
   cursor: pointer;
   margin-left: 1%; 
   position: absolute;
@@ -107,6 +106,9 @@ h2{text-align: center;
   justify-content: space-between;
 
   }
+  #inputTime{
+    margin-left: 1.75vw;
+  }
 
 
   @media (orientation: landscape){
@@ -117,6 +119,10 @@ h2{text-align: center;
     gap: 2.5%;
     height: 13vh;
  
+  }
+  .back-button{
+    width: 7vw !important;
+    height: 10vh !important;
   }
 
   button{
@@ -501,6 +507,9 @@ width: 60vw;
       margin-top: 1.25vh;
       min-height: 40px;
     }
+    .inputTimeBlocking{
+width: 25%;
+    }
    }
   
   .intervallContainer{
@@ -515,14 +524,14 @@ width: 60vw;
   
   .inputErinnerungDetails{
   height: 40%;
-  width: 30%;
+  width: 28%;
   margin:1vh 3vw 1vh 3vw;
   background-color: var(--farbe);
   min-height: 17px;
   }
 
   .inputTimeBlocking{
-    height: 45%;
+    height: 40%;
     width: 30%;
     margin:0.5vh 1.5vh 0.5vh 1.5vw;
     background-color: var(--farbe);
@@ -810,7 +819,14 @@ width: 80%;
     }
     .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before, .checkboxAusrede:checked::before{
     font-size: 5vh;
-    }
+    
+  }
+  #endTime{
+    margin-left: 2.75vw !important;
+  }
+#intervallEinheit{
+  width: 92% !important;;
+}
     
 
 }
@@ -845,6 +861,10 @@ option {
  height:8vh;
  min-height: 40px;
 }
+#block{
+  width: 25%;
+  margin-right: 0.75vw;
+}
  }
   
  
@@ -872,15 +892,15 @@ option {
 #intervallEinheit{
   border: 2px solid transparent;
   box-shadow: 0 0 0 1.75px black;
-  width: 85%;
+  width: 80%;
   box-sizing: border-box;
   height: 60% !important;
   margin-top: 1.2vh;
-  min-height: 20px;
+  min-height: 23px;
   
 }
 
-#block{
+#block, #blockErinnerung{
   display: flex;
   flex-direction: column;
   width: 33%;

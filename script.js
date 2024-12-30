@@ -900,7 +900,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
 
             <div id="ErinnerungsDropDown">
                 <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
-                <div id="block">
+                <div id="blockErinnerung">
                     <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
                         <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
                         <option value="Keine Wiederholung" ${data.intervallEinheit === 'Keine Wiederholung' ? 'selected' : ''}>Keine Wiederholung</option>
@@ -1079,7 +1079,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
      <div id="ErinnerungsDropDown">
      
       <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
-      <div id="block">
+      <div id="blockErinnerung">
         <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
         <option value="Keine Wiederholung" selected>Keine Wiederholung</option>
         <option value="Täglich">Täglich</option>
