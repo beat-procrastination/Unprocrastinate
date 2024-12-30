@@ -954,12 +954,18 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     originalDivOffeneAusrede.id = `erinnerung-${data.id}`
     
     originalDivOffeneAusrede.innerHTML = `
-        <div class="ausredeÜbersicht">
+       <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${data.ausredeName}</h3>
-        </div> 
-        <div class="ausredeDetailsContainer"> 
-        <textarea onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
-        </div>   
+            <div class ="ausredeDatesContainer">
+            <div class="ausredeDates">${data.ausredeDate.value}</div>
+            <div class="ausredeDates">${data.ausredeTime.value}</div>
+            </div>
+            <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
+            <input type="checkbox" class="checkboxAusrede">
+        </div>  
+         <div class="ausredeDetailsContainer">             
+            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
+        </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
 
@@ -1029,7 +1035,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
             </div>
         </div>
     `;
-    container.appendChild(originalDivErinnerung);
+    container.insertBefore(originalDivErinnerung, container.firstChild);
     saveDataErinnerung();  
 }
 
@@ -1063,7 +1069,7 @@ function createNewElementTimer(containerId) {       //Timer
                 <input class="input-timer" type="number"  id="wiederholungen" min="1" >
         </div>
     `;
-    container.appendChild(originalDivTimer);
+    container.insertBefore(originalDivTimer, container.firstChild);
     saveDataTimer();  // Save the state immediately after creating a new element
 }
 
@@ -1129,7 +1135,7 @@ function createNewElementBlocking(containerId) {   //Blocking
 
     </div>
     `;
-    container.appendChild(originalDivBlocking);
+    container.insertBefore(originalDivBlocking, container.firstChild);
     saveDataBlocking();  // Save the state immediately after creating a new element
     
 }
@@ -1158,7 +1164,7 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) { 
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
         </div>
     `;
-    container.appendChild(originalDivOffeneAusrede);
+    container.insertBefore(originalDivOffeneAusrede, container.firstChild);
     saveDataOffeneAusrede();  // Save the state immediately after creating a new element 
 }
 

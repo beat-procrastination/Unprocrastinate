@@ -292,26 +292,27 @@ background-color:var(--farbe);
   }
   @media (orientation: landscape){
     .ausredeDates{
-      width:10vw;
-      font-size: medium;
+      width:10vw !important;
+      font-size: medium !important;
     }
     .ausredeDatesContainer{
-      width: 10vw;
+      width: 12.5vw !important;
     }
     .labelAusrede{
-      font-size: medium;
+      font-size: medium !important;
     }
     .checkboxAusrede{
-      width: 3.25vw;
+      width: 3.25vw  !important;
     }
     .ausredeName{
-      width: 43vw;
+      width: 43vw !important;
     }
   }
 
 
   .ausredeDates{
   width:18vw ;
+  margin-top: 0.5vh;
   font-size: small;
   white-space: nowrap;
   overflow: hidden;
