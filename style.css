@@ -210,7 +210,7 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
   .erinnerungName, .input-name, #ausredeName{
     display: flex;
     font-size: calc(1vh + 3.25vw);
-  width: 33vw;
+  width: 54vw;
   text-align: center;
   height:calc(4vh + 1.5vw);
   background-color:var(--farbe);
@@ -400,6 +400,7 @@ background-color:var(--farbe);
   justify-content: center;
   align-items: center;
   min-height: 4vw;
+  gap: 4%;
   
   }
   @media (orientation: landscape) {
@@ -690,6 +691,7 @@ width: 80%;
   .menuErinnerung, .Timermenu, .menuBlocking{
     min-height: 45px !important;
     max-height: 70px !important;
+    width: 7vw;
   }
 }
 
