@@ -207,7 +207,7 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
  
   
   
-  .erinnerungName, .input-name, #ausredeName{
+  .erinnerungName:valid, .input-name:valid, #ausredeName{
     display: flex;
     font-size: calc(1vh + 3.25vw);
   width: 54vw;
@@ -217,6 +217,12 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
+  margin: 0 4vw;
+  }
+
+  .erinnerungName:invalid, .input-name:invalid, #inputDate:invalid, #inputTime:invalid, #timeBlockingDatum:invalid, #startTime:invalid, #endTime:invalid{
+    background-color: #f5c2c2;;
   }
 
   #nameZeitplanung{
@@ -232,6 +238,7 @@ h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .
     .input-name, .erinnerungName{
 font-size:calc(1vh + 2.75vw) ;
 background-color:var(--farbe);
+margin: 0 2.5vw;
     }    
 
   }
@@ -338,7 +345,7 @@ background-color:var(--farbe);
 
     
     .timerContainer{
-      height:25vh ;
+      height:26vh ;
       min-height: fit-content;
       margin-top: 9vh;
       width: 80vw;
@@ -393,15 +400,23 @@ background-color:var(--farbe);
     min-height: fit-content;
   }
 
-  .erinnerungÜbersicht, .newTimeBlockingHeadline{
-  display: block;
+ .newTimeBlockingHeadline{
   height: 7vh;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 4vw;
-  gap: 4%;
   
+  
+  }
+
+  .erinnerungÜbersicht{
+    height: 7vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 4vw;
+    
   }
   @media (orientation: landscape) {
     .erinnerungContainer{
@@ -428,6 +443,8 @@ background-color:var(--farbe);
     .erinnerungÜbersicht, .newTimeBlockingHeadline{
       height: 10vh;
       min-height: 40px;
+    
+
     }
   }
 
@@ -691,7 +708,7 @@ width: 80%;
   .menuErinnerung, .Timermenu, .menuBlocking{
     min-height: 45px !important;
     max-height: 70px !important;
-    width: 7vw;
+    width: 7vw !important;
   }
 }
 
@@ -702,7 +719,7 @@ width: 80%;
   cursor: pointer;
   margin: auto;
   min-height: 37px;
-  max-height: 45px;
+  max-height: 75px;
 
 }
 
@@ -723,7 +740,7 @@ width: 80%;
 
 .checkboxErinnerung,  .checkboxAusrede{
     width: 4vw;
-    min-width: 25px;
+    min-width: 45px;
     aspect-ratio: 1 / 1;
     height:auto;
     border: 3px solid black;

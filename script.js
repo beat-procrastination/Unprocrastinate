@@ -467,6 +467,85 @@ function timeBlockingCheckTime(data){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//timeBlocking check von differenz zwischen start und Endzeit
+document.addEventListener('input', function (event) {
+    // Überprüfen, ob das Event von einem Input-Feld stammt
+    if (event.target.tagName === 'INPUT') {
+        // Den spezifischen `time-blocking-container` finden
+        const container = event.target.closest('.time-blocking-container');
+        
+        if (container) {
+            // Start- und Endzeit innerhalb dieses Containers suchen
+            const startTimeInput = container.querySelector('#startTime');
+            const endTimeInput = container.querySelector('#endTime');
+
+            // Wenn beide Felder existieren, weiterarbeiten
+            if (startTimeInput && endTimeInput) {
+                console.log('Startzeit:', startTimeInput.value);
+                console.log('Endzeit:', endTimeInput.value);
+
+                // Optional: Logik einfügen, z. B. Zeitdifferenz berechnen
+                if (startTimeInput.value && endTimeInput.value) {
+                    const startTime = new Date(`1970-01-01T${startTimeInput.value}`);
+                    const endTime = new Date(`1970-01-01T${endTimeInput.value}`);
+                    const diffInMinutes = (endTime - startTime) / (1000 * 60);
+
+                    if (diffInMinutes < 20) {
+                        alert('Die Zeitdifferenz muss mindestens 20 Minuten betragen!');
+                    }
+                }
+            }
+        }
+    }
+});
+
+
+
 //Timer Start
 function changeButtons(button){
     var playButton = button.parentNode.querySelector("#play-buttonTimer");
@@ -807,7 +886,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
             <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" value="true" ${data.checkboxErinnerung ? 'checked' : ''}>
-            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}">
+            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}" required>
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
@@ -819,9 +898,9 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
         <div class="erinnerungDetails">
             <div class="datumContainer">
                 <label  class="labelErinnerung"  for="inputDate">Datum:</label>
-                <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}">
+                <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" value="${data.date}" required>
                 <label  class="labelErinnerung"  id="labelTime" for="inputTime">Uhrzeit:</label>
-                <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}">
+                <input id="inputTime"   class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" value="${data.time}" required>
             </div>
 
             <div id="ErinnerungsDropDown">
@@ -893,13 +972,13 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     
     originalDivBlocking.innerHTML = `
     <div class="newTimeBlockingHeadline" id=${data.id}>
-         <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}">                           
+         <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" value="${data.nameBlocking}" required>                           
     </div>                                                                                                                                                                                                                                              
     <div class="inputTimeBlocking-container"> 
     <div class="datumContainer2">
         <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
-        <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" value=${data.startDate}>
+        <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" value="${data.startDate}" required>
          <div class="container">
             <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
@@ -910,9 +989,9 @@ function createNewElementWithDataBlocking(data) {  //Blocking
                 </div>
         <div class="datumContainer">
             <label class="labelZeitplanung" for="start-time">Start:</label>
-            <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}">
+            <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" value="${data.startTime}" required>
             <label  class="labelZeitplanung" id="labelEndTime" for="end-time">Ende:</label>
-            <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}">
+            <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" value="${data.endTime}" required>
         </div>
         <div class="BlockingDropDown">
             <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
@@ -985,7 +1064,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
             <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
-            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text">
+            <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" required>
             <div class="container">
         <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
@@ -997,9 +1076,9 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
          <div class="erinnerungDetails">
                 <div class="datumContainer">
                    <label  class="labelErinnerung" for="inputDate">Datum:</label>
-            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date">
+            <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" required>
                     <label  class="labelErinnerung" id="labelTime for="inputTime">Uhrzeit:</label>
-            <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time">
+            <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" required>
          
             </div>
        
@@ -1078,13 +1157,13 @@ function createNewElementBlocking(containerId) {   //Blocking
     
     originalDivBlocking.innerHTML = `
         <div class="newTimeBlockingHeadline" >
-            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung">
+            <input class="input-name" placeholder="Name Zeitplanung" type="text" id="nameZeitplanung" required>
         </div>                                                                                                                                                                                                                                             
         <div class="inputTimeBlocking-container"> 
         <div class="datumContainer2">
             <input type="checkbox" class="checkboxTimeBlocking">
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
-                <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum">
+                <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" required>
                  <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
@@ -1095,9 +1174,9 @@ function createNewElementBlocking(containerId) {   //Blocking
         </div>
           <div class="datumContainer">
             <label class="labelZeitplanung" for="starTime">Start:</label>
-                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time">
+                <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" required>
                 <label  class="labelZeitplanung" for="endTime">Ende:</label>
-                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time">
+                <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" required>
           </div>
         
           <div class="BlockingDropDown">
