@@ -504,8 +504,10 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
 
 //timeBlocking check von differenz zwischen start und Endzeit
 document.addEventListener('input', function (event) {
+    console.log("1");
     // Überprüfen, ob das Event von einem Input-Feld stammt
     if (event.target.tagName === 'INPUT') {
+        console.log("2");
         // Den spezifischen `time-blocking-container` finden
         const container = event.target.closest('.blockingcontainer');
         
@@ -513,7 +515,7 @@ document.addEventListener('input', function (event) {
             // Start- und Endzeit innerhalb dieses Containers suchen
             const startTimeInput = container.querySelector('#startTime');
             const endTimeInput = container.querySelector('#endTime');
-
+console.log("3");
             // Wenn beide Felder existieren, weiterarbeiten
             if (startTimeInput && endTimeInput) {
                 console.log('Startzeit:', startTimeInput.value);
@@ -523,6 +525,9 @@ document.addEventListener('input', function (event) {
                 if (startTimeInput.value && endTimeInput.value) {
                     const startTime = new Date(`1970-01-01T${startTimeInput.value}`);
                     const endTime = new Date(`1970-01-01T${endTimeInput.value}`);
+                    if (endTime < startTime) {
+                        endTime.setDate(endTime.getDate() + 1);
+                    }
                     const diffInMinutes = (endTime - startTime) / (1000 * 60);
 
                     if (diffInMinutes < 20) {
