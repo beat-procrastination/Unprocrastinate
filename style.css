@@ -15,8 +15,8 @@
 background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
 background-size: cover;
 background-position: center center;
-
-height: 100vh;
+min-height: 100vh;
+padding-bottom: 50px;
 
 
 }
@@ -508,7 +508,7 @@ width: 60vw;
       min-height: 40px;
     }
     .inputTimeBlocking{
-width: 25%;
+width: 25% !important;
     }
    }
   
@@ -821,7 +821,7 @@ width: 80%;
     font-size: 5vh;
     
   }
-  #endTime{
+  #labelEndTime{
     margin-left: 2.75vw !important;
   }
 #intervallEinheit{
@@ -862,7 +862,7 @@ option {
  min-height: 40px;
 }
 #block{
-  width: 25%;
+  width: 25% !important;
   margin-right: 0.75vw;
 }
  }
@@ -892,7 +892,7 @@ option {
 #intervallEinheit{
   border: 2px solid transparent;
   box-shadow: 0 0 0 1.75px black;
-  width: 80%;
+  width: 84%;
   box-sizing: border-box;
   height: 60% !important;
   margin-top: 1.2vh;
@@ -908,7 +908,7 @@ option {
 }
 
 #labelTime{
-  margin-left: 2vw;
+  margin-left: 1.5vw !important;
 }
 
 #labelEndTime{

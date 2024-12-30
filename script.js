@@ -1168,7 +1168,7 @@ function createNewElementBlocking(containerId) {   //Blocking
           <div class="datumContainer">
             <label class="labelZeitplanung" for="starTime">Start:</label>
                 <input class="inputTimeBlocking"  type="time" id="startTime" name="start-time" required>
-                <label  class="labelZeitplanung" for="endTime">Ende:</label>
+                <label  class="labelZeitplanung"  id="labelEndTime" for="endTime">Ende:</label>
                 <input  class="inputTimeBlocking"   type="time" id="endTime" name="end-time" required>
           </div>
         
