@@ -88,6 +88,8 @@ self.addEventListener('message', event => {
         self.registration.showNotification(event.data.title, {
             body: event.data.body,
             icon: '/Niklas-Nils-new/icons/192x192.png',
+            vibrate: [200, 100, 200], 
+            requireInteraction: true,
         });
     }
 });

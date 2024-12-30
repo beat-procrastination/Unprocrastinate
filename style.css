@@ -81,7 +81,7 @@ h2{text-align: center;
   align-items: center;
   gap: 1%;
   height: 8vh;
-  margin-top: -1.5vh;
+  margin-top: -1.75vh;
   
   }
   .bigWords{
@@ -842,8 +842,8 @@ option {
   box-shadow: 0 0 0 1.75px black;
   width: 85%;
   box-sizing: border-box;
-  height: 70% !important;
-  margin-top: 1vh;
+  height: 60% !important;
+  margin-top: 1.2vh;
   min-height: 20px;
   
 }
@@ -861,6 +861,9 @@ option {
 
 #labelEndTime{
   margin-left: 3vw;
+}
+#inputTime, #inputDate, #endTime, #startTime{
+  height: 47% !important;
 }
 
 
