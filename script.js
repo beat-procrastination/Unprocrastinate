@@ -1071,7 +1071,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
                 <div class="datumContainer">
                    <label  class="labelErinnerung" for="inputDate">Datum:</label>
             <input id="inputDate" class="inputErinnerungDetails" placeholder="Datum" type="date" required>
-                    <label  class="labelErinnerung" id="labelTime for="inputTime">Uhrzeit:</label>
+                    <label  class="labelErinnerung" id="labelTime" for="inputTime">Uhrzeit:</label>
             <input id="inputTime" class="inputErinnerungDetails" placeholder="Uhrzeit" type="time" required>
          
             </div>

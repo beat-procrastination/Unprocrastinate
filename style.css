@@ -443,6 +443,7 @@ width: 60vw;
    height: 30vh;
    margin-top: 10vh;
    min-height: 115px;
+   max-height: 30vh;
     }
     .blockingContainer{
       width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
