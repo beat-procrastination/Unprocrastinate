@@ -992,7 +992,6 @@ function createNewElementWithDataBlocking(data) {  //Blocking
             <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
             <div id="block">
                 <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
-                    <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
                         <option value="Keine Wiederholung" ${data.intervallEinheit === 'Keine Wiederholung' ? 'selected' : ''}>Keine Wiederholung</option>
                         <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
                         <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
@@ -1082,8 +1081,7 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
       <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
       <div id="block">
         <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
-     <option value="" disabled selected>Bitte wählen...</option>
-        <option value="Keine Wiederholung">Keine Wiederholung</option>
+        <option value="Keine Wiederholung" selected>Keine Wiederholung</option>
         <option value="Täglich">Täglich</option>
         <option value="Wöchentlich">Wöchentlich</option>
         <option value="Monatlich">Monatlich</option>
@@ -1179,8 +1177,7 @@ function createNewElementBlocking(containerId) {   //Blocking
       <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
       <div id="block">
         <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)">
-     <option value="" disabled selected>Bitte wählen...</option>
-       <option value="Keine Wiederholung">Keine Wiederholung</option>
+       <option value="Keine Wiederholung" selected>Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
       <option value="Wöchentlich">Wöchentlich</option>
       <option value="Monatlich">Monatlich</option>
