@@ -509,7 +509,7 @@ document.addEventListener('input', function (event) {
     if (event.target.tagName === 'INPUT') {
         console.log("2");
         // Den spezifischen `time-blocking-container` finden
-        const container = event.target.closest('.blockingcontainer');
+        const container = event.target.closest('.blockingContainer');
         
         if (container) {
             // Start- und Endzeit innerhalb dieses Containers suchen
