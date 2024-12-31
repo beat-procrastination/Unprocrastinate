@@ -823,7 +823,7 @@ function saveDataBlocking() {   //Blocking
         console.log(existingDataSet);
 
         return {
-            id: element.id,
+            id: element.id,   //Die ID wird dem Element entnommen und kann dort nicht geändert werden. Jedes Element hat eine eigene ID, die sich nie ändert. 
             nameBlocking: nameBlocking,
             checkboxBlocking: checkboxBlocking,
             startDate: startDate,
@@ -833,9 +833,10 @@ function saveDataBlocking() {   //Blocking
             intervallWert: intervallWert,
             endDatum: endDatum,
 
-            startNotificationSend: existingData.startNotificationSend,
-            endNotificationSend: existingDataSet.endNotificationSend,
-            ausredeErstellt: existingDataSet.ausredeErstellt,
+            //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
+            endNotificationSend: existingDataSet?.endNotificationSend || undefined,
+            ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
