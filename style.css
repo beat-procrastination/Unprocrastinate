@@ -10,18 +10,17 @@
 
 
 
- .bodyIndex{ 
+
   
   .bodyIndex {
     background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
     background-size: cover; /* Füllt die Breite vollständig aus */
-    background-repeat: repeat-y; /* Wiederholt sich nur vertikal */
-    background-position: center top; /* Startet zentriert und oben */
-    min-height: 100vh; /* Die Seite hat immer mindestens Fensterhöhe */
+    background-position: center center; /* Startet zentriert und oben */
+    height: 100vh; 
     padding-bottom: 50px;
   }
 
-}
+
 .ellipse{
   height: 15vh;
   width: 40%;
@@ -159,7 +158,7 @@ svg{
   } */
 
 
-h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
+h1, h2, svg, label, .neuesElement, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
   background-color:var(--farbe) ;
 }
   svg{
@@ -591,7 +590,7 @@ width: 25% !important;
     
    
     .menuBlocking{
-      height: 4vw !important;
+      height: 5vw !important;
       width: 6.25vw !important;
       min-height: 45px !important;
       max-height: 70px !important;
@@ -828,7 +827,7 @@ width: 80%;
     margin-left: 2.75vw !important;
   }
 #intervallEinheit{
-  width: 92% !important;;
+  width: 88% !important;;
 }
     
 

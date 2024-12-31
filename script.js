@@ -112,12 +112,14 @@ showTool('tool1');
   
 
 function schließeAlleDropdownMenues(containerListe){
+    console.log(containerListe);
     document.addEventListener('click', function(){
+        console.log("g");
         let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
         });
-    })
+    }, true)
 }
 
 
@@ -134,24 +136,22 @@ function details(button){
 }
   
 function dropDownMenu(button) {
-   
+   console.log("2");
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
-        schließeAlleDropdownMenues(button.parentNode.parentNode.parentNode.parentNode);
-      
+        console.log("3");
     } else {
       dropdownMenu.classList.add('hidden');
+      console.log("4");
     }
 }
 
-  
 
 
 function löschen(button) {
     console.log(button);
-    console.log(button.parentNode.parentNode.parentNode);
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
+    var parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
     parentElement.remove();
 }
 
@@ -165,12 +165,11 @@ function fixieren(button) {
     });
 
    
-    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+    var container = button.closest('.erinnerungListe, #timer-list, #blockingList');
    
 
     
-    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
-   
+    var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
@@ -931,8 +930,8 @@ function createNewElementWithDataBlocking(data) {  //Blocking
          <div class="container">
             <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
             <div id="dropdownMenu" class="dropdown-content hidden">
-                <a onclick="löschen(document.getElementById('dropdownMenu'))" href="#" class="change">Löschen</a>
-                <a onclick="fixieren(document.getElementById('dropdownMenu'))" href="#" class="change">Fixieren</a>
+                <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
             </div>                                                                                                       
         </div>      
                 </div>
@@ -1114,8 +1113,8 @@ function createNewElementBlocking(containerId) {   //Blocking
                  <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuBlocking" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
                 <div id="dropdownMenu" class="dropdown-content hidden">
-                    <a onclick="löschen(document.getElementById('dropdownMenu'))" href="#" class="change">Löschen</a>
-                    <a onclick="fixieren(document.getElementById('dropdownMenu'))" href="#" class="change">Fixieren</a>
+                    <a onclick="löschen(this)" href="#" class="change">Löschen</a>
+                    <a onclick="fixieren(this)" href="#" class="change">Fixieren</a>
                 </div>                                                                                                       
             </div>       
         </div>
