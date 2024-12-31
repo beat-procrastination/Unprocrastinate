@@ -6,7 +6,7 @@ const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 
 // App installieren 
-let deferredPrompt;
+
 const installButton = document.getElementById('install-button');
 
 /*
@@ -41,6 +41,71 @@ function installButtonPressed(){
     console.log("Install Button Pressed.")
 }
 */
+
+
+
+//installieren
+let deferredPrompt; // This will store the beforeinstallprompt event
+
+// Listen for the 'beforeinstallprompt' event to trigger custom install flow
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('beforeinstallprompt fired');
+    // Prevent the default install prompt from appearing
+    e.preventDefault();
+
+    // Save the event to trigger it later
+    deferredPrompt = e;
+
+    // Check if notifications are allowed
+    if (Notification.permission === "granted") {
+        // Show a custom notification asking to install the app
+        showInstallNotification();
+    } else {
+        // Request notification permission
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                showInstallNotification(); // Show notification after permission is granted
+            }
+        });
+    }
+});
+
+// Function to show the install notification
+function showInstallNotification() {
+    console.log('Showing install notification');
+    // Create and show the notification
+    new Notification('Installiere unsere App!', {
+        body: 'Klicke hier, um die App zu installieren.',
+        icon: '/Niklas-Nils-new/icons/192x192.png',
+        requireInteraction: true // Keeps the notification active until the user clicks it
+    }).onclick = function () {
+        // When the notification is clicked, trigger the install prompt
+        if (deferredPrompt) {
+            deferredPrompt.prompt(); // Show the install prompt
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('Benutzer hat die Installation akzeptiert');
+                } else {
+                    console.log('Benutzer hat die Installation abgelehnt');
+                }
+                // Reset the deferred prompt to null after use
+                deferredPrompt = null;
+            });
+        }
+    };
+}
+
+// Handle page load
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOMContentLoaded');
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+        // Only show the notification if the app is not already installed
+        if (deferredPrompt) {
+            showInstallNotification();
+        }
+    }
+});
+
 
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
@@ -165,11 +230,12 @@ function fixieren(button) {
     });
 
    
-    var container = button.closest('.erinnerungListe, #timer-list, #blockingList');
+    var container = button.closest('.erinnerungListe, #timer-list, #blockingListe');
    
-
+console.log(container);
     
     var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
+    console.log(containerOfButton);
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
