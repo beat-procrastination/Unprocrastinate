@@ -114,6 +114,7 @@ showTool('tool1');
 function schließeAlleDropdownMenues(containerListe){
     console.log(containerListe);
     document.addEventListener('click', function(){
+        console.log("g");
         let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
@@ -144,7 +145,7 @@ function dropDownMenu(button) {
         console.log(containerListe);
         setTimeout(function() {
             schließeAlleDropdownMenues(containerListe);
-        }, 1000);
+        }, 100000);
     } else {
       dropdownMenu.classList.add('hidden');
       console.log("4");
