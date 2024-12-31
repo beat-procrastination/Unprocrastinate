@@ -540,15 +540,15 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
         return unix; 
     }
     else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft. 
-        if(intervallEinheit == "day"){
+        if(intervallEinheit == "Täglich"){
             const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWert));
             return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWert; 
         }
-        if(intervallEinheit == "week"){
+        if(intervallEinheit == "Wöchentlich"){
             const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWert * 7));
             return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWert * 7;
         }
-        if(intervallEinheit == "month"){
+        if(intervallEinheit == "Monatlich"){
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
                 letzteWiederholung.setMonth(letzteWiederholung.getMonth() + intervallWert);
@@ -557,7 +557,7 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
             letzteWiederholung.setMonth(letzteWiederholung.getMonth() - intervallWert)
             return letzteWiederholung.getTime();
         }
-        if(intervallEinheit == "year"){
+        if(intervallEinheit == "Jährlich"){
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
                 letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() + intervallWert);
