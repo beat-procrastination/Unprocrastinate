@@ -534,31 +534,35 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
         console.log("Kein Intervall oder IntervallWert nicht definiert.")
         return unix; 
     }
-    else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft. 
+    else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft.
+        const numberMatch = string.match(/\d+/);
+        const intervallWertZahl = numberMatch ? parseInt(numberMatch[0], 10) : null;
+        console.log("intervallWertZahl:"+intervallWertZahl);
+
         if(intervallEinheit == "Täglich"){
-            const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWert));
-            return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWert; 
+            const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWertZahl));
+            return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWertZahl; 
         }
         if(intervallEinheit == "Wöchentlich"){
-            const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWert * 7));
-            return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWert * 7;
+            const wiederholungen = Math.floor((Date.now() - unix) / (60 * 60 * 24 * 1000 * intervallWertZahl * 7));
+            return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWertZahl * 7;
         }
         if(intervallEinheit == "Monatlich"){
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
-                letzteWiederholung.setMonth(letzteWiederholung.getMonth() + intervallWert);
+                letzteWiederholung.setMonth(letzteWiederholung.getMonth() + intervallWertZahl);
                 console.log(letzteWiederholung);
             }
-            letzteWiederholung.setMonth(letzteWiederholung.getMonth() - intervallWert)
+            letzteWiederholung.setMonth(letzteWiederholung.getMonth() - intervallWertZahl)
             return letzteWiederholung.getTime();
         }
         if(intervallEinheit == "Jährlich"){
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
-                letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() + intervallWert);
+                letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() + intervallWertZahl);
                 console.log(letzteWiederholung);
             }
-            letzteWiederholung.setFullYear(letzteWiederholung.setFullYear() - intervallWert)
+            letzteWiederholung.setFullYear(letzteWiederholung.setFullYear() - intervallWertZahl)
             return letzteWiederholung.getTime();
         }
     }
