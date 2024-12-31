@@ -12,12 +12,14 @@
 
  .bodyIndex{ 
   
-background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
-background-size: cover;
-background-position: center center;
-min-height: 100vh;
-padding-bottom: 50px;
-
+  .bodyIndex {
+    background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
+    background-size: cover; /* Füllt die Breite vollständig aus */
+    background-repeat: repeat-y; /* Wiederholt sich nur vertikal */
+    background-position: center top; /* Startet zentriert und oben */
+    min-height: 100vh; /* Die Seite hat immer mindestens Fensterhöhe */
+    padding-bottom: 50px;
+  }
 
 }
 .ellipse{
@@ -893,7 +895,7 @@ option {
 #intervallEinheit{
   border: 2px solid transparent;
   box-shadow: 0 0 0 1.75px black;
-  width: 84%;
+  width: 89%;
   box-sizing: border-box;
   height: 60% !important;
   margin-top: 1.2vh;
