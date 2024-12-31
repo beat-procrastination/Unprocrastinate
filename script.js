@@ -6,7 +6,7 @@ const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 
 // App installieren 
-let deferredPrompt;
+
 const installButton = document.getElementById('install-button');
 
 /*
@@ -41,6 +41,74 @@ function installButtonPressed(){
     console.log("Install Button Pressed.")
 }
 */
+
+
+
+//installieren
+
+let deferredPrompt; // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Verhindert das automatische Anzeigen des Installations-Popups
+    e.preventDefault();
+    // Speichert das Ereignis, damit es später ausgelöst werden kann
+    deferredPrompt = e;
+
+    // Zeige benutzerdefinierte Aufforderung an
+    showInstallPrompt();
+});
+
+function showInstallPrompt() {
+    // Prüfe, ob die App bereits installiert wurde (steht im Standalone-Modus)
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log("App ist bereits installiert.");
+        return; // Falls bereits installiert, keine Benachrichtigung anzeigen
+    }
+
+    // Wenn noch nicht installiert, und Benachrichtigungen erlaubt sind
+    if (Notification.permission === "granted") {
+        // Benachrichtigung anzeigen
+        new Notification("Installiere unsere App!", {
+            body: "Klicke hier, um die App zu installieren.",
+            icon: '/Niklas-Nils-new/icons/192x192.png',
+            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
+        }).onclick = function() {
+            // Hier triggern wir das Installations-Prompt, wenn der Benutzer darauf klickt
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Zeigt das Standard-Installations-Prompt an
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Benutzer hat die Installation akzeptiert');
+                    } else {
+                        console.log('Benutzer hat die Installation abgelehnt');
+                    }
+                    deferredPrompt = null; // Zurücksetzen der deferredPrompt, um es nicht erneut zu verwenden
+                });
+            }
+        };
+    } else {
+        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                showInstallPrompt(); // Zeige Benachrichtigung an, wenn Berechtigung erteilt wurde
+            }
+        });
+    }
+}
+
+// Diese Funktion wird aufgerufen, wenn die Seite geladen wird.
+document.addEventListener('DOMContentLoaded', function () {
+    showInstallPrompt();
+});
+
+
+
+
+
+
+
+
+
 
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
