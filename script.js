@@ -635,99 +635,51 @@ function startTimer(element) {
 
 let uniqueIdCounter = parseInt(localStorage.getItem('uniqueIdCounter')) || 0;  //ID counter für alle Elemente 
 
+//Add Eventlisteners when loading the page. For DropdownMenues and Loading and Saving Data
 document.addEventListener('DOMContentLoaded', function() {
-    if (true) {    //Erinnerung
-        document.addEventListener('click', function() {
-            schließeAlleDropdownMenues(document.querySelector('#erinnerungListe'));
-        },true);
-        
-        // Load saved data when the page loads
-        loadDataErinnerung();
-     
-        // Add event listeners to save data automatically on input change
-        document.getElementById('erinnerungListe').addEventListener('input', function(event) {
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-                saveDataErinnerung();
-            }
-        });
-
-        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-        document.addEventListener('click', function(event) {
-            if (event.target.closest('.change')) {
-                saveDataErinnerung();
-            }
-        });
-    };
     
-    if (true) { //timer 
-        document.addEventListener('click', function() {
-            schließeAlleDropdownMenues(document.querySelector('#timer-list'));
-        },true);   
-        
-        // Load saved data when the page loads
-        loadDataTimer();
-        
-        // Add event listeners to save data automatically on input change
-        document.getElementById('timer-list').addEventListener('input', function(event) {
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-                
-                saveDataTimer();
-            }
-        });
-        
-        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-        document.addEventListener('click', function(event) {
-            if (event.target.closest('.change')) {
-                saveDataTimer();
-            }
-        });
-    };
+    // Add event listener to close all dropdownMenues when user clicks somewhere on the page.
+    document.addEventListener('click', function() {
+        schließeAlleDropdownMenues(document.querySelector('#erinnerungListe'));
+    },true);
+    
+    // Load saved data when the page loads
+    loadDataErinnerung();
+    loadDataTimer();
+    loadDataBlocking();
+    loadDataOffeneAusrede();
+    
+    // Add event listeners to save data automatically on input change
+    document.getElementById('erinnerungListe').addEventListener('input', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            saveDataErinnerung();
+        }
+    });
+    document.getElementById('timer-list').addEventListener('input', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            saveDataTimer();
+        }
+    });
+    document.getElementById('blockingListe').addEventListener('input', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            saveDataBlocking();
+        }
+    });
+    document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
+        if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
+            saveDataOffeneAusrede();
+        }
+    });
 
-    if (true) {    //Blocking
-        document.addEventListener('click', function() {
-            schließeAlleDropdownMenues(document.querySelector('#blockingListe'));
-        },true);
-        
-        // Load saved data when the page loads
-        loadDataBlocking();
-        
-        // Add event listeners to save data automatically on input change
-        document.getElementById('blockingListe').addEventListener('input', function(event) {
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-                saveDataBlocking();
-            }
-        });
-
-        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-        document.addEventListener('click', function(event) {
-            if (event.target.closest('.change')) {
-                saveDataBlocking();
-            }
-        });
-    };
-
-    if (true) { //offeneAusrede
-        document.addEventListener('click', function() {
-            schließeAlleDropdownMenues(document.querySelector('#offeneAusredeListe'));
-        },true);    
-        
-        // Load saved data when the page loads
-        loadDataOffeneAusrede();
-
-        // Add event listeners to save data automatically on input change
-        document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
-            if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
-                saveDataOffeneAusrede();
-            }
-        });
-
-        // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
-        document.addEventListener('click', function(event) {
-            if (event.target.closest('.change')) {
-                saveDataOffeneAusrede();
-            }
-    })
-    }
+    // Speichert die Daten wenn Löschen oder Fixieren benutzt wird. 
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.change')) {
+            saveDataErinnerung();
+            saveDataTimer();
+            saveDataBlocking();
+            saveDataOffeneAusrede();
+        }
+    });
 });
 
 
