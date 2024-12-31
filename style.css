@@ -10,7 +10,7 @@
 
 
 
- .bodyIndex{ 
+
   
   .bodyIndex {
     background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
@@ -21,7 +21,7 @@
     padding-bottom: 50px;
   }
 
-}
+
 .ellipse{
   height: 15vh;
   width: 40%;
@@ -159,7 +159,7 @@ svg{
   } */
 
 
-h1, h2, svg, label, img, .neuesElement, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
+h1, h2, svg, label, .neuesElement, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
   background-color:var(--farbe) ;
 }
   svg{

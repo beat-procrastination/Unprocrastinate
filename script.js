@@ -112,6 +112,7 @@ showTool('tool1');
   
 
 function schließeAlleDropdownMenues(){
+    console.log("1");
     document.addEventListener('click', function(){
         let dropdownMenus = document.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
@@ -134,14 +135,16 @@ function details(button){
 }
   
 function dropDownMenu(button) {
-   
+   console.log("2");
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
+        console.log("3");
         schließeAlleDropdownMenues();
       
     } else {
       dropdownMenu.classList.add('hidden');
+      console.log("4");
     }
 }
 
