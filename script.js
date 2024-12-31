@@ -425,6 +425,8 @@ function updateStringInLocalStorage(key, id, newValue) {
 }
 
 
+//Wenn man die startZeit ändert, wird data.notificationSend einfach aus dem Local Storage entfernt? Stellt zwar kein Problem dar, aber dennoch frage ich mich warum. Bleibt aber sonst gleich, auch wenn man die Seite neu lädt oder schließt und wieder öffnet. Ok, sorgt doch für Probleme. Wenn die Elemente gespeichert werden, gehen diese daten im local Storage natürlich verloren. Muss behoben werden. 
+
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf um diese zu senden. 
 function timeBlockingCheckTime(data){
     console.log("timeBlockingCheckTime()")
