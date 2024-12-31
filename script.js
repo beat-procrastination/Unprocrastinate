@@ -46,62 +46,63 @@ function installButtonPressed(){
 
 //installieren
 
-let deferredPrompt; // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
+let deferredPrompt; // Stores the beforeinstallprompt event to trigger later
 
+// Event listener for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Verhindert das automatische Anzeigen des Installations-Popups
+    // Prevent the default install prompt
     e.preventDefault();
-    // Speichert das Ereignis, damit es später ausgelöst werden kann
+    // Store the event to be triggered later
     deferredPrompt = e;
 
-    // Zeige benutzerdefinierte Aufforderung an
-    showInstallPrompt();
+    // Check if the app is not installed already
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+        // Only show the custom install notification if the app isn't installed
+        if (Notification.permission === 'granted') {
+            showInstallPrompt();
+        } else {
+            // Request notification permission if not granted yet
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    showInstallPrompt(); // Show the notification once permission is granted
+                }
+            });
+        }
+    }
 });
 
+// Function to show the install prompt notification
 function showInstallPrompt() {
-    // Prüfe, ob die App bereits installiert wurde (steht im Standalone-Modus)
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-        console.log("App ist bereits installiert.");
-        return; // Falls bereits installiert, keine Benachrichtigung anzeigen
-    }
-
-    // Wenn noch nicht installiert, und Benachrichtigungen erlaubt sind
-    if (Notification.permission === "granted") {
-        // Benachrichtigung anzeigen
-        new Notification("Installiere unsere App!", {
-            body: "Klicke hier, um die App zu installieren.",
-            icon: '/Niklas-Nils-new/icons/192x192.png',
-            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
-        }).onclick = function() {
-            // Hier triggern wir das Installations-Prompt, wenn der Benutzer darauf klickt
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); // Zeigt das Standard-Installations-Prompt an
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Benutzer hat die Installation akzeptiert');
-                    } else {
-                        console.log('Benutzer hat die Installation abgelehnt');
-                    }
-                    deferredPrompt = null; // Zurücksetzen der deferredPrompt, um es nicht erneut zu verwenden
-                });
-            }
-        };
-    } else {
-        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                showInstallPrompt(); // Zeige Benachrichtigung an, wenn Berechtigung erteilt wurde
-            }
-        });
-    }
+    // Show the custom install notification
+    new Notification('Installiere unsere App!', {
+        body: 'Klicke hier, um die App zu installieren.',
+        icon: '/Niklas-Nils-new/icons/192x192.png',
+        requireInteraction: true // The notification stays visible until the user clicks
+    }).onclick = function () {
+        // Trigger the deferred install prompt when the user clicks the notification
+        if (deferredPrompt) {
+            deferredPrompt.prompt(); // Show the default installation prompt
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('Benutzer hat die Installation akzeptiert');
+                } else {
+                    console.log('Benutzer hat die Installation abgelehnt');
+                }
+                // Reset the deferred prompt so it can't be used again
+                deferredPrompt = null;
+            });
+        }
+    };
 }
 
-// Diese Funktion wird aufgerufen, wenn die Seite geladen wird.
+// Check if the app is installed, and if not, show the prompt once the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    showInstallPrompt();
+    // If the app is not in standalone mode, proceed to handle installation
+    if (!window.matchMedia('(display-mode: standalone)').matches && deferredPrompt) {
+        // The install prompt will be triggered when the beforeinstallprompt is fired
+        showInstallPrompt(); // Show the notification after DOM is loaded
+    }
 });
-
-
 
 
 
