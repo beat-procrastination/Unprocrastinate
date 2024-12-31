@@ -142,8 +142,9 @@ function dropDownMenu(button) {
         console.log("3");
         const containerListe =  button.closest('.erinnerungListe, #timer-list, #blockingList');
         console.log(containerListe);
-        schließeAlleDropdownMenues(containerListe);
-      
+        setTimeout(function() {
+            schließeAlleDropdownMenues(containerListe);
+        }, 1000);
     } else {
       dropdownMenu.classList.add('hidden');
       console.log("4");
