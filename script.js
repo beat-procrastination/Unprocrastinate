@@ -535,7 +535,7 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
         return unix; 
     }
     else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft.
-        const numberMatch = string.match(/\d+/);
+        const numberMatch = intervallWert.match(/\d+/);
         const intervallWertZahl = numberMatch ? parseInt(numberMatch[0], 10) : null;
         console.log("intervallWertZahl:"+intervallWertZahl);
 
