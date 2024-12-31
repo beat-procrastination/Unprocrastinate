@@ -112,7 +112,7 @@ showTool('tool1');
   
 
 function schließeAlleDropdownMenues(containerListe){
-    console.log("1");
+    console.log(containerListe);
     document.addEventListener('click', function(){
         let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
@@ -141,6 +141,7 @@ function dropDownMenu(button) {
         dropdownMenu.classList.remove('hidden');
         console.log("3");
         const containerListe =  button.closest('.erinnerungListe, #timer-list, #blockingList');
+        console.log(containerListe);
         schließeAlleDropdownMenues(containerListe);
       
     } else {
