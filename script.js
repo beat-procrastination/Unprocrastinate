@@ -444,13 +444,13 @@ function timeBlockingCheckTime(data){
             console.log("Zeitblock hat begonnen.");
             updateStringInLocalStorage("blocking", data.id, { startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
-        console.log(data.startNotificationSend);
+        console.log(data.endNotificationSend);
         if(Date.now() > endTime && Date.now() < endTime + 600 * 1000 && (data.endNotificationSend < endTime || data.endNotificationSend == undefined)){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
             //Benachrichtigung muss hier gesendet werden. 
             console.log("Zeitblock ist um.");
             updateStringInLocalStorage("blocking", data.id, { endNotificationSend: endTime}) ;        //Speichert im LocalStorage das bereits eine endNotification für diesen Zeitblock gesendet wurde.
         }
-        console.log(data.startNotificationSend);
+        console.log(data.ausredeErstellt);
         if(Date.now() > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
