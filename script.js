@@ -45,67 +45,62 @@ function installButtonPressed(){
 
 
 //installieren
-let deferredPrompt; // This will store the beforeinstallprompt event
+let deferredPrompt; // Stores the beforeinstallprompt event to trigger later
 
-// Listen for the 'beforeinstallprompt' event to trigger custom install flow
+// Event listener for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('beforeinstallprompt fired');
-    // Prevent the default install prompt from appearing
+    // Prevent the default install prompt
     e.preventDefault();
-
-    // Save the event to trigger it later
+    // Store the event to be triggered later
     deferredPrompt = e;
 
-    // Check if notifications are allowed
-    if (Notification.permission === "granted") {
-        // Show a custom notification asking to install the app
-        showInstallNotification();
-    } else {
-        // Request notification permission
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                showInstallNotification(); // Show notification after permission is granted
-            }
-        });
+    // Only show the install prompt if the app isn't already installed
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+        // If notifications are allowed, show a custom notification
+        if (Notification.permission === 'granted') {
+            showInstallPrompt();
+        } else {
+            // Request notification permission if not granted yet
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    showInstallPrompt(); // Show the notification once permission is granted
+                }
+            });
+        }
     }
 });
 
-// Function to show the install notification
-function showInstallNotification() {
-    console.log('Showing install notification');
-    // Create and show the notification
+// Function to show the install prompt notification
+function showInstallPrompt() {
+    // Show the custom install notification
     new Notification('Installiere unsere App!', {
         body: 'Klicke hier, um die App zu installieren.',
         icon: '/Niklas-Nils-new/icons/192x192.png',
-        requireInteraction: true // Keeps the notification active until the user clicks it
+        requireInteraction: true // The notification stays visible until the user clicks
     }).onclick = function () {
-        // When the notification is clicked, trigger the install prompt
+        // Trigger the deferred install prompt when the user clicks the notification
         if (deferredPrompt) {
-            deferredPrompt.prompt(); // Show the install prompt
+            deferredPrompt.prompt(); // Show the default installation prompt
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('Benutzer hat die Installation akzeptiert');
                 } else {
                     console.log('Benutzer hat die Installation abgelehnt');
                 }
-                // Reset the deferred prompt to null after use
+                // Reset the deferred prompt so it can't be used again
                 deferredPrompt = null;
             });
         }
     };
 }
 
-// Handle page load
+// Call the function when the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOMContentLoaded');
+    // Only show the install prompt if the user is not in standalone mode
     if (!window.matchMedia('(display-mode: standalone)').matches) {
-        // Only show the notification if the app is not already installed
-        if (deferredPrompt) {
-            showInstallNotification();
-        }
+        // The install prompt will be triggered when beforeinstallprompt is fired
     }
 });
-
 
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
