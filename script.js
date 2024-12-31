@@ -165,11 +165,12 @@ function fixieren(button) {
     });
 
    
-    var container = button.closest('.erinnerungListe, #timer-list, #blockingList');
+    var container = button.closest('.erinnerungListe, #timer-list, #blockingListe');
    
-
+console.log(container);
     
     var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
+    console.log(containerOfButton);
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
