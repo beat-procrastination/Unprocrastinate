@@ -7,7 +7,6 @@ const stopButton = document.getElementById('stop-button');
 
 // App installieren 
 
-const installButton = document.getElementById('install-button');
 
 /*
 // Listen for the beforeinstallprompt event
