@@ -147,7 +147,6 @@ function dropDownMenu(button) {
     }
 }
 
-  button.parenNode
 
 
 function löschen(button) {
