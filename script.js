@@ -111,9 +111,9 @@ showTool('tool1');
 }
   
 
-function schließeAlleDropdownMenues(containerListe){
+function schließeAlleDropdownMenues(){
     document.addEventListener('click', function(){
-        let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
+        let dropdownMenus = document.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
         });
@@ -138,7 +138,7 @@ function dropDownMenu(button) {
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
-        schließeAlleDropdownMenues(button.parentNode.parentNode.parentNode.parentNode);
+        schließeAlleDropdownMenues();
       
     } else {
       dropdownMenu.classList.add('hidden');
@@ -150,8 +150,7 @@ function dropDownMenu(button) {
 
 function löschen(button) {
     console.log(button);
-    console.log(button.parentNode.parentNode.parentNode);
-    var parentElement = button.parentNode.parentNode.parentNode.parentNode;
+    var parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
     parentElement.remove();
 }
 
@@ -165,12 +164,11 @@ function fixieren(button) {
     });
 
    
-    var container = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+    var container = button.closest('.erinnerungListe, #timer-list, #blockingList');
    
 
     
-    var containerOfButton = button.parentNode.parentNode.parentNode.parentNode;
-   
+    var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
