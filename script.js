@@ -119,7 +119,7 @@ function schließeAlleDropdownMenues(containerListe){
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
         });
-    })
+    }, true)
 }
 
 
