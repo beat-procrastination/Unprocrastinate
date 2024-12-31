@@ -112,11 +112,13 @@ showTool('tool1');
   
 
 function schließeAlleDropdownMenues(containerListe){
-   // document.addEventListener('click', function(){
-    let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
-    dropdownMenus.forEach(menu => {
-    menu.classList.add('hidden');
-    });}
+    document.addEventListener('click', function(){
+        let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
+        dropdownMenus.forEach(menu => {
+        menu.classList.add('hidden');
+        });
+    })
+}
 
 
 function details(button){
@@ -135,8 +137,8 @@ function dropDownMenu(button) {
    
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
-      dropdownMenu.classList.remove('hidden');
-     // schließeAlleDropdownMenues(button.parentNode.parentNode.parentNode.parentNode);
+        dropdownMenu.classList.remove('hidden');
+        schließeAlleDropdownMenues(button.parentNode.parentNode.parentNode.parentNode);
       
     } else {
       dropdownMenu.classList.add('hidden');
