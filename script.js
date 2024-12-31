@@ -111,10 +111,10 @@ showTool('tool1');
 }
   
 
-function schließeAlleDropdownMenues(){
+function schließeAlleDropdownMenues(containerListe){
     console.log("1");
     document.addEventListener('click', function(){
-        let dropdownMenus = document.querySelectorAll('.dropdown-content');
+        let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
         });
@@ -140,7 +140,8 @@ function dropDownMenu(button) {
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
         console.log("3");
-        schließeAlleDropdownMenues();
+        const containerListe =  button.closest('.erinnerungListe, #timer-list, #blockingList');
+        schließeAlleDropdownMenues(containerListe);
       
     } else {
       dropdownMenu.classList.add('hidden');
