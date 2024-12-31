@@ -799,6 +799,8 @@ function saveDataTimer() {  //Timer
 function saveDataBlocking() {   //Blocking
     const container = document.getElementById('blockingListe');
     const blockingElements = container.querySelectorAll('.blockingContainer');
+
+    const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
     
     const data = Array.from(blockingElements).map((element) => {
         const nameBlocking = element.querySelector('#nameZeitplanung').value;
@@ -809,9 +811,14 @@ function saveDataBlocking() {   //Blocking
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
         const intervallWert = element.querySelector('#intervallWertSelect').value;
         const endDatum = element.querySelector('#endDate').value;
+        
+    
+        const existingDataSet = existingData.find(item => item.id === element.id);
+        console.log("existingDataSet:")
+        console.log(existingDataSet);
 
         return {
-            id: element.id,
+            id: element.id,   //Die ID wird dem Element entnommen und kann dort nicht geändert werden. Jedes Element hat eine eigene ID, die sich nie ändert. 
             nameBlocking: nameBlocking,
             checkboxBlocking: checkboxBlocking,
             startDate: startDate,
@@ -820,6 +827,11 @@ function saveDataBlocking() {   //Blocking
             intervallEinheit: intervallEinheit,
             intervallWert: intervallWert,
             endDatum: endDatum,
+
+            //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
+            endNotificationSend: existingDataSet?.endNotificationSend || undefined,
+            ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
