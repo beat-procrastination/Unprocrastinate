@@ -141,18 +141,13 @@ function dropDownMenu(button) {
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
         console.log("3");
-        const containerListe =  button.closest('.erinnerungListe, #timer-list, #blockingList');
-        console.log(containerListe);
-        setTimeout(function() {
-            schließeAlleDropdownMenues(containerListe);
-        }, 100000);
     } else {
       dropdownMenu.classList.add('hidden');
       console.log("4");
     }
 }
 
-  
+  button.parenNode
 
 
 function löschen(button) {
