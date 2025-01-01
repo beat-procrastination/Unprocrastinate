@@ -40,6 +40,7 @@ function installButtonPressed(){
     console.log("Install Button Pressed.")
 }
 */
+/*
 let deferredPrompt; // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
 
 // Überprüfen, ob die App bereits installiert wurde
@@ -105,7 +106,77 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+*/
 
+
+let deferredPrompt;  // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
+
+// Überprüfen, ob die App bereits installiert wurde
+function isAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches;
+}
+
+// beforeinstallprompt-Event lauschen
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Verhindert das automatische Anzeigen des Installations-Popups
+    e.preventDefault();
+    
+    // Speichern des Events für späteren Gebrauch
+    deferredPrompt = e;
+    
+    // Wenn die App noch nicht installiert ist, zeige die Benachrichtigung an
+    if (!isAppInstalled()) {
+        showInstallNotification();  // Zeigt eine Benachrichtigung an, die zur Installation auffordert
+    }
+});
+
+// Funktion, um die Installations-Benachrichtigung anzuzeigen
+function showInstallNotification() {
+    if (Notification.permission === "granted") {
+        // Zeige die Benachrichtigung an
+        const notification = new Notification("Installiere unsere App!", {
+            body: "Klicke hier, um die App zu installieren.",
+            icon: '/Niklas-Nils-new/icons/192x192.png',
+            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
+        });
+
+        // Wenn der Benutzer auf die Benachrichtigung klickt, zeige den Installations-Prompt
+        notification.onclick = function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();  // Zeigt das Installations-Prompt an
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Benutzer hat die Installation akzeptiert');
+                    } else {
+                        console.log('Benutzer hat die Installation abgelehnt');
+                    }
+                    // Setze deferredPrompt zurück
+                    deferredPrompt = null;
+                });
+            }
+        };
+    } else {
+        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                showInstallNotification();  // Zeige Benachrichtigung an, wenn Berechtigung erteilt wurde
+            }
+        });
+    }
+}
+
+// Event, wenn die App installiert wurde
+addEventListener('appinstalled', () => {
+    console.log('App wurde installiert');
+});
+
+// Funktion zum Prüfen, ob die App bereits installiert wurde
+document.addEventListener('DOMContentLoaded', function() {
+    // Wenn die PWA noch nicht installiert ist und das deferredPrompt vorhanden ist
+    if (deferredPrompt && !isAppInstalled()) {
+        showInstallNotification();  // Zeige die Benachrichtigung an
+    }
+});
 
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
