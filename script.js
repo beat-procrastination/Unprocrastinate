@@ -919,10 +919,9 @@ function saveDataBlocking() {   //Blocking
         const startTime = element.querySelector('#startTime').value;
         const endTime = element.querySelector('#endTime').value;
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
-        const intervallWert = element.querySelector('#intervallWertSelect').value;
         const endDatum = element.querySelector('#endDate').value;
         
-    
+        
         const existingDataSet = existingData.find(item => item.id === element.id);
         console.log("existingDataSet:")
         console.log(existingDataSet);
@@ -935,10 +934,10 @@ function saveDataBlocking() {   //Blocking
             startTime: startTime,
             endTime: endTime,
             intervallEinheit: intervallEinheit,
-            intervallWert: intervallWert,
             endDatum: endDatum,
 
             //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            intervallWert: existingDataSet?.intervallWert || undefined,
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             endNotificationSend: existingDataSet?.endNotificationSend || undefined,
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
@@ -1138,7 +1137,9 @@ function createNewElementWithDataBlocking(data) {  //Blocking
                 </select>
 
                 <div id="intervallWert" style=" margin-top: 10px; display:none;">
-                    <select id="intervallWertSelect"></select>
+                    <select id="intervallWertSelect">
+                         
+                    </select>
                 </div>
             </div>
             <label  class="labelZeitplanung" id="labelEndDate" for="endDate">Enddatum:</label>
@@ -1508,7 +1509,7 @@ function call(button) {
     let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
     let intervallWertDiv = button.parentNode.parentNode.querySelector("#intervallWert");
     let detailsSelect = button.parentNode.parentNode.querySelector("#intervallWertSelect");
-    let lastSelectedRepeat = ''; // Hier speichern wir die letzte Auswahl im Repeat-Dropdown
+    const parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
 
     function updateDetailsOptions(type) {
         detailsSelect.innerHTML = ''; // Clear previous options
@@ -1580,6 +1581,14 @@ function call(button) {
     detailsSelect.addEventListener('change', function() {
         lastSelectedDetail = detailsSelect.value;
         intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
+        
+        const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
+        const existingDataSet = existingData.find(item => item.id === parentElement.id);
+        console.log("existingDataSet:")
+        console.log(existingDataSet);
+
+        updateStringInLocalStorage("blocking", parentElement.id, { intervallWert: lastSelectedDetail });
+        console.log("intervallWert:"+ lastSelectedDetail);
     });
 }    
 
