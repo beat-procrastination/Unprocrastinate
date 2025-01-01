@@ -5,108 +5,7 @@ const moreInfos = document.getElementById('Details');
 const playButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 
-// App installieren 
 
-
-/*
-// Listen for the beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the default prompt
-    e.preventDefault();
-    
-    // Save the event for later use
-    deferredPrompt = e;
-
-    // When the button is clicked, trigger the install prompt
-    installButton.addEventListener('click', () => {
-      // Show the install prompt
-      deferredPrompt.prompt();
-
-      // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-            } else {
-            console.log('User dismissed the install prompt');
-            }
-
-            // Reset the deferred prompt variable
-            deferredPrompt = null;
-        });
-    });
-});
-
-function installButtonPressed(){
-    console.log("Install Button Pressed.")
-}
-*/
-/*
-let deferredPrompt; // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
-
-// Überprüfen, ob die App bereits installiert wurde
-function isAppInstalled() {
-    return window.matchMedia('(display-mode: standalone)').matches;
-}
-
-// beforeinstallprompt-Event lauschen
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Verhindert das automatische Anzeigen des Installations-Popups
-    e.preventDefault();
-    
-    // Speichern des Events für späteren Gebrauch
-    deferredPrompt = e;
-    
-    // Wenn die App noch nicht installiert ist, zeige die Benachrichtigung an
-    if (!isAppInstalled()) {
-        showInstallNotification();
-    }
-});
-
-// Funktion, um die Benachrichtigung anzuzeigen
-function showInstallNotification() {
-    if (Notification.permission === "granted") {
-        // Zeige die Benachrichtigung an
-        const notification = new Notification("Installiere unsere App!", {
-            body: "Klicke hier, um die App zu installieren.",
-            icon: '/Niklas-Nils-new/icons/192x192.png',
-            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
-        });
-
-        // Wenn der Benutzer auf die Benachrichtigung klickt, zeige den Installations-Prompt
-        notification.onclick = function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); // Zeigt das Installations-Prompt an
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Benutzer hat die Installation akzeptiert');
-                    } else {
-                        console.log('Benutzer hat die Installation abgelehnt');
-                    }
-                    deferredPrompt = null; // Zurücksetzen der deferredPrompt
-                });
-            }
-        };
-    } else {
-        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                showInstallNotification(); // Zeige Benachrichtigung an, wenn Berechtigung erteilt wurde
-            }
-        });
-    }
-}
-
-// Funktion, die beim Laden der Seite ausgeführt wird
-document.addEventListener('DOMContentLoaded', function() {
-    // Wenn der Benutzer die Seite geladen hat, überprüfe, ob der Installationsprozess ausgelöst werden kann
-    if (deferredPrompt) {
-        // Wenn die PWA noch nicht installiert ist, zeige die Benachrichtigung an
-        if (!isAppInstalled()) {
-            showInstallNotification();
-        }
-    }
-});
-*/
 let deferredPrompt;  // Speichert das beforeinstallprompt-Ereignis, um es später auszulösen.
 
 // Überprüfen, ob die App bereits installiert wurde
@@ -255,9 +154,7 @@ showTool('tool1');
   
 
 function schließeAlleDropdownMenues(containerListe){
-    console.log(containerListe);
     document.addEventListener('click', function(){
-        console.log("g");
         let dropdownMenus = containerListe.querySelectorAll('.dropdown-content');
         dropdownMenus.forEach(menu => {
         menu.classList.add('hidden');
@@ -279,21 +176,17 @@ function details(button){
 }
   
 function dropDownMenu(button) {
-   console.log("2");
     var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
-        console.log("3");
     } else {
       dropdownMenu.classList.add('hidden');
-      console.log("4");
     }
 }
 
 
 
 function löschen(button) {
-    console.log(button);
     var parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
     parentElement.remove();
 }
@@ -310,225 +203,13 @@ function fixieren(button) {
    
     var container = button.closest('.erinnerungListe, #timer-list, #blockingListe');
    
-console.log(container);
     
     var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
-    console.log(containerOfButton);
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
     }
 }
-
-/*
-// Zeitplanung
-function stopTimeBlocking() {
-    isRunningTimeBlocking = false;
-                alert('Zeitplanung wurde gestoppt.');
-                return;
-  
-    
-}
-
-
-function changeButton(button){
-    var playButton = button.parentNode.querySelector("#play-buttonZeitplanung");
-    var stopButton = button.parentNode.querySelector("#stop-buttonZeitplanung");
-    
-    
-    if(playButton.classList.contains('hidden')){
-        playButton.classList.remove('hidden');
-        stopButton.classList.add('hidden');
-        stopTimeBlocking();
-        
-    } else if (stopButton.classList.contains('hidden')) {
-        stopButton.classList.remove('hidden');
-        playButton.classList.add('hidden');
-        NotificatioPermission(button.parentNode.parentNode.parentNode);
-        
-    }
-  }
-
-  function NotificatioPermission(element) {         //Berechtigung für Benachrichtigungen prüfen/fragen
-  if (Notification.permission === "default") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-               
-                startTimeBlocking(element);
-            } else {
-                alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
-            }
-        });
-    } else if (Notification.permission === "granted") {
-        startTimeBlocking(element);
-    } else {
-        alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
-    }
-    }
-
-
-
-let isRunningTimeBlocking = false;
-let checkboxx = false;
-function startTimeBlocking(element, repeat = false) {
-    isRunningTimeBlocking = true;
-    console.log(element.querySelector(".newTimeBlockingHeadline").querySelector("#nameZeitplanung").value);  //Name der Zeitplanung
-    
-    const playTime = element.querySelector("#startTime").value;
-    const endTime = element.querySelector("#endTime").value;
-    const playButton = element.querySelector("#play-buttonZeitplanung");
-    const nameZeitplanung = element.querySelector('#nameZeitplanung').value;
-    const checkbox = element.querySelector('.checkboxTimeBlocking');
-    const intervallEinheit = element.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-    const detailsInput = element.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
-    const endDateInput = element.querySelector('#endDate').value; // Das Enddatum der Erinnerung
-    const endDate = new Date(endDateInput); // Umwandlung in ein Date-Objekt
-    const [startHours, startMinutes, startSeconds] = playTime.split(':').map(Number).concat(0); // Default seconds to 0
-    const [endHours, endMinutes, endSeconds] = endTime.split(':').map(Number).concat(0); // Default seconds to 0
-    const timeBlockingDatumValue = element.querySelector('#timeBlockingDatum').value;
-    const timeBlockingDatum = new Date(timeBlockingDatumValue);
-    timeBlockingDatum.setHours(startHours, startMinutes,  startSeconds, 0);
-    const now = new Date();
-    const DatumBlocking = timeBlockingDatum - now - 1500;
-    console.log(DatumBlocking);
-    if (!playTime || !endTime || !intervallEinheit || !nameZeitplanung || !timeBlockingDatumValue) {
-        alert('Bitte alle Felder ausfüllen.');
-        changeButton(playButton);
-        return;
-    }
-    
-    console.log(startMinutes, endMinutes);
-    const Differenz = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
-    if ((endHours * 60 + endMinutes) - (startHours * 60 + startMinutes) < 1) {
-        alert('Die Differenz zwischen Start- und Endzeit muss mindestens 20 Minuten betragen.');
-        changeButton(playButton);
-        return;
-    }
-
-    console.log(repeat);
-    if(repeat === true){
-    DatumBlocking = 1;
-    startMinutes = startMinutes + 3;
-    endMinutes = endMinutes + 3;
-    console.log(startMinutes, endMinutes);
-
-    }
-
-    if(DatumBlocking <= 0){
-    alert('Die eingegebene Zeit liegt in der Vergangenheit.');
-    isRunningTimeBlocking = false;
-    changeButton(playButton);
-    return;
-    }
-    let DateBlocking = setTimeout(() =>{
-        let timeBlockingInterval = setInterval(() => {
-            if (!isRunningTimeBlocking) {
-                clearInterval(timeBlockingInterval);
-                clearTimeout(DateBlocking);
-                return;
-            
-            }
-            const now = new Date();
-            const currentHours = now.getHours();
-            const currentMinutes = now.getMinutes();
-            const currentSeconds = now.getSeconds();
-
-            const currentTime = currentHours * 60 * 60 + currentMinutes * 60 + currentSeconds;
-            const startToTalSeconds = startHours * 60 * 60 + startMinutes * 60 + startSeconds;
-            const endTotalSeconds = endHours * 60 * 60 + endMinutes * 60 + endSeconds;
-            
-            console.log(currentTime, startToTalSeconds);
-            if (currentTime === startToTalSeconds) {
-                if (Notification.permission === 'granted') {  
-                    sendNotification('Beginn bestätigen!','Bestätigen Sie, dass Sie angefangen haben!');
-                    console.log("Zeitplanung hat begonnen, Benachrichtigung wurde gesendet.");
-                }
-            
-        
-            let timeoutCheckbox = setTimeout(() => {
-            if (!isRunningTimeBlocking) return;
-                if (!checkbox.checked) {
-                    console.log(checkboxx);
-                    if(!checkboxx){
-                    alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten seit der Startzeit vergangen sind.'); //Ausrede muss hier erstellt werden
-                    
-                    createNewElementOffeneAusrede(nameZeitplanung);
-                    showTool('tool4');
-
-                    checkboxx =true;
-                    clearTimeout(timeoutCheckbox);}
-                }
-            }, 10 * 60 * 1000);}
-        
-            if (currentTime === endTotalSeconds) {
-                if (Notification.permission === 'granted') {
-                    sendNotification('Ende der geplanten Zeit',`Ihre eingeplante Zeit ${nameZeitplanung} ist abgelaufen`);}
-                    checkbox.checked = false; 
-                    if(intervallEinheit === 'Keine Wiederholung'){
-                        clearTimeout(DateBlocking);
-                        clearInterval(timeBlockingInterval);
-                    changeButton(playButton);
-                    stopTimeBlocking();
-                }
-                if (intervallEinheit !== 'Keine Wiederholung') {
-                    handleRepeats(intervallEinheit, detailsInput, now, endDate, playButton, element, Differenz);
-                    
-                }
-            }  
-        }, 1000);
-
-
-
-        //probleme: zeigt den start nicht an nur ende, vermutung: die 60000 millisekunden zu lange mit den dateblocking lösung: mehr console logs vermututng überprüfen, und dann weniger machen was aber problematisch sein könnte da die minutenzahl sich in dieser zeit nicht ändern würde und 2 benachrichtigun die folge wäre
-        },DatumBlocking);
-
-    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission();
-}}
-
-function handleRepeats(intervallEinheit, detailsInput, now, endDateInput, playButton, element, Differenz) {
-    let repeatInterval = 0;
-    // Bestimmen des Wiederholungsintervalls
-    if (intervallEinheit === 'Täglich') {
-        repeatInterval =  1000 * 20; 
-    } else if (intervallEinheit === 'Wöchentlich') {
-        repeatInterval = 7 * 24 * 60 * 60 * 1000; 
-    } else if (intervallEinheit === 'Monatlich') {
-        repeatInterval = 30 * 24 * 60 * 1000 * 60; 
-    } else if (intervallEinheit === 'Jährlich') {
-        repeatInterval = 365 * 24 * 60 * 60 * 1000; 
-    }
-
-    if (detailsInput) {
-        const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
-        repeatInterval *= detailsNumber;
-        
-    }
-    let nextRepeatDate = new Date(now.getTime() + repeatInterval);
-
-    // Startzeit für `nextRepeatDate` festlegen
-    const [startHours, startMinutes] = element.querySelector("#startTime").value.split(':').map(Number);
-    nextRepeatDate.setHours(startHours, startMinutes, 0, 0);
-
-    // Eine Minute abziehen, um sicherzustellen, dass die Wiederholung pünktlich startet
-    nextRepeatDate = new Date(nextRepeatDate.getTime() - 60000);
-
-    console.log("Next Repeat Date:", nextRepeatDate);
-    console.log("End Date:", endDateInput);
-
-    if (nextRepeatDate <= endDateInput) {
-        const delayUntilNextRepeat = nextRepeatDate - now - Differenz;
-        setTimeout(() => {
-            
-            startTimeBlocking(element,true); // Start der Hauptfunktion erneut
-        }, delayUntilNextRepeat);
-    }else{
-        changeButton(playButton);
-        stopTimeBlocking();
-        return;
-    }
-}
-*/
 
 
 //Neue Zeitplanung Benachrichtigungen ohne Play Button. 
@@ -835,14 +516,17 @@ function saveDataErinnerung() {   //Erinnerung
     const container = document.getElementById('erinnerungListe');
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
+    const existingData = JSON.parse(localStorage.getItem('erinnerung')) || [];
+
     const data = Array.from(erinnerungElements).map((element) => {
         const name = element.querySelector('.erinnerungName').value;
         const checkboxErinnerung = element.querySelector('#checkboxErinnerung').checked;
         const date = element.querySelector('#inputDate').value;
         const time = element.querySelector('#inputTime').value;
         const intervallEinheit = element. querySelector('#intervallEinheit').value;
-        const intervallWert = element. querySelector('#intervallWertSelect').value;
         const endDate = element.querySelector('#endDate').value;
+
+        const existingDataSet = existingData.find(item => item.id === element.id);
 
         return {
             id: element.id,
@@ -851,8 +535,12 @@ function saveDataErinnerung() {   //Erinnerung
             date: date,
             time: time,
             intervallEinheit: intervallEinheit,
-            intervallWert: intervallWert, 
             endDate: endDate, 
+
+            //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            intervallWert: existingDataSet?.intervallWert || undefined,
+            startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
+            ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
         };
     });
     localStorage.setItem('erinnerungen', JSON.stringify(data));
@@ -894,10 +582,7 @@ function saveDataBlocking() {   //Blocking
         const intervallEinheit = element.querySelector('#intervallEinheit').value;
         const endDatum = element.querySelector('#endDate').value;
         
-        
         const existingDataSet = existingData.find(item => item.id === element.id);
-        console.log("existingDataSet:")
-        console.log(existingDataSet);
 
         return {
             id: element.id,   //Die ID wird dem Element entnommen und kann dort nicht geändert werden. Jedes Element hat eine eigene ID, die sich nie ändert. 
@@ -981,8 +666,8 @@ function loadDataOffeneAusrede() {   //offeneAusrede
 
 
 // Function to create a new element and populate it with data
-
-function createNewElementWithDataErinnerung(data) {  //Erinnerung
+//Erinnerung
+function createNewElementWithDataErinnerung(data) {  
     const container = document.getElementById('erinnerungListe');
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
@@ -1036,7 +721,8 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     
 }
 
-function createNewElementWithDataTimer(data) {          //Timer
+//Timer
+function createNewElementWithDataTimer(data) {          
     const container = document.getElementById('timer-list');
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
@@ -1069,7 +755,8 @@ function createNewElementWithDataTimer(data) {          //Timer
     uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
 }
 
-function createNewElementWithDataBlocking(data) {  //Blocking
+//Blocking
+function createNewElementWithDataBlocking(data) {  
     const container = document.getElementById('blockingListe');
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
@@ -1127,8 +814,8 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. 
 }
 
-
-function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
+//offeneAusrede
+function createNewElementWithDataOffeneAusrede(data) {  
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
@@ -1156,8 +843,8 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
 
 
 // Function to create a new element when the button is pressed
-
-function createNewElementErinnerung(containerId) {   //Erinnerung
+//Erinnerung
+function createNewElementErinnerung(containerId) {   
     const container = document.getElementById(containerId);
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
@@ -1216,8 +903,8 @@ function createNewElementErinnerung(containerId) {   //Erinnerung
     container.insertBefore(originalDivErinnerung, container.firstChild);
     saveDataErinnerung();  
 }
-
-function createNewElementTimer(containerId) {       //Timer
+ //Timer
+function createNewElementTimer(containerId) {      
     const container = document.getElementById(containerId);
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
@@ -1250,8 +937,8 @@ function createNewElementTimer(containerId) {       //Timer
     container.insertBefore(originalDivTimer, container.firstChild);
     saveDataTimer();  // Save the state immediately after creating a new element
 }
-
-function createNewElementBlocking(containerId) {   //Blocking
+//Blocking
+function createNewElementBlocking(containerId) {   
     const container = document.getElementById(containerId);
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
@@ -1315,8 +1002,8 @@ function createNewElementBlocking(containerId) {   //Blocking
     
 }
 
-//erstellt neue Ausreden nur zum Testen der App
-function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {   //offeneAusrede
+//offeneAusrede
+function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {   
     const container = document.getElementById("offeneAusredeListe");
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
@@ -1345,7 +1032,7 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) { 
 
 
 
-// errinnerung
+// errinnerung Benachrichtigungen senden, muss ersetzt werden mit Funktion ohne Playtutton.
 let stopped = false;
 let timerId = null;
 
@@ -1478,6 +1165,10 @@ function startReminder(einheit, isRepeat = false) {
 }
 
 
+
+
+//Intervall Select 
+
 function call(button) {
     let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
     let intervallWertDiv = button.parentNode.parentNode.querySelector("#intervallWert");
@@ -1567,7 +1258,7 @@ function call(button) {
 
  
 
-
+//autoResize 
 
 function autoResize(textarea) {
   textarea.style.height = 'auto';
