@@ -153,6 +153,40 @@ function showInstallNotification() {
     }
 }
 
+// Funktion zum Anzeigen einer Benachrichtigung, wenn die App installiert werden kann
+function showInstallNotificationAlernativ() {
+    if (Notification.permission === "granted") {
+        // Zeige die Benachrichtigung an
+        const notification = new Notification("Installiere unsere App!", {
+            body: "Installiere unsere Web-App für ein optimiertes Nutzungserlebnis!",
+            icon: '/Niklas-Nils-new/icons/192x192.png',
+            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
+        });
+
+        notification.onclick = function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();  // Zeigt das Installations-Prompt an
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Benutzer hat die Installation akzeptiert');
+                    } else {
+                        console.log('Benutzer hat die Installation abgelehnt');
+                    }
+                    // Setze deferredPrompt zurück
+                    deferredPrompt = null;
+                });
+            }
+        };
+    } else {
+        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                showInstallNotification();
+            }
+        });
+    }
+}
+
 // beforeinstallprompt-Event lauschen
 if (isBeforeInstallPromptSupported()) {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -170,7 +204,7 @@ if (isBeforeInstallPromptSupported()) {
 } else {
     // Wenn der Browser das beforeinstallprompt nicht unterstützt, zeige die Benachrichtigung direkt an
     if (!isAppInstalled()) {
-        showInstallNotification();  // Zeige die Benachrichtigung an
+        showInstallNotificationAlernativ();  // Zeige die Benachrichtigung an
     }
 }
 
