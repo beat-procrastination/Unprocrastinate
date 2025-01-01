@@ -612,8 +612,8 @@ function timeBlockingCheckTime(data){
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime, endTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Millisekunden seit 1970 gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man den Zeitblock mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
-        console.log("Date.now() - startTime:" + Date.now() - startTime);
-        console.log("Date.now() - endTime:" + Date.now() - endTime);
+        console.log(Date.now() - startTime);
+        console.log(Date.now() - endTime);
         console.log(data.startNotificationSend);
         if(Date.now() > startTime && Date.now() < endTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
             //Benachrichtigung muss hier gesendet werden. 
