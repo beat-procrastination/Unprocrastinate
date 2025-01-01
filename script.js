@@ -683,23 +683,18 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
 
 //timeBlocking check von differenz zwischen start und Endzeit
 document.addEventListener('input', function (event) {
-    console.log("1");
     // Überprüfen, ob das Event von einem Input-Feld stammt
     if (event.target.tagName === 'INPUT') {
-        console.log("2");
         // Den spezifischen `time-blocking-container` finden
         const container = event.target.closest('.blockingContainer');
-        
         if (container) {
             // Start- und Endzeit innerhalb dieses Containers suchen
             const startTimeInput = container.querySelector('#startTime');
             const endTimeInput = container.querySelector('#endTime');
-console.log("3");
             // Wenn beide Felder existieren, weiterarbeiten
             if (startTimeInput && endTimeInput) {
                 console.log('Startzeit:', startTimeInput.value);
                 console.log('Endzeit:', endTimeInput.value);
-
                 // Optional: Logik einfügen, z. B. Zeitdifferenz berechnen
                 if (startTimeInput.value && endTimeInput.value) {
                     const startTime = new Date(`1970-01-01T${startTimeInput.value}`);
@@ -1019,7 +1014,7 @@ function createNewElementWithDataErinnerung(data) {  //Erinnerung
     const container = document.getElementById('erinnerungListe');
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
-    originalDivErinnerung.id = `erinnerung-${data.id}` 
+    originalDivErinnerung.id = `${data.id}` 
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
@@ -1073,7 +1068,7 @@ function createNewElementWithDataTimer(data) {          //Timer
     const container = document.getElementById('timer-list');
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
-    originalDivTimer.id = `timer-${data.id}`
+    originalDivTimer.id = `${data.id}`
     
     originalDivTimer.innerHTML = `
         <div class="timerHeadline">
@@ -1106,7 +1101,7 @@ function createNewElementWithDataBlocking(data) {  //Blocking
     const container = document.getElementById('blockingListe');
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
-    originalDivBlocking.id = `erinnerung-${data.id}`
+    originalDivBlocking.id = `${data.id}`
     
     originalDivBlocking.innerHTML = `
     <div class="newTimeBlockingHeadline" id=${data.id}>
@@ -1163,7 +1158,7 @@ function createNewElementWithDataOffeneAusrede(data) {  //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
-    originalDivOffeneAusrede.id = `erinnerung-${data.id}`
+    originalDivOffeneAusrede.id = `${data.id}`
     
     originalDivOffeneAusrede.innerHTML = `
        <div class="ausredeÜbersicht">   
