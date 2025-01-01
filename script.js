@@ -155,7 +155,8 @@ function showInstallNotification() {
 
 // Funktion zum Anzeigen einer Benachrichtigung, wenn die App installiert werden kann
 function showInstallNotificationAlernativ() {
-    if (Notification.permission === "granted") {
+    document.addEventListener('DOMContentLoaded', function() {
+    if (Notification.permission === "granted" && DomLoaded) {
         // Zeige die Benachrichtigung an
         const notification = new Notification("Installiere unsere App!", {
             body: "Installiere unsere Web-App für ein optimiertes Nutzungserlebnis!",
@@ -163,20 +164,6 @@ function showInstallNotificationAlernativ() {
             requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
         });
 
-        notification.onclick = function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();  // Zeigt das Installations-Prompt an
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Benutzer hat die Installation akzeptiert');
-                    } else {
-                        console.log('Benutzer hat die Installation abgelehnt');
-                    }
-                    // Setze deferredPrompt zurück
-                    deferredPrompt = null;
-                });
-            }
-        };
     } else {
         // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
         Notification.requestPermission().then((permission) => {
@@ -185,7 +172,7 @@ function showInstallNotificationAlernativ() {
             }
         });
     }
-}
+})};
 
 // beforeinstallprompt-Event lauschen
 if (isBeforeInstallPromptSupported()) {
