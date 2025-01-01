@@ -138,12 +138,13 @@ function showTool(toolId) {
     history.pushState({tool: toolId}, toolId, `#${toolId}`);
 }
   
-// Handle back and forward buttons
+/* Handle back and forward buttons
 window.onpopstate = (event) => {
 if (event.state) {
     showTool(event.state.tool);
 }
 };
+*/
 
 // Initialize the first tool as visible on page load
 if (location.hash) {
