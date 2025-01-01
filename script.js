@@ -23,7 +23,7 @@ function showInstallNotification() {
     if (Notification.permission === "granted") {
         // Zeige die Benachrichtigung an
         const notification = new Notification("Installiere unsere App!", {
-            body: "Klicke hier, um die App zu installieren.",
+            body: "Intsallieren Sie unsere Wep-App für ein optimiertes Nutzungserlebniss!",
             icon: '/Niklas-Nils-new/icons/192x192.png',
             requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
         });
