@@ -138,8 +138,7 @@ function showInstallNotification() {
                     } else {
                         console.log('Benutzer hat die Installation abgelehnt');
                     }
-                    // Setze deferredPrompt zurück
-                    deferredPrompt = null;
+
                 });
             }
         };
