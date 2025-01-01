@@ -156,7 +156,7 @@ function showInstallNotification() {
 // Funktion zum Anzeigen einer Benachrichtigung, wenn die App installiert werden kann
 function showInstallNotificationAlernativ() {
     document.addEventListener('DOMContentLoaded', function() {
-    if (Notification.permission === "granted" && DomLoaded) {
+    if (Notification.permission === "granted") {
         // Zeige die Benachrichtigung an
         const notification = new Notification("Installiere unsere App!", {
             body: "Installiere unsere Web-App für ein optimiertes Nutzungserlebnis!",
