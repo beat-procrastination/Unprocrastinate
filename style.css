@@ -9,16 +9,13 @@
 }
 
 
-
-
-  
-  .bodyIndex {
-    background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
-    background-size: cover; /* Füllt die Breite vollständig aus */
-    background-position: center center; /* Startet zentriert und oben */
-    height: 100vh; 
-    padding-bottom: 50px;
-  }
+.bodyIndex {
+  background-image: url('bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg');
+  background-size: cover; /* Füllt die Breite vollständig aus */
+  background-position: center center; /* Startet zentriert und oben */
+  height: 100vh; 
+  padding-bottom: 50px;
+}
 
 
 .ellipse{
@@ -74,62 +71,62 @@ h2{text-align: center;
   font-size: calc(2.5vw + 2.5vh) !important;
  }
 
- .container{
-  position: relative;
- }
- 
- .neuesElement{ display: flex;
-  align-items: center;
-  gap: 1%;
-  height: 8vh;
-  margin-top: -1.75vh;
-  
-  }
-  .bigWords{
-  text-align: center;
-  font-size: calc(4vw + 2vh);
-  
-  } .back-button{
-  height: 5vh;
-  width: 11vw;
-  cursor: pointer;
-  margin-left: 1%; 
-  position: absolute;
-  max-height: 100px;
-  }
-  
-  .headline{
-  display: flex;
-  align-items: center;
-  gap: 4%;
-  height: 8vh;
-  padding-top: calc(7vh + 2vw);
-  justify-content: space-between;
+.container{
+position: relative;
+}
 
-  }
-  #inputTime{
-    margin-left: 1.75vw;
-  }
+.neuesElement{ display: flex;
+align-items: center;
+gap: 1%;
+height: 8vh;
+margin-top: -1.75vh;
+
+}
+.bigWords{
+text-align: center;
+font-size: calc(4vw + 2vh);
+
+} .back-button{
+height: 5vh;
+width: 11vw;
+cursor: pointer;
+margin-left: 1%; 
+position: absolute;
+max-height: 100px;
+}
+
+.headline{
+display: flex;
+align-items: center;
+gap: 4%;
+height: 8vh;
+padding-top: calc(7vh + 2vw);
+justify-content: space-between;
+
+}
+#inputTime{
+  margin-left: 1.75vw;
+}
 
 
-  @media (orientation: landscape){
-  .headline{
-    width: 80vw;
-    margin-left: auto;
-    margin-right: auto;
-    gap: 2.5%;
-    height: 13vh;
- 
-  }
-  .back-button{
-    width: 7vw !important;
-    height: 10vh !important;
-  }
+@media (orientation: landscape){
+.headline{
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 2.5%;
+  height: 13vh;
 
-  button{
-    height: 6vh;
-    min-height: 30px;
-  }
+}
+.back-button{
+  width: 7vw !important;
+  height: 10vh !important;
+}
+
+button{
+  height: 6vh;
+  min-height: 30px;
+}
 .neuesElement{
   width: 80vw;
   margin-left: auto;
@@ -147,347 +144,326 @@ svg{
 }
 
 
-}
- /*
-  .bodyIndex{
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color:red;
-  
-  } */
-
-
 h1, h2, svg, label, .neuesElement, .erinnerungContainer, .timerContainer, .blockingContainer, .offeneAusredeContainer, button{
   background-color:var(--farbe) ;
 }
-  svg{
-  width: 9vw;
-  height: 8vh;
-  cursor: pointer;
-  }
-  .bigHeadlines{
-  text-align: center;
-  font-size: calc(4vw + 4vh);
-  }
-  .hidden{
-  display: none;
-  }
+svg{
+width: 9vw;
+height: 8vh;
+cursor: pointer;
+}
+.bigHeadlines{
+text-align: center;
+font-size: calc(4vw + 4vh);
+}
+.hidden{
+display: none;
+}
+
+.timerHeadline{
+  display: flex;
+  height: 6vh;
+  justify-content: center;
+  align-items: center;
+  min-height: 4vw;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+}
+
+.timerContainer{
+  box-sizing: border-box;
+  height:auto;
+  padding: calc(0.75vw + 0.5vh);
+border: calc(0.3vw + 0.3vh) solid black;
+  margin-top: 7vh;
   
-  .timerHeadline{
-    display: flex;
-    height: 6vh;
-    justify-content: center;
-    align-items: center;
-    min-height: 4vw;
-    margin-bottom: 2vh;
-    margin-top: 2vh;
-  }
-  
-  .timerContainer{
-    box-sizing: border-box;
-    height:auto;
-    padding: calc(0.75vw + 0.5vh);
-  border: calc(0.3vw + 0.3vh) solid black;
-   margin-top: 7vh;
-    
-  }
+}
 
 
-  
+.newTimer, .newTimeBlocking{
+margin-bottom: 5vh;
+}
 
-    
-  .newTimer, .newTimeBlocking{
-  margin-bottom: 5vh;
-  }
-  
-  
-  input, select{
-  border:2px solid transparent;
-  box-shadow: 0 0 0 2px black;
-  background-color: var(--farbe);
-  }
-  input::placeholder{
-  color: black;
-  
-  }
+
+input, select{
+border:2px solid transparent;
+box-shadow: 0 0 0 2px black;
+background-color: var(--farbe);
+}
+input::placeholder{
+color: black;
+
+}
  
-  
-  
-  .erinnerungName{
-    display: flex;
-    font-size: calc(1vh + 3.25vw);
-  width: 54vw;
-  text-align: center;
-  height:calc(4vh + 1.5vw);
-  background-color:var(--farbe);
+.erinnerungName{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  margin: 0 4vw;
-  }
+  font-size: calc(1vh + 3.25vw);
+width: 54vw;
+text-align: center;
+height:calc(4vh + 1.5vw);
+background-color:var(--farbe);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-grow: 1;
+margin: 0 4vw;
+}
 
-  .input-name, #ausredeName{
-    display: flex;
-    font-size: calc(1vh + 3.25vw);
-  width: 77vw;
-  text-align: center;
-  height:calc(4vh + 1.5vw);
-  background-color:var(--farbe);
+.input-name, #ausredeName{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 4vw;
-  }
+  font-size: calc(1vh + 3.25vw);
+width: 77vw;
+text-align: center;
+height:calc(4vh + 1.5vw);
+background-color:var(--farbe);
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 4vw;
+}
 
-  .erinnerungName:invalid, .input-name:invalid, #inputDate:invalid, #inputTime:invalid, #timeBlockingDatum:invalid, #startTime:invalid, #endTime:invalid{
-    background-color: #f5c2c2;;
-  }
+.erinnerungName:invalid, .input-name:invalid, #inputDate:invalid, #inputTime:invalid, #timeBlockingDatum:invalid, #startTime:invalid, #endTime:invalid{
+  background-color: #f5c2c2;;
+}
 
 
-  #inputTime, #inputDate, #start-time, #end-time{
-    margin-left: 1vw;
-    margin-right: 1vw;
-  }
+#inputTime, #inputDate, #start-time, #end-time{
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
   
-  @media (orientation: landscape) {
-    .input-name, .erinnerungName{
+@media (orientation: landscape) {
+  .input-name, .erinnerungName{
 font-size:calc(1vh + 2.75vw) ;
 background-color:var(--farbe);
 margin: 0 2.5vw;
 width: 60vw;
-    }    
+  }    
 
-  }
+}
 
 
-  .intervall{
-    font-size: calc(1.25vh + 1.25vw);
-    
-  }
-   .wiederholungen{
-    font-size: calc(1.25vh + 1.25vw);
-    margin-left: 2vw;
-    
-
-  }
-  #Intervall, #wiederholungen{
-    width: 12vw;
-    margin-right: 1.4vw;
-    margin-left: 1.4vw;
-    text-align: center;
-  }
-  .detailsTimer{
-    display: flex;
-    width: 100%;
-    height:5.25vh;
-    flex-wrap: nowrap;
-   justify-content: center;
-   align-items: center;
-   margin-top: 1vh;
-    }
-
-    #play-buttonTimer, #stop-buttonTimer {
-
-      margin-left: 1vw !important;
-      margin-right: 3vw;
-      width: calc(3.5vh + 4vw);
-      height: calc(3.5vh + 5vw);
-      max-width: 60px;
-      max-height: 60px;
-    }
-
- 
+.intervall{
+  font-size: calc(1.25vh + 1.25vw);
   
-  #play-button, #stop-button {
+}
+  .wiederholungen{
+  font-size: calc(1.25vh + 1.25vw);
+  margin-left: 2vw;
+  
+
+}
+#Intervall, #wiederholungen{
+  width: 12vw;
+  margin-right: 1.4vw;
+  margin-left: 1.4vw;
+  text-align: center;
+}
+.detailsTimer{
+  display: flex;
+  width: 100%;
+  height:5.25vh;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1vh;
+  }
+
+  #play-buttonTimer, #stop-buttonTimer {
+
+    margin-left: 1vw !important;
+    margin-right: 3vw;
     width: calc(3.5vh + 4vw);
     height: calc(3.5vh + 5vw);
-    margin: auto;
     max-width: 60px;
     max-height: 60px;
   }
-  #play-buttonZeitplanung, #stop-buttonZeitplanung{
-    width: calc(3.5vh + 4vw);
-    height: calc(3.5vh + 5vw);
-    margin:1vh 1vh 1vh 1vh  ;
-    max-width: 60px;
-    max-height: 60px;
-
-  }
-  @media (orientation: landscape){
-    .ausredeDates{
-      width:10vw !important;
-      font-size: medium !important;
-    }
-    .ausredeDatesContainer{
-      width: 12.5vw !important;
-    }
-    .labelAusrede{
-      font-size: medium !important;
-    }
-    .checkboxAusrede{
-      width: 3.25vw  !important;
-    }
-    .ausredeName{
-      width: 43vw !important;
-    }
-  }
 
 
+
+#play-button, #stop-button {
+  width: calc(3.5vh + 4vw);
+  height: calc(3.5vh + 5vw);
+  margin: auto;
+  max-width: 60px;
+  max-height: 60px;
+}
+#play-buttonZeitplanung, #stop-buttonZeitplanung{
+  width: calc(3.5vh + 4vw);
+  height: calc(3.5vh + 5vw);
+  margin:1vh 1vh 1vh 1vh  ;
+  max-width: 60px;
+  max-height: 60px;
+
+}
+@media (orientation: landscape){
   .ausredeDates{
+    width:10vw !important;
+    font-size: medium !important;
+  }
+  .ausredeDatesContainer{
+    width: 12.5vw !important;
+  }
+  .labelAusrede{
+    font-size: medium !important;
+  }
+  .checkboxAusrede{
+    width: 3.25vw  !important;
+  }
+  .ausredeName{
+    width: 43vw !important;
+  }
+}
+
+
+.ausredeDates{
   width:18vw ;
   margin-top: 0.5vh;
   font-size: small;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
 
-  }
+.ausredeDatesContainer{
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .ausredeDatesContainer{
-    width: 20vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+/* Anpassung für Querformat */
+@media (orientation: landscape) {
+  #play-button, #stop-button {
+    width: calc(2.75vh + 3vw); /* Kleinere Skalierung für breitere Bildschirme */
+    height: calc(2.75vh + 4vw);
+}
+
+
+
+.timerContainer{
+  height:26vh ;
+  min-height: fit-content;
+  margin-top: 9vh;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100px;
+}
+.detailsTimer{
+  margin-top: 3.5vh;
+  height:8vh ;
+}
+#timerName{
+  margin-left: 0vw;
+  margin-right: 2.5vw;
+  width: 70%;
+  height: calc(2.75vh + 2.5w);
+  font-size: calc(2vh + 2vw);
+
+}
+.Timermenu{
+  width: 6vw !important;
+  margin-right:3 vw;
+}
+
+.input-timer{
+  height: 4vh;
   
-  /* Anpassung für Querformat */
-  @media (orientation: landscape) {
-    #play-button, #stop-button {
-      width: calc(2.75vh + 3vw); /* Kleinere Skalierung für breitere Bildschirme */
-      height: calc(2.75vh + 4vw);
-    }
-   
-
-    
-    .timerContainer{
-      height:26vh ;
-      min-height: fit-content;
-      margin-top: 9vh;
-      width: 80vw;
-      margin-left: auto;
-      margin-right: auto;
-      min-height: 100px;
-    }
-    .detailsTimer{
-      margin-top: 3.5vh;
-      height:8vh ;
-    }
-    #timerName{
-      margin-left: 0vw;
-      margin-right: 2.5vw;
-      width: 70%;
-      height: calc(2.75vh + 2.5w);
-      font-size: calc(2vh + 2vw);
-
-    }
-    .Timermenu{
-      width: 6vw !important;
-      margin-right:3 vw;
-    }
-
-    .input-timer{
-      height: 4vh;
-      
-    }
-  }
+}
+}
   
-
-
-  
-
-  .erinnerungContainer{
-  height: 22vh;
+.erinnerungContainer{
+height: 22vh;
+width: auto;
+padding: calc(0.75vw + 0.5vh);
+border: calc(0.3vw + 0.3vh) solid black;
+margin-bottom: 5vh;
+margin-top: 5vh;
+min-height: fit-content;
+max-height: 26vh;
+}
+.blockingContainer{
+  height: 27vh;
   width: auto;
   padding: calc(0.75vw + 0.5vh);
   border: calc(0.3vw + 0.3vh) solid black;
-  margin-bottom: 5vh;
+  margin-bottom: 8vh;
   margin-top: 5vh;
   min-height: fit-content;
-  max-height: 26vh;
-  }
-  .blockingContainer{
-    height: 27vh;
-    width: auto;
-    padding: calc(0.75vw + 0.5vh);
-    border: calc(0.3vw + 0.3vh) solid black;
-    margin-bottom: 8vh;
-    margin-top: 5vh;
-    min-height: fit-content;
-  }
+}
 
- .newTimeBlockingHeadline{
+.newTimeBlockingHeadline{
+height: 7vh;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 4vw;
+
+
+}
+
+.erinnerungÜbersicht{
   height: 7vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 4vw;
-  
-  
-  }
-
-  .erinnerungÜbersicht{
-    height: 7vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 4vw;
     
+}
+@media (orientation: landscape) {
+  .erinnerungContainer{
+    width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
+margin-left: auto;
+margin-right: auto;
+  height: 30vh;
+  margin-top: 10vh;
+  min-height: 115px;
+  max-height: 30vh;
   }
-  @media (orientation: landscape) {
-    .erinnerungContainer{
-      width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
-  margin-left: auto;
-  margin-right: auto;
-   height: 30vh;
-   margin-top: 10vh;
-   min-height: 115px;
-   max-height: 30vh;
-    }
-    .blockingContainer{
-      width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
-  margin-left: auto;
-  margin-right: auto;
-   height: 36vh;
-   margin-top: 10vh;
-   min-height: 175px;
-    }
-
-    .inputTimeBlocking{
-    height: 50% !important;
-    margin: 0 2.5vh 0 2.5vh;
-    }
-    .erinnerungÜbersicht, .newTimeBlockingHeadline{
-      height: 10vh;
-      min-height: 40px;
-    
-
-    }
+  .blockingContainer{
+    width: 80vw; /* Setzt eine maximale Breite, damit der Container kompakt bleibt */
+margin-left: auto;
+margin-right: auto;
+  height: 36vh;
+  margin-top: 10vh;
+  min-height: 175px;
   }
+
+  .inputTimeBlocking{
+  height: 50% !important;
+  margin: 0 2.5vh 0 2.5vh;
+  }
+  .erinnerungÜbersicht, .newTimeBlockingHeadline{
+    height: 10vh;
+    min-height: 40px;
+  
+
+  }
+}
 
  
  
   
   
+
+.erinnerungDetails, .inputTimeBlocking-container {
+height: 6vh;
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+}
   
-  .erinnerungDetails, .inputTimeBlocking-container {
-  height: 6vh;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  }
-  
-  .datumContainer{
-  display: flex;
-  width: 100%;
-  height:6vh;
-  flex-wrap: nowrap;
- justify-content: center;
- align-items: center;
- margin-top: 0.5vh;
-  }
+.datumContainer{
+display: flex;
+width: 100%;
+height:6vh;
+flex-wrap: nowrap;
+justify-content: center;
+align-items: center;
+margin-top: 0.5vh;
+}
   .datumContainer2{
     display: flex;
     width: 100%;
@@ -921,3 +897,4 @@ option {
 }
 
 
+}

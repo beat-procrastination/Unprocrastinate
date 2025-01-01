@@ -17,7 +17,6 @@ const urlsToCache = [
   '/Niklas-Nils-new/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
 ];
 
-
 // Entferne Duplikate
 const uniqueUrlsToCache = [...new Set(urlsToCache)];
 
@@ -47,7 +46,6 @@ self.addEventListener('install', event => {
       })
   );
 });
-
 
 // 2. Fetch-Event - Dateien aus dem Cache abrufen
 self.addEventListener('fetch', event => {
