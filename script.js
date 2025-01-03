@@ -286,6 +286,7 @@ function timeBlockingCheckTime(data){
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
+            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`, new Date(startTime));
         }
         console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.");
     }
@@ -1032,8 +1033,8 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
             <div class ="ausredeDatesContainer">
-            <div class="ausredeDates">${ausredeDate.value}</div>
-            <div class="ausredeDates">${ausredeTime.value}</div>
+            <div class="ausredeDates">${ausredeDate}</div>
+            <div class="ausredeDates">${ausredeTime}</div>
             </div>
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
