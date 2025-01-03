@@ -260,7 +260,7 @@ function timeBlockingCheckTime(data){
     console.log(Date.now());
     if(data.startDate && data.startTime && data.endTime){           
         const startTime = unixToCheck(convertToMilliseconds(data.startDate, data.startTime), data.intervallWert, data.intervallEinheit);
-        const endTime =  unixToCheck(convertToMilliseconds(data.startDate, data.endTime), data.intervallWert, data.intervallEinheit);
+        const endTime = startTime + calculateTimeDiff(data.startTime, data.endTime); //Die Endzeit wird mithilfe der Startzeit + die Differenz der Start und Endzeit berechnet. Wenn man die Endzeit auch mit unixToCheck() berechnet, kommt es bei Intervallen zu Problemen, da die Startzeit erreicht ist, aber die Endzeit noch nicht und es deshalb für die Endzeit den Zeitpunkt von einem Intervall zuvor nimmt. 
         console.log("startTime:"+startTime);
         console.log("endTime:"+endTime);
 
@@ -334,6 +334,21 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
     }
 }
 
+
+function calculateTimeDiff(time1, time2){
+    const [hours1, minutes1] = time1.split(":").map(Number);
+    const [hours2, minutes2] = time2.split(":").map(Number);
+
+    milliseconds1 = (hours1 * 60 * 60 * 1000 + minutes1 * 60 * 1000)
+    milliseconds2 = (hours2 * 60 * 60 * 1000 + minutes2 * 60 * 1000)
+
+    if(milliseconds1 < milliseconds2){       // Erste Zeit ist kleiner als Zweite. Mitternacht wird nicht überschritten. 
+        return milliseconds2 - milliseconds1;  
+    }
+    else{                                    // Erste Zeit ist größer als Zweite. Mitternacht wird überschritten
+        return (24 * 60 * 60 * 1000) - millis1 + millis2;     // 24 Stunden - erste Zei + zweite Zeit. Beispiel: 24:00 - 23:00 + 02:00 = 3 Stunden Differenz.
+    }
+}
 
 
 //timeBlocking check von differenz zwischen start und Endzeit
