@@ -286,7 +286,9 @@ function timeBlockingCheckTime(data){
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`, new Date(startTime));
+            const date = new Date(startTime);
+            const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`,dateString);
         }
         console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.");
     }
