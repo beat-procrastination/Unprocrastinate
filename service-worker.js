@@ -80,9 +80,7 @@ self.addEventListener('activate', event => {
 
 // 4. Benachrichtigungen empfangen und anzeigen
 self.addEventListener('message', event => {
-    console.log("f");
     if (event.data && event.data.type === 'show-notification') {
-         console.log("a");
         self.registration.showNotification(event.data.title, {
             body: event.data.body,
             icon: '/Niklas-Nils-new/icons/192x192.png',
