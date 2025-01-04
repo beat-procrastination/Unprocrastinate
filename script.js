@@ -21,25 +21,27 @@ function isBeforeInstallPromptSupported() {
 // Funktion zum Anzeigen einer Benachrichtigung, wenn die App installiert werden kann
 function showInstallNotification() {
     if (Notification.permission === "granted") {
-        // Zeige die Benachrichtigung an
-        const notification = sendNotification('Installiere unsere App!',"Intsallieren Sie unsere Wep-App für ein optimiertes Nutzungserlebniss!");
-
-        notification.onclick = function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();  // Zeigt das Installations-Prompt an
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Benutzer hat die Installation akzeptiert');
-                    } else {
-                        console.log('Benutzer hat die Installation abgelehnt');
-                    }
-
-                });
-            }
+        // Nachricht in einer Variablen definieren
+        const notification = {
+            title: 'Installiere unsere App!',
+            body: 'Installieren Sie unsere Web-App für ein optimiertes Nutzungserlebnis!',
+            icon: '/Niklas-Nils-new/icons/192x192.png', // Optional: Icon hinzufügen
+            vibrate: [200, 100, 200], // Optional: Vibrationsmuster
+            requireInteraction: true, // Benachrichtigung bleibt sichtbar
         };
+
+        // Nachricht an den Service Worker senden
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'show-notification',
+                ...notification // Alle Eigenschaften der Benachrichtigung übergeben
+            });
+        } else {
+            console.error('Service Worker not controlling the page. Reload the page to enable notifications.');
+        }
     } else {
-        // Fordere Benachrichtigungsberechtigungen an, wenn noch nicht erteilt
-        Notification.requestPermission().then((permission) => {
+        // Berechtigung für Benachrichtigungen anfordern
+        Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 showInstallNotification();
             }
