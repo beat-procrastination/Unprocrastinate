@@ -22,11 +22,7 @@ function isBeforeInstallPromptSupported() {
 function showInstallNotification() {
     if (Notification.permission === "granted") {
         // Zeige die Benachrichtigung an
-        const notification = sendNotification('Installiere unsere App!', {
-            body: "Intsallieren Sie unsere Wep-App für ein optimiertes Nutzungserlebniss!",
-            icon: '/Niklas-Nils-new/icons/192x192.png',
-            requireInteraction: true // Benachrichtigung bleibt, bis der Benutzer darauf klickt
-        });
+        const notification = sendNotification('Installiere unsere App!',"Intsallieren Sie unsere Wep-App für ein optimiertes Nutzungserlebniss!");
 
         notification.onclick = function() {
             if (deferredPrompt) {
