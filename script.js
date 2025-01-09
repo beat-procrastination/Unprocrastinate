@@ -380,7 +380,7 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
     }
 }
 
-//Berechnet die Difference in Millisekunden zwischen 2 Zeitpunkten. (Wird nur für Zeitplanung und nicht für Erinnerung benötig.)
+//Berechnet die Difference in Millisekunden zwischen 2 Zeitpunkten. (Wird nur für Zeitplanung und nicht für Erinnerung benötig.)  
 function calculateTimeDiff(time1, time2){
     const [hours1, minutes1] = time1.split(":").map(Number);
     const [hours2, minutes2] = time2.split(":").map(Number);
