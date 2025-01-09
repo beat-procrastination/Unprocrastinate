@@ -211,11 +211,24 @@ function fixieren(button) {
 }
 
 
-//Neue Zeitplanung Benachrichtigungen ohne Play Button. 
+
+
+//Erinnerung und Zeitplanung Benachrichtigungen ohne Play Button. 
 
 const millisekundenBisAusrede = 600 * 1000;
 
-//Hauptfunktion, steuert den Rest. 
+//Hauptfunktion Erinnerung, steuert den Rest. 
+function erinnerungCheck(){                          
+    const data = JSON.parse(localStorage.getItem('erinnerung'));
+    if (data) {
+        data.forEach(item => {
+            erinnerungCheckTime(item);
+        });
+    }
+    console.log("timeBlockingCheck() komplett ausgeführt.")
+}
+
+//Hauptfunktion Blocking, steuert den Rest. 
 function timeBlockingCheck(){                          
     const data = JSON.parse(localStorage.getItem('blocking'));
     if (data) {
@@ -226,7 +239,6 @@ function timeBlockingCheck(){
     console.log("timeBlockingCheck() komplett ausgeführt.")
 }
 
-
 //Konvertiert Datum und Zeit in Millisekunden seit 1970. 
 function convertToMilliseconds(datum, zeit){
     if (datum && zeit) {
@@ -235,7 +247,6 @@ function convertToMilliseconds(datum, zeit){
         return Math.floor(datumZeit.getTime());
     }
 }  
-
 
 //Wird verwendet um Werte im Local Storage zu ändern. 
 function updateStringInLocalStorage(key, id, newValue) {      
@@ -249,7 +260,41 @@ function updateStringInLocalStorage(key, id, newValue) {
 }
 
 
-//Wenn man die startZeit ändert, wird data.notificationSend einfach aus dem Local Storage entfernt? Stellt zwar kein Problem dar, aber dennoch frage ich mich warum. Bleibt aber sonst gleich, auch wenn man die Seite neu lädt oder schließt und wieder öffnet. Ok, sorgt doch für Probleme. Wenn die Elemente gespeichert werden, gehen diese daten im local Storage natürlich verloren. Muss behoben werden. 
+//Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf um diese zu senden. 
+function erinnerungCheckTime(data){
+    console.log("erinnerungCheckTime()")
+    console.log(data);
+    console.log(Date.now());
+    if(data.startDate && data.startTime){           
+        const startTime = unixToCheck(convertToMilliseconds(data.startDate, data.startTime), data.intervallWert, data.intervallEinheit);
+        console.log("startTime:"+startTime);
+
+        //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Unix Code (Millisekunden seit 1970) gespeichert. 
+        //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
+        //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
+        console.log(Date.now() - startTime);
+        console.log(data.startNotificationSend);
+        if(Date.now() > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
+            //Benachrichtigung muss hier gesendet werden. 
+            console.log("Erinnerung wurde gesendet.");
+            updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
+        }
+        console.log(data.ausredeErstellt);
+        if(Date.now() > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
+            //Ausrede erstellen 
+            console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
+            updateStringInLocalStorage("erinnerung", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
+            const date = new Date(startTime);
+            const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`,dateString);
+        }
+        console.log("Datum und Zeit vorhanden. erinnerungCheckTime() wurde ausgeführt.");
+    }
+    else{
+        console.log("Datum oder Zeit nicht vorhanden.");
+    }
+}
+
 
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf um diese zu senden. 
 function timeBlockingCheckTime(data){
@@ -335,7 +380,7 @@ function unixToCheck(unix, intervallWert, intervallEinheit){    //Time in Unix E
     }
 }
 
-
+//Berechnet die Difference in Millisekunden zwischen 2 Zeitpunkten. (Wird nur für Zeitplanung und nicht für Erinnerung benötig.)
 function calculateTimeDiff(time1, time2){
     const [hours1, minutes1] = time1.split(":").map(Number);
     const [hours2, minutes2] = time2.split(":").map(Number);
@@ -350,6 +395,9 @@ function calculateTimeDiff(time1, time2){
         return (24 * 60 * 60 * 1000) - millis1 + millis2;     // 24 Stunden - erste Zei + zweite Zeit. Beispiel: 24:00 - 23:00 + 02:00 = 3 Stunden Differenz.
     }
 }
+
+
+
 
 
 //timeBlocking check von differenz zwischen start und Endzeit
@@ -1048,7 +1096,7 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
 }
 
 
-
+/*
 // errinnerung Benachrichtigungen senden, muss ersetzt werden mit Funktion ohne Playtutton.
 let stopped = false;
 let timerId = null;
@@ -1180,7 +1228,7 @@ function startReminder(einheit, isRepeat = false) {
 
     }, timeToReminder);
 }
-
+*/
 
 
 
