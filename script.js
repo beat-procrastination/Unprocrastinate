@@ -285,7 +285,7 @@ function erinnerungCheckTime(data, now){
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
         console.log(data.ausredeErstellt);
-        if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
+        if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
@@ -295,7 +295,6 @@ function erinnerungCheckTime(data, now){
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
             createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString}`,dateString);
         }
-
 
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
         if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
@@ -666,6 +665,7 @@ function saveDataErinnerung() {   //Erinnerung
             intervallWert: existingDataSet?.intervallWert || undefined,
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
+            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('erinnerung', JSON.stringify(data));
@@ -724,6 +724,7 @@ function saveDataBlocking() {   //Blocking
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             endNotificationSend: existingDataSet?.endNotificationSend || undefined,
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
+            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
