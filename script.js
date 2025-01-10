@@ -736,14 +736,21 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const ausredeElements = container.querySelectorAll('.offeneAusredeContainer');
 
+    const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
+
     const data = Array.from(ausredeElements).map((element, index) => {
-        const ausredeDetailsInput = element.querySelector('#ausredeDetailsInput').value;
-        const ausredeName = element.querySelector('#ausredeName').innerText;
+        const ausredeDetailsInput = element.querySelector('.ausredeDetailsContainer').querySelector('#ausredeDetailsInput').value;
+
+        const existingDataSet = existingData.find(item => item.id === element.id);
 
         return {
             id: element.id,
             ausredeDetailsInput: ausredeDetailsInput,
-            ausredeName: ausredeName,
+
+            //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            ausredeName: existingDataSet?.ausredeName || undefined,
+            ausredeDate: existingDataSet?.ausredeDate || undefined,
+            ausredeTime: existingDataSet?.ausredeTime || undefined,
         };
     });
     localStorage.setItem('offeneAusrede', JSON.stringify(data));
@@ -957,8 +964,8 @@ function createNewElementWithDataOffeneAusrede(data) {
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
         </div>  
-         <div class="ausredeDetailsContainer">             
-            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
+        <div class="ausredeDetailsContainer">             
+            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
         </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
