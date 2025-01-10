@@ -227,7 +227,7 @@ function erinnerungCheck(){
             erinnerungCheckTime(item, now);
         });
     }
-    console.log("timeBlockingCheck() komplett ausgeführt.")
+    console.log("erinnerungCheck() komplett ausgeführt.")
 }
 
 //Hauptfunktion Blocking, steuert den Rest. 
@@ -336,7 +336,7 @@ function timeBlockingCheckTime(data, now){
         const endTime = startTime + calculateTimeDiff(data.startTime, data.endTime); //Die Endzeit wird mithilfe der Startzeit + die Differenz der Start und Endzeit berechnet. Wenn man die Endzeit auch mit unixToCheck() berechnet, kommt es bei Intervallen zu Problemen, da die Startzeit erreicht ist, aber die Endzeit noch nicht und es deshalb für die Endzeit den Zeitpunkt von einem Intervall zuvor nimmt. 
         console.log("startTime:"+startTime);
         console.log("endTime:"+endTime);
-        const checkbox = document.getElementById(data.id).querySelector('.erinnerungÜbersicht').querySelector('#checkboxErinnerung')  //Die Checkbox des Elements (der Erinnerung).
+        const checkbox = document.getElementById(data.id).querySelector('.inputTimeBlocking-container').querySelector('.datumContainer2').querySelector('.checkboxTimeBlocking')  //Die Checkbox des Elements (der Zeitplanung).
         console.log(checkbox);
 
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime, endTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Millisekunden seit 1970 gespeichert. 
