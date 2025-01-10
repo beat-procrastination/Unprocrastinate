@@ -268,8 +268,8 @@ function updateStringInLocalStorage(key, id, newValue) {
 function erinnerungCheckTime(data, now){
     console.log("erinnerungCheckTime()")
     console.log(data);
-    if(data.startDate && data.startTime){           
-        const startTime = unixToCheck(convertToMilliseconds(data.startDate, data.startTime), data.intervallWert, data.intervallEinheit, now);
+    if(data.date && data.time){           
+        const startTime = unixToCheck(convertToMilliseconds(data.date, data.time), data.intervallWert, data.intervallEinheit, now);
         console.log("startTime:"+startTime);
         const checkbox = document.getElementById(data.id).querySelector('.erinnerungÜbersicht').querySelector('#checkboxErinnerung')  //Die Checkbox des Elements (der Erinnerung).
         console.log(checkbox);
@@ -289,9 +289,11 @@ function erinnerungCheckTime(data, now){
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            const date = new Date(startTime);
+            //Ausrede erstellen 
+            const date = new Date(startTime); 
+            const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
-            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`,dateString);
+            createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString}`,dateString);
         }
 
 
@@ -308,7 +310,7 @@ function erinnerungCheckTime(data, now){
 
         //Falls der Beginn der Erinnerung weniger als 10 Minuten her ist, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
         if(now > startTime && now < startTime + millisekundenBisAusrede){   
-            if(checkbox.disabled && !data.ausredeErstellt == data.startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            if(checkbox.disabled && !data.ausredeErstellt == startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
@@ -318,7 +320,6 @@ function erinnerungCheckTime(data, now){
                 checkbox.disabled = true;
                 console.log("Checkbox wurde deaktiviert.")
             }
-
         console.log("Datum und Zeit vorhanden. erinnerungCheckTime() wurde ausgeführt.");
     }
     else{
@@ -358,12 +359,15 @@ function timeBlockingCheckTime(data, now){
         }
         console.log(data.ausredeErstellt);
         if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
-            //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
-            updateStringInLocalStorage("blocking", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            const date = new Date(startTime);
+            updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
+            //Ausrede erstellen 
+            const date = new Date(startTime); 
+            const dateEndTime = new Date(endTime);
+            const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            const endTimeString = `${dateEndTime.getHours().toString().padStart(2, '0')}:${dateEndTime.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
-            createNewElementOffeneAusrede(data.nameBlocking, `${data.startTime} - ${data.endTime}`,dateString);
+            createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString} - ${endTimeString}`,dateString);
         }
 
 
@@ -380,7 +384,7 @@ function timeBlockingCheckTime(data, now){
 
         //Falls die Zeitplanung begonnen hat und noch nicht geendet hat, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
         if(now > startTime && now < endTime){   
-            if(checkbox.disabled && !data.ausredeErstellt == data.startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            if(checkbox.disabled && !data.ausredeErstellt == startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
@@ -390,7 +394,6 @@ function timeBlockingCheckTime(data, now){
                 checkbox.disabled = true;
                 console.log("Checkbox wurde deaktiviert.")
             }
-
         console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.");
     }
     else{
