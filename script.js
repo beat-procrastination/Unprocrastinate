@@ -818,7 +818,7 @@ function createNewElementWithDataErinnerung(data) {
             <div id="ErinnerungsDropDown">
                 <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
                 <div id="blockErinnerung">
-                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
+                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this, 'erinnerung')" value="${data.intervallEinheit}">
                         <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
                         <option value="Keine Wiederholung" ${data.intervallEinheit === 'Keine Wiederholung' ? 'selected' : ''}>Keine Wiederholung</option>
                         <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
@@ -910,7 +910,7 @@ function createNewElementWithDataBlocking(data) {
         <div class="BlockingDropDown">
             <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
             <div id="block">
-                <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
+                <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this, 'blocking')" value="${data.intervallEinheit}">
                         <option value="Keine Wiederholung" ${data.intervallEinheit === 'Keine Wiederholung' ? 'selected' : ''}>Keine Wiederholung</option>
                         <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
                         <option value="Wöchentlich" ${data.intervallEinheit === 'Wöchentlich' ? 'selected' : ''}>Wöchentlich</option>
@@ -1001,7 +1001,7 @@ function createNewElementErinnerung(containerId) {
      
       <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
       <div id="blockErinnerung">
-        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
+        <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this, 'erinnerung')">
         <option value="Keine Wiederholung" selected>Keine Wiederholung</option>
         <option value="Täglich">Täglich</option>
         <option value="Wöchentlich">Wöchentlich</option>
@@ -1097,7 +1097,7 @@ function createNewElementBlocking(containerId) {
          
       <label class="labelZeitplanung" for="intervallEinheit">Intervall:</label>
       <div id="block">
-        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this)">
+        <select class="inputTimeBlocking" id="intervallEinheit" onclick="call(this, 'blocking')">
        <option value="Keine Wiederholung" selected>Keine Wiederholung</option>
       <option value="Täglich">Täglich</option>
       <option value="Wöchentlich">Wöchentlich</option>
@@ -1291,7 +1291,7 @@ function startReminder(einheit, isRepeat = false) {
 
 //Intervall Select 
 
-function call(button) {
+function call(button, klasse) {
     let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
     let intervallWertDiv = button.parentNode.parentNode.querySelector("#intervallWert");
     let detailsSelect = button.parentNode.parentNode.querySelector("#intervallWertSelect");
@@ -1368,12 +1368,12 @@ function call(button) {
         lastSelectedDetail = detailsSelect.value;
         intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown nach der Auswahl
         
-        const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
+        const existingData = JSON.parse(localStorage.getItem(klasse)) || [];
         const existingDataSet = existingData.find(item => item.id === parentElement.id);
         console.log("existingDataSet:")
         console.log(existingDataSet);
 
-        updateStringInLocalStorage("blocking", parentElement.id, { intervallWert: lastSelectedDetail });
+        updateStringInLocalStorage(klasse, parentElement.id, {intervallWert: lastSelectedDetail });
         console.log("intervallWert:"+ lastSelectedDetail);
     });
 }    
