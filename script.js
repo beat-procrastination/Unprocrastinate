@@ -635,7 +635,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to save data to localStorage 
 
 function saveDataErinnerung() {   //Erinnerung
-
     const container = document.getElementById('erinnerungListe');
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
@@ -666,7 +665,7 @@ function saveDataErinnerung() {   //Erinnerung
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
         };
     });
-    localStorage.setItem('erinnerungen', JSON.stringify(data));
+    localStorage.setItem('erinnerung', JSON.stringify(data));
     console.log(data);
 }
 
@@ -751,7 +750,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 // Function to load data from localStorage
 
 function loadDataErinnerung() {   //Erinnerung
-    const data = JSON.parse(localStorage.getItem('erinnerungen'));
+    const data = JSON.parse(localStorage.getItem('erinnerung'));
     if (data) {
         data.forEach(item => {
             createNewElementWithDataErinnerung(item);
@@ -819,7 +818,7 @@ function createNewElementWithDataErinnerung(data) {
             <div id="ErinnerungsDropDown">
                 <label class="labelErinnerung" for="intervallEinheit">Intervall:</label>
                 <div id="blockErinnerung">
-                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)">
+                    <select class="inputErinnerungDetails" id="intervallEinheit" onclick="call(this)" value="${data.intervallEinheit}">
                         <option value="" disabled ${data.intervallEinheit === '' ? 'selected' : ''}>Bitte wählen...</option>
                         <option value="Keine Wiederholung" ${data.intervallEinheit === 'Keine Wiederholung' ? 'selected' : ''}>Keine Wiederholung</option>
                         <option value="Täglich" ${data.intervallEinheit === 'Täglich' ? 'selected' : ''}>Täglich</option>
