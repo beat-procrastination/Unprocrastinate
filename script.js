@@ -951,8 +951,8 @@ function createNewElementWithDataOffeneAusrede(data) {
        <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${data.ausredeName}</h3>
             <div class ="ausredeDatesContainer">
-            <div class="ausredeDates">${data.ausredeDate.value}</div>
-            <div class="ausredeDates">${data.ausredeTime.value}</div>
+            <div class="ausredeDates">${data.ausredeDate}</div>
+            <div class="ausredeDates">${data.ausredeTime}</div>
             </div>
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
