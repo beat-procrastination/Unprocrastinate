@@ -740,12 +740,14 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 
     const data = Array.from(ausredeElements).map((element, index) => {
         const ausredeDetailsInput = element.querySelector('.ausredeDetailsContainer').querySelector('#ausredeDetailsInput').value;
+        const ausredeCheckbox = element.querySelector('.ausredeÜbersicht').querySelector('.checkboxAusrede').checked;
 
         const existingDataSet = existingData.find(item => item.id === element.id);
 
         return {
             id: element.id,
             ausredeDetailsInput: ausredeDetailsInput,
+            ausredeCheckbox: ausredeCheckbox,
 
             //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
             ausredeName: existingDataSet?.ausredeName || undefined,
@@ -808,7 +810,7 @@ function createNewElementWithDataErinnerung(data) {
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" value="true" ${data.checkboxErinnerung ? 'checked' : ''}>
+            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" ${data.checkboxErinnerung ? 'checked' : ''}>
             <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}" required>
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
@@ -901,7 +903,7 @@ function createNewElementWithDataBlocking(data) {
     </div>                                                                                                                                                                                                                                              
     <div class="inputTimeBlocking-container"> 
     <div class="datumContainer2">
-        <input type="checkbox" class="checkboxTimeBlocking" value="true" ${data.checkboxBlocking ? 'checked' : ''}>
+        <input type="checkbox" class="checkboxTimeBlocking" ${data.checkboxBlocking ? 'checked' : ''}>
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
         <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" value="${data.startDate}" required>
          <div class="container">
@@ -958,11 +960,11 @@ function createNewElementWithDataOffeneAusrede(data) {
        <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${data.ausredeName}</h3>
             <div class ="ausredeDatesContainer">
-            <div class="ausredeDates">${data.ausredeDate}</div>
-            <div class="ausredeDates">${data.ausredeTime}</div>
+                <div class="ausredeDates">${data.ausredeDate}</div>
+                <div class="ausredeDates">${data.ausredeTime}</div> 
             </div>
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
-            <input type="checkbox" class="checkboxAusrede">
+            <input type="checkbox" class="checkboxAusrede" ${data.ausredeCheckbox ? 'checked' : ''}>
         </div>  
         <div class="ausredeDetailsContainer">             
             <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
@@ -1149,8 +1151,8 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
             <div class ="ausredeDatesContainer">
-            <div class="ausredeDates">${ausredeDate}</div>
-            <div class="ausredeDates">${ausredeTime}</div>
+                <div class="ausredeDates">${ausredeDate}</div>
+                <div class="ausredeDates">${ausredeTime}</div>
             </div>
             <label class="labelAusrede" for="checkboxAusrede">Später erledigt:</label>
             <input type="checkbox" class="checkboxAusrede">
