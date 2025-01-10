@@ -293,7 +293,7 @@ function erinnerungCheckTime(data, now){
             const date = new Date(startTime); 
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
-            createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString}`,dateString);
+            createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
 
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
