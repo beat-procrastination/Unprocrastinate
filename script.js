@@ -738,7 +738,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 
     const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
 
-    const data = Array.from(ausredeElements).map((element, index) => {
+    const data = Array.from(ausredeElements).map((element) => {
         const ausredeDetailsInput = element.querySelector('.ausredeDetailsContainer').querySelector('#ausredeDetailsInput').value;
         const ausredeCheckbox = element.querySelector('.ausredeÜbersicht').querySelector('.checkboxAusrede').checked;
 
@@ -1144,9 +1144,19 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
 
     originalDivOffeneAusrede.id = `ausrede-${uniqueIdCounter++}`; // Increment the counter
-    // Save the updated counter value in localStorage
-    localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter); // Save the updated counter value in localStorage
     
+    //Speichert die festen Daten der Ausrede im LocalStorage. Diese werden beim ersten Erstellen der Ausrede definiert und können sich später nicht mehr ändern. 
+    const neuesElement = {
+        "id": `ausrede-${uniqueIdCounter - 1}`,
+        "ausredeName": ausredeName,
+        "ausredeDate": ausredeDate,
+        "ausredeTime": ausredeTime,
+    }
+    const existingData = JSON.parse(localStorage.getItem('ausrede')) || [];
+    existingData.push(neuesElement);
+    localStorage.setItem('ausrede', JSON.stringify(existingData));
+
     originalDivOffeneAusrede.innerHTML = `
         <div class="ausredeÜbersicht">   
             <h3 id="ausredeName">${ausredeName}</h3>
@@ -1158,7 +1168,7 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
             <input type="checkbox" class="checkboxAusrede">
         </div>  
          <div class="ausredeDetailsContainer">             
-            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
+            <textarea onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput"></textarea>
         </div>
     `;
     container.insertBefore(originalDivOffeneAusrede, container.firstChild);
