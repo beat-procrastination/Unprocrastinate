@@ -294,16 +294,17 @@ function erinnerungCheckTime(data, now){
         if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
-            updateStringInLocalStorage("erinnerung", data.id, { ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
+            updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
             //Ausrede erstellen 
             const date = new Date(startTime); 
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
             createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
-
+        
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
         if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
+            console.log("Leere Checkbox")
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
         }
