@@ -736,7 +736,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
     const container = document.getElementById('offeneAusredeListe');
     const ausredeElements = container.querySelectorAll('.offeneAusredeContainer');
 
-    const existingData = JSON.parse(localStorage.getItem('blocking')) || [];
+    const existingData = JSON.parse(localStorage.getItem('ausrede')) || [];
 
     const data = Array.from(ausredeElements).map((element) => {
         const ausredeDetailsInput = element.querySelector('.ausredeDetailsContainer').querySelector('#ausredeDetailsInput').value;
