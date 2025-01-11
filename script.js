@@ -271,9 +271,15 @@ function erinnerungCheckTime(data, now){
     if(data.date && data.time){           
         const startTime = unixToCheck(convertToMilliseconds(data.date, data.time), data.intervallWert, data.intervallEinheit, now);
         console.log("startTime:"+startTime);
+        //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
+        if(data.EndDate){
+            if(convertToMilliseconds(data.endDate, data.time) < startTime){
+                console.log("End Datum überschritten.");
+                return;
+            }
+        }
         const checkbox = document.getElementById(data.id).querySelector('.erinnerungÜbersicht').querySelector('#checkboxErinnerung')  //Die Checkbox des Elements (der Erinnerung).
-        console.log(checkbox);
-
+        
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Unix Code (Millisekunden seit 1970) gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
@@ -336,8 +342,14 @@ function timeBlockingCheckTime(data, now){
         const endTime = startTime + calculateTimeDiff(data.startTime, data.endTime); //Die Endzeit wird mithilfe der Startzeit + die Differenz der Start und Endzeit berechnet. Wenn man die Endzeit auch mit unixToCheck() berechnet, kommt es bei Intervallen zu Problemen, da die Startzeit erreicht ist, aber die Endzeit noch nicht und es deshalb für die Endzeit den Zeitpunkt von einem Intervall zuvor nimmt. 
         console.log("startTime:"+startTime);
         console.log("endTime:"+endTime);
+        //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
+        if(data.EndDate){
+            if(convertToMilliseconds(data.endDatum, data.endTime) < startTime){
+                console.log("End Datum überschritten.");
+                return;
+            }
+        }
         const checkbox = document.getElementById(data.id).querySelector('.inputTimeBlocking-container').querySelector('.datumContainer2').querySelector('.checkboxTimeBlocking')  //Die Checkbox des Elements (der Zeitplanung).
-        console.log(checkbox);
 
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime, endTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Millisekunden seit 1970 gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
