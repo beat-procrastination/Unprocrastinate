@@ -967,7 +967,7 @@ function createNewElementWithDataOffeneAusrede(data) {
             <input type="checkbox" class="checkboxAusrede" ${data.ausredeCheckbox ? 'checked' : ''}>
         </div>  
         <div class="ausredeDetailsContainer">             
-            <textarea  onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
+            <textarea onclick="autoResize(this)" oninput="autoResize(this)" onblur="resizeBackToNormal(this)" class="ausredeDetailsInput" placeholder="Bitte Versäumnis begründen." id="ausredeDetailsInput">${data.ausredeDetailsInput}</textarea>
         </div>
     `;
     container.appendChild(originalDivOffeneAusrede);
@@ -1398,7 +1398,6 @@ function call(button, klasse) {
 function autoResize(textarea) {
   textarea.style.height = 'auto';
   textarea.style.height = textarea.scrollHeight + 'px';
-  textarea.addEventListener('input', autoResize);
 }
 
 function resizeBackToNormal(textarea){
