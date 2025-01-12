@@ -324,7 +324,7 @@ function erinnerungCheckTime(data, now){
             console.log("1");
             console.log(checkbox.disabled);
             console.log(!data.ausredeErstellt == startTime + millisekundenBisAusrede);
-            if(checkbox.disabled && !checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            if(checkbox.disabled && checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
@@ -404,7 +404,7 @@ function timeBlockingCheckTime(data, now){
 
         //Falls die Zeitplanung begonnen hat und noch nicht geendet hat, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
         if(now > startTime && now < endTime){   
-            if(checkbox.disabled && !checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            if(checkbox.disabled && checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
