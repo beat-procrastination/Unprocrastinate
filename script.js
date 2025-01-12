@@ -1430,5 +1430,12 @@ function autoResize(textarea) {
 }
 
 function resizeBackToNormal(textarea){
-    textarea.style.height = '50px';
+    // Überprüfe die Bildschirmorientierung
+    if (window.innerHeight > window.innerWidth) {
+        // Hochformat
+        textarea.style.height = '5vh';
+    } else {
+        // Querformat
+        textarea.style.height = '10vh';
+    }
 }
