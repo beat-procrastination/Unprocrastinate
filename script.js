@@ -685,7 +685,7 @@ function saveDataErinnerung() {   //Erinnerung
             intervallWert: existingDataSet?.intervallWert || undefined,
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
-            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
+            checkboxZuletztGeleert: existingDataSet?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('erinnerung', JSON.stringify(data));
@@ -744,7 +744,7 @@ function saveDataBlocking() {   //Blocking
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             endNotificationSend: existingDataSet?.endNotificationSend || undefined,
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
-            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
+            checkboxZuletztGeleert: existingDataSet?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
