@@ -261,6 +261,8 @@ function updateStringInLocalStorage(key, id, newValue) {
         }
     });
     localStorage.setItem(key, JSON.stringify(data));
+    console.log("updateStringInLocalStorage()");
+    console.log(data);
 }
 
 
@@ -305,9 +307,9 @@ function erinnerungCheckTime(data, now){
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
         console.log(data.checkboxZuletztGeleert);
         if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
-            console.log("Leere Checkbox")
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
+            console.log("Leere Checkbox")
         }
         if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
             updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
