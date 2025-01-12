@@ -1420,10 +1420,9 @@ function call(button, klasse) {
 //autoResize 
 
 function autoResize(textarea) {
-  textarea.style.height = 'auto';
   textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 function resizeBackToNormal(textarea){
-    textarea.style.height = '35px';
+    textarea.style.height = '50px';
 }
