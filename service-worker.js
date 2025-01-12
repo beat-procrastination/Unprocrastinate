@@ -8,7 +8,7 @@ const urlsToCache = [
   '/Unprocrastinate/service-worker.js',
   '/Unprocrastinate/icons/favicon.svg',
   '/Unprocrastinate/icons/favicon.ico',
-  '/Unprocrastinate/icons/apple-touch-icon.png',
+  '/Unprocrastinate/icons/appleTouch-icon.png',
   '/Unprocrastinate/icons/512x512.png',
   '/Unprocrastinate/icons/192x192.png',
   '/Unprocrastinate/icons/96x96.png',
