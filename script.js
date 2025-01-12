@@ -288,7 +288,7 @@ function erinnerungCheckTime(data, now){
         console.log(now - startTime);
         console.log(data.startNotificationSend);
         if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
-            //Benachrichtigung muss hier gesendet werden. 
+            
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
@@ -300,7 +300,7 @@ function erinnerungCheckTime(data, now){
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
             showTool('tool4');
-            sendNotification('Ermahnung','Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.'); 
+            sendNotification('Ermahnung',`Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf des Startes der Erinnerung ${data.name} vergangen sind.`); 
             createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
         
@@ -368,13 +368,13 @@ function timeBlockingCheckTime(data, now){
         console.log(now - endTime);
         console.log(data.startNotificationSend);
         if(now > startTime && now < endTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
-            //Benachrichtigung muss hier gesendet werden. 
+            sendNotification('Start Zeitplanung', `Bestätigen Sie, dass Sie mit ihrer Zeitplanung ${data.name} angefangen haben!`);
             console.log("Zeitblock hat begonnen.");
             updateStringInLocalStorage("blocking", data.id, { startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
         console.log(data.endNotificationSend);
         if(now > endTime && now < endTime + 600 * 1000 && (data.endNotificationSend < endTime || data.endNotificationSend == undefined)){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
-            //Benachrichtigung muss hier gesendet werden. 
+            sendNotification('Ende Zeitplanung', `Ihre eingeplante Zeit ${data.name} ist um!`);
             console.log("Zeitblock ist um.");
             updateStringInLocalStorage("blocking", data.id, { endNotificationSend: endTime}) ;        //Speichert im LocalStorage das bereits eine endNotification für diesen Zeitblock gesendet wurde.
         }
@@ -387,7 +387,8 @@ function timeBlockingCheckTime(data, now){
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const endTimeString = `${dateEndTime.getHours().toString().padStart(2, '0')}:${dateEndTime.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
-            //Benachrichtigung muss hier gesendet werden. 
+            showTool('tool4');
+            sendNotification('Ermahnung','Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf des Startes der Zeitplanung vergangen sind.'); 
             createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString} - ${endTimeString}`,dateString);
         }
 
