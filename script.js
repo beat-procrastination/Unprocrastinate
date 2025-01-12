@@ -303,6 +303,7 @@ function erinnerungCheckTime(data, now){
         }
         
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
+        console.log(data.checkboxZuletztGeleert);
         if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
             console.log("Leere Checkbox")
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
