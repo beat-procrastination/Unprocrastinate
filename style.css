@@ -601,7 +601,7 @@ width: 25% !important;
 
     
     .ausredeDetailsContainer{
-height: 7vw;
+height: fit-content;
 margin-top: 2vw !important;
 margin: auto;
 width: 80%;
