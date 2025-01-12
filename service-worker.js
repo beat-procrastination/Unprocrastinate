@@ -1,20 +1,20 @@
 //Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
-  '/Niklas-Nils-new/index.html',
-  '/Niklas-Nils-new/style.css',
-  '/Niklas-Nils-new/script.js',
-  '/Niklas-Nils-new/settings.json',
-  '/Niklas-Nils-new/service-worker.js',
-  '/Niklas-Nils-new/icons/favicon.svg',
-  '/Niklas-Nils-new/icons/favicon.ico',
-  '/Niklas-Nils-new/icons/apple-touch-icon.png',
-  '/Niklas-Nils-new/icons/512x512.png',
-  '/Niklas-Nils-new/icons/192x192.png',
-  '/Niklas-Nils-new/icons/96x96.png',
-  '/Niklas-Nils-new/bilder/screenshotHandy.png',
-  '/Niklas-Nils-new/bilder/screenshotDeskop.png',
-  '/Niklas-Nils-new/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
+  '/Unprocrastinate/index.html',
+  '/Unprocrastinate/style.css',
+  '/Unprocrastinate/script.js',
+  '/Unprocrastinate/settings.json',
+  '/Unprocrastinate/service-worker.js',
+  '/Unprocrastinate/icons/favicon.svg',
+  '/Unprocrastinate/icons/favicon.ico',
+  '/Unprocrastinate/icons/apple-touch-icon.png',
+  '/Unprocrastinate/icons/512x512.png',
+  '/Unprocrastinate/icons/192x192.png',
+  '/Unprocrastinate/icons/96x96.png',
+  '/Unprocrastinate/bilder/screenshotHandy.png',
+  '/Unprocrastinate/bilder/screenshotDeskop.png',
+  '/Unprocrastinate/bilder/dji_fly_20231126_112932_353_1700997032135_photo_optimized.jpg',
 ];
 
 // Entferne Duplikate
@@ -83,7 +83,7 @@ self.addEventListener('message', event => {
     if (event.data && event.data.type === 'show-notification') {
         self.registration.showNotification(event.data.title, {
             body: event.data.body,
-            icon: '/Niklas-Nils-new/icons/192x192.png',
+            icon: '/Unprocrastinate/icons/192x192.png',
             vibrate: [200, 100, 200], 
             requireInteraction: true,
         });

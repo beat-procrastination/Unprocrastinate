@@ -25,7 +25,7 @@ function showInstallNotification() {
         const notification = {
             title: 'Installiere unsere App!',
             body: 'Installieren Sie unsere Web-App für ein optimiertes Nutzungserlebnis!',
-            icon: '/Niklas-Nils-new/icons/192x192.png', // Optional: Icon hinzufügen
+            icon: '/Unprocrastinate/icons/192x192.png', // Optional: Icon hinzufügen
             vibrate: [200, 100, 200], // Optional: Vibrationsmuster
             requireInteraction: true, // Benachrichtigung bleibt sichtbar
         };
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/Niklas-Nils-new/service-worker.js')
+        navigator.serviceWorker.register('/Unprocrastinate/service-worker.js')
             .then(registration => {
                 console.log('Service Worker registered:', registration);
 
