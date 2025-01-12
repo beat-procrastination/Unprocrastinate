@@ -294,13 +294,12 @@ function erinnerungCheckTime(data, now){
         }
         console.log(data.ausredeErstellt);
         if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
-            //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            //Ausrede erstellen 
             const date = new Date(startTime); 
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            //Benachrichtigung muss hier gesendet werden.
             createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
         
@@ -382,12 +381,12 @@ function timeBlockingCheckTime(data, now){
         if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            //Ausrede erstellen 
             const date = new Date(startTime); 
             const dateEndTime = new Date(endTime);
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const endTimeString = `${dateEndTime.getHours().toString().padStart(2, '0')}:${dateEndTime.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            //Benachrichtigung muss hier gesendet werden. 
             createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString} - ${endTimeString}`,dateString);
         }
 
