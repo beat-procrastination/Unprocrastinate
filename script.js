@@ -299,7 +299,8 @@ function erinnerungCheckTime(data, now){
             const date = new Date(startTime); 
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
-            //Benachrichtigung muss hier gesendet werden.
+            showTool('tool4');
+            sendNotification('Ermahnung','Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.'); 
             createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
         
