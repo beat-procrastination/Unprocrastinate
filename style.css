@@ -608,7 +608,7 @@ width: 80%;
     }
     .ausredeDetailsInput{
       font-size: calc(0.75vw + 1.5vh);
-      height: 10vh;
+      height: 10vh !important;
     }
   }
 

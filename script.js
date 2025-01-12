@@ -1424,18 +1424,17 @@ function call(button, klasse) {
  
 
 //autoResize 
-
 function autoResize(textarea) {
-  textarea.style.height = textarea.scrollHeight + 'px';
-}
+    textarea.style.setProperty('height', textarea.scrollHeight + 'px', 'important');
+  }
 
-function resizeBackToNormal(textarea){
+function resizeBackToNormal(textarea) {
     // Überprüfe die Bildschirmorientierung
     if (window.innerHeight > window.innerWidth) {
         // Hochformat
-        textarea.style.height = '5vh';
+        textarea.style.setProperty('height', '5vh', 'important');
     } else {
         // Querformat
-        textarea.style.height = '10vh';
+        textarea.style.setProperty('height', '10vh', 'important');
     }
 }
