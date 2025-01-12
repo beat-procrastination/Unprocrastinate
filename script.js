@@ -111,10 +111,10 @@ if ('serviceWorker' in navigator) {
 
 // Function to send a notification
 function sendNotification(title, body) {
-    console.log("g");
+    console.log("Sending Notification");
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
         // Send a message to the Service Worker
-        console.log("h");
+        console.log("Notification send to the service worker.");
         navigator.serviceWorker.controller.postMessage({
             type: 'show-notification',
             title: title,
@@ -136,13 +136,6 @@ function showTool(toolId) {
     history.pushState({tool: toolId}, toolId, `#${toolId}`);
 }
   
-/* Handle back and forward buttons
-window.onpopstate = (event) => {
-if (event.state) {
-    showTool(event.state.tool);
-}
-};
-*/
 
 // Initialize the first tool as visible on page load
 if (location.hash) {
@@ -221,26 +214,22 @@ const millisekundenBisAusrede = 600 * 1000;
 function erinnerungCheck(){                          
     const data = JSON.parse(localStorage.getItem('erinnerung'));
     const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. Wird in Upix Epoch gespeichert.
-    console.log(now);
     if (data) {
         data.forEach(item => {
             erinnerungCheckTime(item, now);
         });
     }
-    console.log("erinnerungCheck() komplett ausgeführt.")
 }
 
 //Hauptfunktion Blocking, steuert den Rest. 
 function timeBlockingCheck(){                          
     const data = JSON.parse(localStorage.getItem('blocking'));
     const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. Wird in Upix Epoch gespeichert.
-    console.log(now);
     if (data) {
         data.forEach(item => {
             timeBlockingCheckTime(item, now);
         });
     }
-    console.log("timeBlockingCheck() komplett ausgeführt.")
 }
 
 //Konvertiert Datum und Zeit in Millisekunden seit 1970. 
@@ -261,18 +250,13 @@ function updateStringInLocalStorage(key, id, newValue) {
         }
     });
     localStorage.setItem(key, JSON.stringify(data));
-    console.log("updateStringInLocalStorage()");
-    console.log(data);
 }
 
 
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf, um diese zu senden. 
 function erinnerungCheckTime(data, now){
-    console.log("erinnerungCheckTime()")
-    console.log(data);
     if(data.date && data.time){           
         const startTime = unixToCheck(convertToMilliseconds(data.date, data.time), data.intervallWert, data.intervallEinheit, now);
-        console.log("startTime:"+startTime);
         //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
         if(data.EndDate){
             if(convertToMilliseconds(data.endDate, data.time) < startTime){
@@ -285,8 +269,6 @@ function erinnerungCheckTime(data, now){
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Unix Code (Millisekunden seit 1970) gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
-        console.log(now - startTime);
-        console.log(data.startNotificationSend);
         if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
             //Benachrichtigung muss hier gesendet werden. 
             console.log("Erinnerung wurde gesendet.");
@@ -305,26 +287,14 @@ function erinnerungCheckTime(data, now){
         }
         
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
-       
         console.log(data.checkboxZuletztGeleert);
         if((data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
-            console.log(data);
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
-            console.log("Leere Checkbox")
         }
-        /*if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
-            // updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
-            checkbox.disabled = true; 
-            console.log("Checkbox wurde disabled.")   
-        }*/
 
         //Falls der Beginn der Erinnerung weniger als 10 Minuten her ist und sie noch nicht angeklickt wurde, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
-        console.log("0");
         if(now > startTime && now < startTime + millisekundenBisAusrede){   
-            console.log("1");
-            console.log(checkbox.disabled);
-            console.log(!data.ausredeErstellt == startTime + millisekundenBisAusrede);
             if(checkbox.disabled){ //Aktiviert die Checkbox, falls sie deaktiviert ist.
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
@@ -335,23 +305,15 @@ function erinnerungCheckTime(data, now){
                 checkbox.disabled = true;
                 console.log("Checkbox wurde deaktiviert.")
             }
-        console.log("Datum und Zeit vorhanden. erinnerungCheckTime() wurde ausgeführt.");
-    }
-    else{
-        console.log("Datum oder Zeit nicht vorhanden.");
     }
 }
 
 
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf um diese zu senden. 
 function timeBlockingCheckTime(data, now){
-    console.log("timeBlockingCheckTime()")
-    console.log(data);
     if(data.startDate && data.startTime && data.endTime){           
         const startTime = unixToCheck(convertToMilliseconds(data.startDate, data.startTime), data.intervallWert, data.intervallEinheit, now);
         const endTime = startTime + calculateTimeDiff(data.startTime, data.endTime); //Die Endzeit wird mithilfe der Startzeit + die Differenz der Start und Endzeit berechnet. Wenn man die Endzeit auch mit unixToCheck() berechnet, kommt es bei Intervallen zu Problemen, da die Startzeit erreicht ist, aber die Endzeit noch nicht und es deshalb für die Endzeit den Zeitpunkt von einem Intervall zuvor nimmt. 
-        console.log("startTime:"+startTime);
-        console.log("endTime:"+endTime);
         //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
         if(data.EndDate){
             if(convertToMilliseconds(data.endDatum, data.endTime) < startTime){
@@ -364,9 +326,6 @@ function timeBlockingCheckTime(data, now){
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime, endTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Millisekunden seit 1970 gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man den Zeitblock mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
-        console.log(now - startTime);
-        console.log(now - endTime);
-        console.log(data.startNotificationSend);
         if(now > startTime && now < endTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
             //Benachrichtigung muss hier gesendet werden. 
             console.log("Zeitblock hat begonnen.");
@@ -397,11 +356,6 @@ function timeBlockingCheckTime(data, now){
             updateStringInLocalStorage("blocking", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
         }
-        /*if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
-            // updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
-            checkbox.disabled = true; 
-            console.log("Checkbox wurde disabled.")   
-        }*/
 
         //Falls die Zeitplanung begonnen hat und noch nicht geendet hat, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
         if(now > startTime && now < endTime){   
@@ -415,10 +369,6 @@ function timeBlockingCheckTime(data, now){
                 checkbox.disabled = true;
                 console.log("Checkbox wurde deaktiviert.")
             }
-        console.log("Datum und Zeit vorhanden. timeBlockingCheckTime wurde ausgeführt.");
-    }
-    else{
-        console.log("Datum oder Zeit nicht vorhanden.");
     }
 }
 
@@ -426,7 +376,6 @@ function timeBlockingCheckTime(data, now){
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
 function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in Unix Epoch, intervallWert full Number, intervallEinheit: day, week, month or year, return Unix Epoch value
     if(intervallEinheit == "no repeat" || !intervallEinheit || !intervallWert){   //Falls die Einheit des Intervalls keine Wiederholung ist oder nicht definiert ist, wird die normale Zeit zurückgegeben. Gleiches gilt, wenn der Intervallwert nicht definiert ist.
-        console.log("Kein Intervall oder IntervallWert nicht definiert.")
         return unix; 
     }
     else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft.
@@ -445,7 +394,6 @@ function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in U
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
                 letzteWiederholung.setMonth(letzteWiederholung.getMonth() + intervallWertZahl);
-                console.log(letzteWiederholung);
             }
             letzteWiederholung.setMonth(letzteWiederholung.getMonth() - intervallWertZahl)
             return letzteWiederholung.getTime();
@@ -454,7 +402,6 @@ function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in U
             letzteWiederholung = new Date(unix);
             while(letzteWiederholung < new Date()){
                 letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() + intervallWertZahl);
-                console.log(letzteWiederholung);
             }
             letzteWiederholung.setFullYear(letzteWiederholung.setFullYear() - intervallWertZahl)
             return letzteWiederholung.getTime();
@@ -663,7 +610,6 @@ function saveDataErinnerung() {   //Erinnerung
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
     const existingData = JSON.parse(localStorage.getItem('erinnerung')) || [];
-    console.log(existingData);
 
     const data = Array.from(erinnerungElements).map((element) => {
         const name = element.querySelector('.erinnerungName').value;
@@ -674,7 +620,6 @@ function saveDataErinnerung() {   //Erinnerung
         const endDate = element.querySelector('#endDate').value;
 
         const existingDataSet = existingData.find(item => item.id === element.id);
-        console.log(existingDataSet);
 
         return {
             id: element.id,
@@ -877,7 +822,6 @@ function createNewElementWithDataErinnerung(data) {
 
     const idNumber = parseInt(data.id.split('-')[1]);
     uniqueIdCounter = Math.max(uniqueIdCounter, idNumber + 1); //Verhindert Probleme durch korrupte Daten. Kann man das +1 aber nicht weglassen, da vor dem erstellen eines neuen Elementes der Counter ja auch um +1 erhöht wird? Macht aber dennoch keine Probleme. 
-    
 }
 
 //Timer
@@ -1009,7 +953,6 @@ function createNewElementErinnerung(containerId) {
     originalDivErinnerung.className = 'erinnerungContainer';
 
     originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Increment the counter
-    console.log(`erinnerung-${uniqueIdCounter++}`);
     // Save the updated counter value in localStorage
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
@@ -1200,142 +1143,6 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
 }
 
 
-/*
-// errinnerung Benachrichtigungen senden, muss ersetzt werden mit Funktion ohne Playtutton.
-let stopped = false;
-let timerId = null;
-
-function changeButto(button) {
-    const playButton = button.parentNode.querySelector("#play-button");
-    const stopButton = button.parentNode.querySelector("#stop-button");
-    console.log(button.parentNode);
-    console.log(playButton);
-
-    if (playButton.classList.contains('hidden')) {
-        console.log("4");
-        // Stoppen des Timers und Umschalten auf Play-Button
-        stopped = true;
-        clearTimeout(timerId); // Timer stoppen, falls er läuft
-        playButton.classList.remove('hidden');
-        stopButton.classList.add('hidden');
-       
-    } else {
-        console.log("5");
-        // Starten der Erinnerung und Umschalten auf Stop-Button
-        stopped = false;
-        stopButton.classList.remove('hidden');
-        playButton.classList.add('hidden');
-        
-        if (Notification.permission !== 'granted') {
-            Notification.requestPermission();
-        } else {
-            console.log(button.parentNode.parentNode);
-            startReminder(button.parentNode.parentNode);
-        }
-
-        // EventListener hinzufügen, um auf das Stoppen zu reagieren
-        stopButton.addEventListener('click', stopReminder);
-    }
-}
-
-function stopReminder() {
-    console.log("3");
-    stopped = true;
-    clearTimeout(timerId); // Timer stoppen
-    console.log("Die Erinnerung wurde angehalten.");
-}
-function startReminder(einheit, isRepeat = false) {
-    const playButton = einheit.querySelector("#play-button");
-    const dateInput = einheit.querySelector('#inputDate');
-    const timeInput = einheit.querySelector('#inputTime');
-    const reminderName = einheit.querySelector('.erinnerungName').value;
-    const checkboxx = einheit.querySelector('#checkboxErinnerung');
-    const intervallEinheit = einheit.querySelector('#intervallEinheit').value; // Das ausgewählte Intervall (Täglich, Wöchentlich...)
-    const detailsInput = einheit.querySelector('#intervallWertSelect').value; // Die genauere Auswahl (Jeden 2. Tag, Jede 2. Woche...)
-    const endDateInput = einheit.querySelector('#endDate').value; // Das Enddatum der Erinnerung
-    
-    console.log(dateInput.value, timeInput.value, reminderName, intervallEinheit);
-    if (!dateInput.value || !timeInput.value || !reminderName || !intervallEinheit) {
-        alert("Bitte alle Felder ausfüllen.");
-        console.log("1");
-        stopped = true;
-        changeButto(playButton);
-        console.log("2");
-        return;
-    }
-    let reminderDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
-    let now = new Date();
-    let timeToReminder = reminderDateTime - now;
-    //Verhindert eine wiederholte Erinnerung, die in der Vergangenheit liegt
-    if (timeToReminder <= 0 && !isRepeat) {
-        alert('Die eingegebene Zeit liegt in der Vergangenheit.');
-        stopped = true;
-        changeButto(playButton);
-        return;
-    }
-    // Adjust the time for repeated reminders if time is in the past
-    if (timeToReminder <= 0 && isRepeat) {
-        let repeatInterval = 0;
-        if (intervallEinheit === 'Täglich') {
-            repeatInterval =  24 * 60 * 60 * 1000; // 1 Tag
-        } else if (intervallEinheit === 'Wöchentlich') {
-            repeatInterval = 7 * 24 * 60 * 60 * 1000; // 1 Woche
-        } else if (intervallEinheit === 'Monatlich') {
-            repeatInterval = 30 * 24 * 60 * 60 * 1000; // 1 Monat
-        } else if (intervallEinheit === 'Jährlich') {
-            repeatInterval = 365 * 24 * 60 * 60 * 1000; // 1 Jahr
-        }
-        if (detailsInput) {
-            const detailsNumber = parseInt(detailsInput.match(/\d+/)[0]); // Extrahiere die Zahl
-            repeatInterval *= detailsNumber;
-        }
-        while (timeToReminder <= 0) {
-            // Füge das Intervall hinzu, bis die Zeit in der Zukunft liegt
-            reminderDateTime = new Date(reminderDateTime.getTime() + repeatInterval);
-            timeToReminder = reminderDateTime - now;
-        }
-    }
-    timerId = setTimeout(() => {
-
-    if (!stopped) {
-        console.log("Benachrichtigung: Es ist Zeit für deine Erinnerung:...");
-        sendNotification('Erinnerung fällig!',`Es ist Zeit für deine Erinnerung: ${reminderName}`);
-        console.log("Benachrichtigung: Es ist Zeit für deine Erinnerung:... wurde gesendet");
-    }
-    console.log(intervallEinheit);
-    if (intervallEinheit !== 'Keine Wiederholung') {   
-    startReminder(einheit, true); 
-    }
-       
-            setTimeout(() => {
-            if (!checkboxx.checked) {
-                console.log("Checkbox wurde nicht abgehakt.");
-                showTool('tool4');
-                alert('Die Checkbox wurde nicht abgehakt, obwohl 10 Minuten nach Ablauf der Erinnerung vergangen sind.');  //Ausrede für Erinnerung muss hier erstellt werden. 
-                createNewElementOffeneAusrede(reminderName, timeInput, dateInput);
-                console.log(reminderName);
-            }
-        }, 1 * 6 * 1000);
-        checkIntervalId = setInterval(() => {
-            let now = new Date(); // Aktualisiere die Zeit bei jeder Wiederholung
-            let endDateTime = endDateInput ? new Date(`${endDateInput}T23:59:59`) : null;
-    
-            if (intervallEinheit === 'Keine Wiederholung' || (endDateTime && now >= endDateTime)) {
-                console.log("Enddatum erreicht, Erinnerung wird gestoppt.");
-                stopped = true;  // Automatisch stoppen nach der Benachrichtigung
-                changeButto(einheit.querySelector("#stop-button"));
-    
-                // Stoppe das Intervall, wenn das Enddatum erreicht ist
-                clearInterval(checkIntervalId);
-            }
-        }, 60 * 1000);
-
-    }, timeToReminder);
-}
-*/
-
-
-
 //Intervall Select 
 
 function call(button, klasse) {
@@ -1417,15 +1224,10 @@ function call(button, klasse) {
         
         const existingData = JSON.parse(localStorage.getItem(klasse)) || [];
         const existingDataSet = existingData.find(item => item.id === parentElement.id);
-        console.log("existingDataSet:")
-        console.log(existingDataSet);
 
         updateStringInLocalStorage(klasse, parentElement.id, {intervallWert: lastSelectedDetail });
-        console.log("intervallWert:"+ lastSelectedDetail);
     });
 }    
-
- 
 
 //autoResize 
 function autoResize(textarea) {
