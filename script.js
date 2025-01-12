@@ -659,6 +659,7 @@ function saveDataErinnerung() {   //Erinnerung
     const erinnerungElements = container.querySelectorAll('.erinnerungContainer');
 
     const existingData = JSON.parse(localStorage.getItem('erinnerung')) || [];
+    console.log(existingData);
 
     const data = Array.from(erinnerungElements).map((element) => {
         const name = element.querySelector('.erinnerungName').value;
@@ -669,6 +670,7 @@ function saveDataErinnerung() {   //Erinnerung
         const endDate = element.querySelector('#endDate').value;
 
         const existingDataSet = existingData.find(item => item.id === element.id);
+        console.log(existingDataSet);
 
         return {
             id: element.id,
