@@ -294,34 +294,37 @@ function erinnerungCheckTime(data, now){
         }
         console.log(data.ausredeErstellt);
         if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
-            //Ausrede erstellen 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            //Ausrede erstellen 
             const date = new Date(startTime); 
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            //Benachrichtigung muss hier gesendet werden.
             createNewElementOffeneAusrede(data.name, `${startTimeString}`,dateString);
         }
         
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
        
         console.log(data.checkboxZuletztGeleert);
-        if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
+        if((data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
             console.log(data);
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
             console.log("Leere Checkbox")
         }
-        if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
-            updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
+        /*if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
+            // updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
             checkbox.disabled = true; 
             console.log("Checkbox wurde disabled.")   
-        }
+        }*/
 
-        //Falls der Beginn der Erinnerung weniger als 10 Minuten her ist, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
+        //Falls der Beginn der Erinnerung weniger als 10 Minuten her ist und sie noch nicht angeklickt wurde, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
+        console.log("0");
         if(now > startTime && now < startTime + millisekundenBisAusrede){   
-            if(checkbox.disabled && !data.ausredeErstellt == startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            console.log("1");
+            console.log(checkbox.disabled);
+            console.log(!data.ausredeErstellt == startTime + millisekundenBisAusrede);
+            if(checkbox.disabled && !checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
@@ -378,30 +381,30 @@ function timeBlockingCheckTime(data, now){
         if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
-            //Ausrede erstellen 
             const date = new Date(startTime); 
             const dateEndTime = new Date(endTime);
             const startTimeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             const endTimeString = `${dateEndTime.getHours().toString().padStart(2, '0')}:${dateEndTime.getMinutes().toString().padStart(2, '0')}`;
             const dateString = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`; //padStart(2, '0') sorgt dafür, dass der Tag und Monat immer zweistellig ist. Also 01.07.2024 anstatt 1.7.2024.
+            //Benachrichtigung muss hier gesendet werden. 
             createNewElementOffeneAusrede(data.nameBlocking, `${startTimeString} - ${endTimeString}`,dateString);
         }
 
 
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
-        if(checkbox.checked && (data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
+        if((data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
             updateStringInLocalStorage("blocking", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
         }
-        if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
-            updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
+        /*if(checkbox.checked && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){ //Falls die Checkbox bei dieser if Schleife ausgewählt ist, bedeutet dies, dass sie nach der Startzeit ausgewählt wurde. Speichert im LocalStorage das eine Ausrede für diesen Zeitpunkt erstellt wurde, da wegen dem Abhaken der Checkbox keine erstellt werden soll. 
+            // updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});
             checkbox.disabled = true; 
             console.log("Checkbox wurde disabled.")   
-        }
+        }*/
 
         //Falls die Zeitplanung begonnen hat und noch nicht geendet hat, wird die Checkbox aktiviert. Falls nicht, wird sie deaktiviert.
         if(now > startTime && now < endTime){   
-            if(checkbox.disabled && !data.ausredeErstellt == startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
+            if(checkbox.disabled && !checkbox.checked){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
             }
@@ -685,7 +688,7 @@ function saveDataErinnerung() {   //Erinnerung
             intervallWert: existingDataSet?.intervallWert || undefined,
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
-            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
+            checkboxZuletztGeleert: existingDataSet?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('erinnerung', JSON.stringify(data));
@@ -744,7 +747,7 @@ function saveDataBlocking() {   //Blocking
             startNotificationSend: existingDataSet?.startNotificationSend || undefined,        
             endNotificationSend: existingDataSet?.endNotificationSend || undefined,
             ausredeErstellt: existingDataSet?.ausredeErstellt || undefined,
-            checkboxZuletztGeleert: existingData?.checkboxZuletztGeleert || undefined,
+            checkboxZuletztGeleert: existingDataSet?.checkboxZuletztGeleert || undefined,
         };
     });
     localStorage.setItem('blocking', JSON.stringify(data));
@@ -830,7 +833,7 @@ function createNewElementWithDataErinnerung(data) {
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" ${data.checkboxErinnerung ? 'checked' : ''}>
+            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" disabled ${data.checkboxErinnerung ? 'checked' : ''}>
             <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" value="${data.name}" required>
             <div class="container">
                 <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
@@ -923,7 +926,7 @@ function createNewElementWithDataBlocking(data) {
     </div>                                                                                                                                                                                                                                              
     <div class="inputTimeBlocking-container"> 
     <div class="datumContainer2">
-        <input type="checkbox" class="checkboxTimeBlocking" ${data.checkboxBlocking ? 'checked' : ''}>
+        <input type="checkbox" class="checkboxTimeBlocking" disabled ${data.checkboxBlocking ? 'checked' : ''}>
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
         <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" value="${data.startDate}" required>
          <div class="container">
@@ -1011,7 +1014,7 @@ function createNewElementErinnerung(containerId) {
     
     originalDivErinnerung.innerHTML = `
         <div class="erinnerungÜbersicht">
-            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder">
+            <input type="checkbox" class="checkboxErinnerung" id="checkboxErinnerung" name="placeholder" disabled>
             <input class="erinnerungName" placeholder="Name der Erinnerung" type="text" required>
             <div class="container">
         <svg onclick="dropDownMenu(this)" class="menuErinnerung" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_105_1893)"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 12.01 12)" width="0.01" x="12.01" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 16.51 12)" width="0.01" x="16.51" y="12"></rect> <rect height="0.01" stroke="#000000" stroke-linejoin="round" stroke-width="3" transform="rotate(90 7.51001 12)" width="0.01" x="7.51001" y="12"></rect> </g> <defs> <clipPath id="clip0_105_1893"> <rect fill="white" height="24" transform="translate(0 0.000976562)" width="24"></rect> </clipPath> </defs> </g></svg>
@@ -1108,7 +1111,7 @@ function createNewElementBlocking(containerId) {
         </div>                                                                                                                                                                                                                                             
         <div class="inputTimeBlocking-container"> 
         <div class="datumContainer2">
-            <input type="checkbox" class="checkboxTimeBlocking">
+            <input type="checkbox" class="checkboxTimeBlocking" disabled>
         <label class="labelZeitplanung" id="labelZeitplanungDatum" for="timeBlockingDatum">Datum:</label>
                 <input class="inputTimeBlocking"  type="date" id="timeBlockingDatum" name="Datum" required>
                  <div class="container">
