@@ -323,6 +323,8 @@ function erinnerungCheckTime(data, now){
         console.log("0");
         if(now > startTime && now < startTime + millisekundenBisAusrede){   
             console.log("1");
+            console.log(checkbox.disabled);
+            console.log(!data.ausredeErstellt == startTime + millisekundenBisAusrede);
             if(checkbox.disabled && !data.ausredeErstellt == startTime + millisekundenBisAusrede){ //Aktiviert die Checkbox, falls sie deaktiviert ist und ausredeErstellt nicht den aktuellen Zeitpunkt hat. Der zweite Teil dient dazu, dass man die Checkbox nicht mehr ändern kann, nachdem man sie ausgewählt hat. 
                 checkbox.disabled = false;
                 console.log("Checkbox wurde aktiviert.")
