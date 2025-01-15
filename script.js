@@ -270,7 +270,6 @@ function erinnerungCheckTime(data, now){
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
         if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
-            
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
@@ -461,6 +460,28 @@ document.addEventListener('input', function (event) {
         }
     }
 });
+
+
+// Ruft die Funktionen alle 3 Sekunden auf. 
+function wiederholeCheck() {
+    erinnerungCheck();
+    timeBlockingCheck();
+}
+
+let checkIntervallId;
+
+// Start das Intervall, wenn die App geöffnet wird. 
+window.addEventListener("load", () => {
+    console.log("App geladen, Intervall gestartet.");  
+    checkIntervallId = setInterval(wiederholeCheck, 3000);
+});
+
+
+
+
+
+
+
 
 
 
