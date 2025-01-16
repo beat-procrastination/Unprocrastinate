@@ -466,6 +466,7 @@ document.addEventListener('input', function (event) {
 function wiederholeCheck() {
     erinnerungCheck();
     timeBlockingCheck();
+    console.log("Check", new Date().toLocaleTimeString());
 }
 
 let checkIntervallId;
@@ -475,12 +476,6 @@ window.addEventListener("load", () => {
     console.log("App geladen, Intervall gestartet.");  
     checkIntervallId = setInterval(wiederholeCheck, 3000);
 });
-
-
-
-
-
-
 
 
 
