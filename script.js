@@ -374,11 +374,11 @@ function timeBlockingCheckTime(data, now){
 
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
-function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in Unix Epoch, intervallWert full Number, intervallEinheit: day, week, month or year, return Unix Epoch value
-    if(intervallEinheit == "no repeat" || !intervallEinheit || !intervallWert){   //Falls die Einheit des Intervalls keine Wiederholung ist oder nicht definiert ist, wird die normale Zeit zurückgegeben. Gleiches gilt, wenn der Intervallwert nicht definiert ist.
+function unixToCheck(unix, intervallWert, intervallEinheit, now){    
+    if(!intervallEinheit || intervallEinheit == "no repeat" || !intervallWert || now <= unix){   //Überprüft alle notwendigen Kriterien für ein Intervall. Falls nicht alle vorhanden sind, wird die Funktion abgebrochen und unix zurückgegeben. 
         return unix; 
     }
-    else {     //Nur falls der IntervallWert definiert ist, wird der Rest überhaupt geprüft.
+    else {     
         const numberMatch = intervallWert.match(/\d+/);
         const intervallWertZahl = numberMatch ? parseInt(numberMatch[0], 10) : null;
 
@@ -390,9 +390,10 @@ function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in U
             const wiederholungen = Math.floor((now - unix) / (60 * 60 * 24 * 1000 * intervallWertZahl * 7));
             return unix + wiederholungen * 60 * 60 * 24 * 1000 * intervallWertZahl * 7;
         }
-        if(intervallEinheit == "Monatlich"){
+        if(intervallEinheit == "Monatlich"){   //Der momentane Zeitpunkt wird so lange um das Intervall erhöht, bis er größer ist, als das momentane Datum. Danach wird er um 1 Intervall reduziert, damit es wieder die späteste zu sendene Nachricht ist.
             letzteWiederholung = new Date(unix);
-            while(letzteWiederholung < new Date()){
+            const dateNow = new Date(now);
+            while(letzteWiederholung < dateNow){     
                 letzteWiederholung.setMonth(letzteWiederholung.getMonth() + intervallWertZahl);
             }
             letzteWiederholung.setMonth(letzteWiederholung.getMonth() - intervallWertZahl)
@@ -400,14 +401,19 @@ function unixToCheck(unix, intervallWert, intervallEinheit, now){    //Time in U
         }
         if(intervallEinheit == "Jährlich"){
             letzteWiederholung = new Date(unix);
-            while(letzteWiederholung < new Date()){
+            const dateNow = new Date(now);
+            while(letzteWiederholung < dateNow){
                 letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() + intervallWertZahl);
             }
-            letzteWiederholung.setFullYear(letzteWiederholung.setFullYear() - intervallWertZahl)
+            letzteWiederholung.setFullYear(letzteWiederholung.getFullYear() - intervallWertZahl)
             return letzteWiederholung.getTime();
         }
     }
+    console.log("unixToCheck() Fallback ausgelöst! Es existiert ein Bug im Code.");
+    return unix; //Fallback zur Sicherheit. Sollte nie ausgelöst werden. 
 }
+
+
 
 //Berechnet die Difference in Millisekunden zwischen 2 Zeitpunkten. (Wird nur für Zeitplanung und nicht für Erinnerung benötig.)  
 function calculateTimeDiff(time1, time2){
