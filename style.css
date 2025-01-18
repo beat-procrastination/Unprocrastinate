@@ -305,7 +305,7 @@ width: 60vw;
   }
   @media (orientation: landscape){
     .ausredeDates{
-      width:10vw !important;
+      width:14vw !important;
       font-size: medium !important;
     }
     .ausredeDatesContainer{
@@ -324,7 +324,7 @@ width: 60vw;
 
 
   .ausredeDates{
-  width:18vw ;
+  width:20vw ;
   margin-top: 0.5vh;
   font-size: small;
   white-space: nowrap;
@@ -856,6 +856,7 @@ option {
 #block{
   width: 25% !important;
   margin-right: 0.75vw;
+  height: 75%;
 }
  }
   
