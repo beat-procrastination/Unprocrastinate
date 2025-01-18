@@ -280,7 +280,6 @@ function erinnerungCheckTime(data, now){
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
-        console.log(data.ausredeErstellt);
         if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
@@ -293,7 +292,6 @@ function erinnerungCheckTime(data, now){
         }
         
         //Leer die Checkbox einmal wenn durch ein Intervall eine Erinnerung das nächste mal beginnt. Speichert sich den Zeitpunkt, für den es die Checkbox geleert hat und setzt sie nur noch für einen späteren Zeitpunkt zürck.
-        console.log(data.checkboxZuletztGeleert);
         if((data.checkboxZuletztGeleert < startTime || data.checkboxZuletztGeleert == undefined)){ //Falls die Checkbox ausgewählt ist, wird sie geleert, sofern die nächste Erinnerung bereits begonnen hat.
             updateStringInLocalStorage("erinnerung", data.id, {checkboxZuletztGeleert: startTime});
             checkbox.checked = false;
@@ -337,13 +335,11 @@ function timeBlockingCheckTime(data, now){
             console.log("Zeitblock hat begonnen.");
             updateStringInLocalStorage("blocking", data.id, { startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
-        console.log(data.endNotificationSend);
         if(now > endTime && now < endTime + 600 * 1000 && (data.endNotificationSend < endTime || data.endNotificationSend == undefined)){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
             sendNotification('Ende Zeitplanung', `Ihre eingeplante Zeit ${data.name} ist um!`);
             console.log("Zeitblock ist um.");
             updateStringInLocalStorage("blocking", data.id, { endNotificationSend: endTime}) ;        //Speichert im LocalStorage das bereits eine endNotification für diesen Zeitblock gesendet wurde.
         }
-        console.log(data.ausredeErstellt);
         if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
