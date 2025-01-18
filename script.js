@@ -219,7 +219,7 @@ const millisekundenBisAusrede = 600 * 1000;
 //Hauptfunktion Erinnerung, steuert den Rest. 
 function erinnerungCheck(){                          
     const data = JSON.parse(localStorage.getItem('erinnerung'));
-    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. Wird in Upix Epoch gespeichert.
+    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
     if (data) {
         data.forEach(item => {
             erinnerungCheckTime(item, now);
@@ -378,7 +378,7 @@ function timeBlockingCheckTime(data, now){
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
 function unixToCheck(unix, intervallWert, intervallEinheit, now){    
-    if(!intervallEinheit || intervallEinheit == "no repeat" || !intervallWert || now <= unix){   //Überprüft alle notwendigen Kriterien für ein Intervall. Falls nicht alle vorhanden sind, wird die Funktion abgebrochen und unix zurückgegeben. 
+    if(!intervallEinheit || intervallEinheit == "Keine Wiederholung" || !intervallWert || now <= unix){   //Überprüft alle notwendigen Kriterien für ein Intervall. Falls nicht alle vorhanden sind, wird die Funktion abgebrochen und unix zurückgegeben. 
         return unix; 
     }
     else {     
@@ -598,6 +598,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners to save data automatically on input change
     document.getElementById('erinnerungListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            if(event.target.id == "inputDate" || event.target.id == "inputTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
+                const parentId = event.target.closest('.erinnerungContainer').id;
+                updateStringInLocalStorage("erinnerung", parentId, {startNotificationSend: Date.now()});
+                updateStringInLocalStorage("erinnerung", parentId, {ausredeErstellt: Date.now()});
+            }
             saveDataErinnerung();
         }
     });
@@ -608,6 +613,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('blockingListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
+            if(event.target.id == "inputDate" || event.target.id == "inputTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
+                const parentId = event.target.closest('.blockingContainer').id;
+                updateStringInLocalStorage("blocking", parentId, {startNotificationSend: Date.now()});
+                updateStringInLocalStorage("blocking", parentId, {endNotificationSend: Date.now()});
+                updateStringInLocalStorage("blocking", parentId, {ausredeErstellt: Date.now()});
+            }
             saveDataBlocking();
         }
     });
