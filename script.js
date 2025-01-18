@@ -31,13 +31,19 @@ function showInstallNotification() {
         };
 
         // Nachricht an den Service Worker senden
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-                type: 'show-notification',
-                ...notification // Alle Eigenschaften der Benachrichtigung übergeben
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(() => {
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: 'show-notification',
+                        ...notification // Alle Eigenschaften der Benachrichtigung übergeben
+                    });
+                } else {
+                    console.warn('Service Worker ist aktiv, hat aber noch keine Kontrolle. Ein Neuladen ist notwendig.');
+                    alert('Bitte laden Sie die Seite neu, um Benachrichtigungen zu aktivieren.');
+                
+                }
             });
-        } else {
-            console.error('Service Worker not controlling the page. Reload the page to enable notifications.');
         }
     } else {
         // Berechtigung für Benachrichtigungen anfordern
@@ -269,7 +275,8 @@ function erinnerungCheckTime(data, now){
         //Nachdem eine Benachrichtigung gesendet wird, wird im Local Storage gespeichert, das für die jeweilige startTime oder Ausrede (startTime + 10 Minuten) eine Benachrichtigung gesendet wurde. Wird in Unix Code (Millisekunden seit 1970) gespeichert. 
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
-        if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){           //Der Zeitblock (die geblockte Zeit) hat begonnen und ist noch nicht zuende. 
+        if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){    
+            sendNotification('Ihre Erinnerung ist fällig!', `Bestätigen Sie, dass Sie mit ihrer Erinnerung ${data.name} angefangen haben!`); 
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
