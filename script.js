@@ -435,10 +435,38 @@ function calculateTimeDiff(time1, time2){
 }
 
 
+document.addEventListener('input', function (event) {
+    // Überprüfen, ob das Event von einem Input-Feld stammt
+    if (event.target.tagName === 'INPUT') {
+        // Den spezifischen Erinnerungs-containe finden
+        const container = event.target.closest('.erinnerungContainer');
+        console.log("1");
+        if (container) {
+            const erinnerungDatum = container.querySelector('#inputDate');
+            console.log("2");
+            const time = container.querySelector('#inputTime');
+            const Intervall = container.querySelector('#intervallEinheit');
+console.log(Intervall);
+            if(erinnerungDatum && Intervall == 'Keine Wiederholung'){
+    console.log("3");
+                 // Kombinieren von Datum und Zeit
+    const combinedDateTime = new Date(`${erinnerungDatum}T${time}:00`);
+    
+    // Aktuelles Datum und Zeit abrufen
+    const now = new Date();
+    
+    // Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
+    if (combinedDateTime < now) {
+        console.log("4");
+        alert("Das Startdatum liegt in der Vergangenheit.");
+                }
+            }
+        
+        }}});
 
 
 
-//timeBlocking check von differenz zwischen start und Endzeit
+//timeBlocking check von differenz zwischen start und Endzeit und ob das Startdatum in der Vergangeheit ist
 document.addEventListener('input', function (event) {
     // Überprüfen, ob das Event von einem Input-Feld stammt
     if (event.target.tagName === 'INPUT') {
@@ -448,11 +476,12 @@ document.addEventListener('input', function (event) {
             // Start- und Endzeit innerhalb dieses Containers suchen
             const startTimeInput = container.querySelector('#startTime');
             const endTimeInput = container.querySelector('#endTime');
+            const zeitplanungDatum = container.querySelector('#timeBlockingDatum');
+            const Intervall = container.querySelector('#intervallEinheit');
             // Wenn beide Felder existieren, weiterarbeiten
             if (startTimeInput && endTimeInput) {
                 console.log('Startzeit:', startTimeInput.value);
                 console.log('Endzeit:', endTimeInput.value);
-                // Optional: Logik einfügen, z. B. Zeitdifferenz berechnen
                 if (startTimeInput.value && endTimeInput.value) {
                     const startTime = new Date(`1970-01-01T${startTimeInput.value}`);
                     const endTime = new Date(`1970-01-01T${endTimeInput.value}`);
@@ -460,13 +489,26 @@ document.addEventListener('input', function (event) {
                         endTime.setDate(endTime.getDate() + 1);
                     }
                     const diffInMinutes = (endTime - startTime) / (1000 * 60);
-
+                    console.log("5");
                     if (diffInMinutes < 20) {
                         alert('Die Zeitdifferenz muss mindestens 20 Minuten betragen!');
                     }
                 }
             }
-        }
+            if(zeitplanungDatum && Intervall == 'Keine Wiederholung'){
+                console.log("6");
+                
+// Kombinieren von Datum und Zeit
+const combinedDateTime = new Date(`${zeitplanungDatum}T${startTimeInput}:00`);
+
+// Aktuelles Datum und Zeit abrufen
+const now = new Date();
+
+// Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
+if (combinedDateTime < now) {
+    alert("Das Startdatum liegt in der Vergangenheit.");
+            }
+        }}
     }
 });
 
