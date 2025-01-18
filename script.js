@@ -39,7 +39,9 @@ function showInstallNotification() {
                         ...notification // Alle Eigenschaften der Benachrichtigung übergeben
                     });
                 } else {
-                    console.error('Service Worker noch nicht aktiv. Bitte laden Sie die Seite neu.');
+                    console.warn('Service Worker ist aktiv, hat aber noch keine Kontrolle. Ein Neuladen ist notwendig.');
+                    alert('Bitte laden Sie die Seite neu, um Benachrichtigungen zu aktivieren.');
+                
                 }
             });
         }
