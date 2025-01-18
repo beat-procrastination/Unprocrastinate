@@ -444,7 +444,7 @@ document.addEventListener('input', function (event) {
             const erinnerungDatum = container.querySelector('#inputDate');
             const time = container.querySelector('#inputTime');
             const Intervall = container.querySelector('#intervallEinheit');
-if(zeitplanungDatum && Intervall == 'Keine Wiederholung'){
+if(erinnerungDatum && Intervall == 'Keine Wiederholung'){
                  // Kombinieren von Datum und Zeit
     const combinedDateTime = new Date(`${erinnerungDatum}T${time}:00`);
     
