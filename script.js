@@ -266,7 +266,7 @@ function erinnerungCheckTime(data, now){
         //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
         if(data.EndDate){
             if(convertToMilliseconds(data.endDate, data.time) < startTime){
-                console.log("End Datum überschritten.");
+                console.log("End Datum überschritten." + data);
                 return;
             }
         }
@@ -321,7 +321,7 @@ function timeBlockingCheckTime(data, now){
         //Überprüft ob das Enddatum überschritten wurde. Wenn ja, wird die Funktion beendet. 
         if(data.EndDate){
             if(convertToMilliseconds(data.endDatum, data.endTime) < startTime){
-                console.log("End Datum überschritten.");
+                console.log("End Datum überschritten." + data);
                 return;
             }
         }
@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('blockingListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
-            if(event.target.id == "inputDate" || event.target.id == "inputTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
+            if(event.target.id == "timeBlockingDatum" || event.target.id == "startTime" || event.target.id == "endTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
                 const parentId = event.target.closest('.blockingContainer').id;
                 updateStringInLocalStorage("blocking", parentId, {startNotificationSend: Date.now()});
                 updateStringInLocalStorage("blocking", parentId, {endNotificationSend: Date.now()});
