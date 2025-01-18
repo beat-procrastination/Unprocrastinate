@@ -214,6 +214,27 @@ function fixieren(button) {
 
 //Erinnerung und Zeitplanung Benachrichtigungen ohne Play Button. 
 
+// Ruft die Funktionen alle 3 Sekunden auf. 
+function checkElements() {
+    erinnerungCheck();
+    timeBlockingCheck();
+    console.log("Check", new Date().toLocaleTimeString());
+}
+
+let checkIntervallId;
+
+// Start das Intervall, wenn die App geöffnet wird. 
+window.addEventListener("load", () => {
+    console.log("App geladen, Intervall gestartet.");  
+    const millisecondsToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds() + 1);
+    checkElements();
+    setTimeout(() => {
+        checkElements();
+        setInterval(checkElements, 60000);
+    }, millisecondsToNextMinute);
+});
+
+
 const millisekundenBisAusrede = 600 * 1000;
 
 //Hauptfunktion Erinnerung, steuert den Rest. 
@@ -504,24 +525,6 @@ if (combinedDateTime < now) {
         }}
     }
 });
-
-
-// Ruft die Funktionen alle 3 Sekunden auf. 
-function wiederholeCheck() {
-    erinnerungCheck();
-    timeBlockingCheck();
-    console.log("Check", new Date().toLocaleTimeString());
-}
-
-let checkIntervallId;
-
-// Start das Intervall, wenn die App geöffnet wird. 
-window.addEventListener("load", () => {
-    console.log("App geladen, Intervall gestartet.");  
-    checkIntervallId = setInterval(wiederholeCheck, 3000);
-});
-
-
 
 
 //Timer Start
