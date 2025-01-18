@@ -438,13 +438,16 @@ function calculateTimeDiff(time1, time2){
 document.addEventListener('input', function (event) {
     // Überprüfen, ob das Event von einem Input-Feld stammt
     if (event.target.tagName === 'INPUT') {
-        // Den spezifischen `time-blocking-container` finden
+        // Den spezifischen Erinnerungs-containe finden
         const container = event.target.closest('.erinnerungContainer');
+        console.log("1");
         if (container) {
             const erinnerungDatum = container.querySelector('#inputDate');
+            console.log("2");
             const time = container.querySelector('#inputTime');
             const Intervall = container.querySelector('#intervallEinheit');
 if(erinnerungDatum && Intervall == 'Keine Wiederholung'){
+    console.log("3");
                  // Kombinieren von Datum und Zeit
     const combinedDateTime = new Date(`${erinnerungDatum}T${time}:00`);
     
@@ -453,6 +456,7 @@ if(erinnerungDatum && Intervall == 'Keine Wiederholung'){
     
     // Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
     if (combinedDateTime < now) {
+        console.log("4");
         alert("Das Startdatum liegt in der Vergangenheit.");
                 }
             }
@@ -484,13 +488,14 @@ document.addEventListener('input', function (event) {
                         endTime.setDate(endTime.getDate() + 1);
                     }
                     const diffInMinutes = (endTime - startTime) / (1000 * 60);
-
+                    console.log("5");
                     if (diffInMinutes < 20) {
                         alert('Die Zeitdifferenz muss mindestens 20 Minuten betragen!');
                     }
                 }
             }
             if(zeitplanungDatum && Intervall == 'Keine Wiederholung'){
+                console.log("6");
                 
 // Kombinieren von Datum und Zeit
 const combinedDateTime = new Date(`${zeitplanungDatum}T${startTimeInput}:00`);
