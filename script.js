@@ -225,6 +225,7 @@ let checkIntervallId;
 
 // Start das Intervall, wenn die App geöffnet wird. 
 window.addEventListener("load", () => {
+    const now = new Date();
     console.log("App geladen, Intervall gestartet.");  
     const millisecondsToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds() + 1);
     checkElements();
