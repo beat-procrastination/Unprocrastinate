@@ -444,8 +444,7 @@ document.addEventListener('input', function (event) {
             const erinnerungDatum = container.querySelector('#inputDate');
             const time = container.querySelector('#inputTime');
             const Intervall = container.querySelector('#intervallEinheit').value;
-console.log(Intervall);
-            if(erinnerungDatum && Intervall == 'Keine Wiederholung'){
+            if(erinnerungDatum.value && Intervall == 'Keine Wiederholung' && time.value){
                  // Kombinieren von Datum und Zeit
     const combinedDateTime = new Date(`${erinnerungDatum}T${time}:00`);
     
@@ -475,7 +474,7 @@ document.addEventListener('input', function (event) {
             const zeitplanungDatum = container.querySelector('#timeBlockingDatum');
             const Intervall = container.querySelector('#intervallEinheit').value;
             // Wenn beide Felder existieren, weiterarbeiten
-            if (startTimeInput && endTimeInput) {
+            if (startTimeInput.value && endTimeInput.value) {
                 console.log('Startzeit:', startTimeInput.value);
                 console.log('Endzeit:', endTimeInput.value);
                 if (startTimeInput.value && endTimeInput.value) {
