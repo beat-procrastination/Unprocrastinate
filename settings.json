@@ -30,13 +30,13 @@
   "screenshots": [
       {
           "src": "/Unprocrastinate/bilder/screenshotHandy.png",
-          "sizes": "405x718",
+          "sizes": "454x812",
           "type": "image/png",
           "form_factor": "narrow"  
       },
       {
           "src": "/Unprocrastinate/bilder/screenshotDeskop.png",
-          "sizes": "1442x810",
+          "sizes": "911x512",
           "type": "image/png",
           "form_factor": "wide"
       }
