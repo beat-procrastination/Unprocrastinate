@@ -800,7 +800,7 @@ width: 80%;
   
   .checkboxTimeBlocking:checked::before , .checkboxErinnerung:checked::before, .checkboxAusrede:checked::before{
     content: '✔'; 
-    font-size: 2.5vh; 
+    font-size: 1.75vh; 
     position: absolute;
     left: 50%;
     top: 50%;
