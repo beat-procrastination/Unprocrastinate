@@ -514,7 +514,7 @@ document.addEventListener('input', function (event) {
             if(zeitplanungDatum?.value && Intervall == 'Keine Wiederholung' && startTimeInput?.value){
                 
 // Kombinieren von Datum und Zeit
-const combinedDateTime = new Date(`${zeitplanungDatum}T${startTimeInput}:00`);
+const combinedDateTime = new Date(`${zeitplanungDatum.value}T${startTimeInput.value}:00`);
 
 // Aktuelles Datum und Zeit abrufen
 const now = new Date();
