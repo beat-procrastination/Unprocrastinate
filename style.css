@@ -306,16 +306,18 @@ width: 60vw;
   @media (orientation: landscape){
     .ausredeDates{
       width:14vw !important;
-      font-size: medium !important;
+      font-size: small !important;
     }
     .ausredeDatesContainer{
       width: 12.5vw !important;
     }
     .labelAusrede{
-      font-size: medium !important;
+      font-size: small !important;
     }
     .checkboxAusrede{
       width: 3.25vw  !important;
+      min-width: 25px !important;
+      margin-right: 0.5vw !important;
     }
     .ausredeName{
       width: 43vw !important;
@@ -326,7 +328,7 @@ width: 60vw;
   .ausredeDates{
   width:20vw ;
   margin-top: 0.5vh;
-  font-size: small;
+  font-size: x-small;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -687,7 +689,7 @@ width: 80%;
 }
 
 .labelAusrede{
-  font-size: small;
+  font-size: x-small;
 }
 
 
@@ -754,7 +756,7 @@ width: 80%;
 
 .checkboxErinnerung,  .checkboxAusrede{
     width: 4vw;
-    min-width: 25px;
+    min-width: 20px;
     aspect-ratio: 1 / 1;
     height:auto;
     border: 3px solid black;
@@ -766,6 +768,7 @@ width: 80%;
     cursor: pointer; 
     display: inline-block;
     position: relative;
+    margin-right: 1.5vw;
   }
   .checkboxTimeBlocking{
     width: 7vw;
