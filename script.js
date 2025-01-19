@@ -556,10 +556,10 @@ function startTimer(element) {
     }
    
     const stopButton = element.querySelector("#stop-buttonTimer");
-    stopButton.addEventListener("click", function() {
-        stopTimer();
-         
-    });
+    if (!stopButton.classList.contains("listener-added")) {
+        stopButton.addEventListener("click", stopTimer);
+        stopButton.classList.add("listener-added"); // Verhindere mehrfaches Hinzufügen
+    }
     
     const playButton = element.querySelector("#play-buttonTimer");
     const intervalInput = element.querySelector("#Intervall");
@@ -593,7 +593,7 @@ function startTimer(element) {
     }
   
     function startInterval() {
-        alert("Timer hat gestartet.");
+    
         isRunning = true;  
         myVar = setInterval(myTimer, intervalValue);
 
