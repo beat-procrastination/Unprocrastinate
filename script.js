@@ -591,7 +591,7 @@ function changeButtons(button){
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         //startTimer(button.parentNode.parentNode);
-        const now = new Date();
+        const now = Date.now();
         updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
         console.log("Timer wurde gestartet.");
     }
