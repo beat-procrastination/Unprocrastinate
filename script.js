@@ -424,18 +424,22 @@ function timeBlockingCheckTime(data, now){
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf, um diese zu senden. 
 function timerCheckTime(data, now){ //now ist in unix Epoch. 
     if(data.intervall && data.timerGestartet && data.wiederholungen){
+
+        console.log("1");
+
         const wiederholungen = Math.floor((now - data.timerGestartet) / (60 * 1000 * data.intervall));
         if(wiederholungen < data.wiederholungen){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde. 
-            timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall; 
-        
-            if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || timerNextUnix == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
+            timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall;  //Immer kleiner oder gleich now. 
+            
+            console.log("2");
+
+            if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || data.timerNotificationSend == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
                 updateStringInLocalStorage("timer", data.id, {timerNotificationSend: timerNextUnix});
                 sendNotification('Timer abgelaufen!',`Ihr Timer  „${data.nameTimer}“ ist abgelaufen`);
                 console.log(`Timer Benachrichtigung für "${data.nameTimer}" wurde gesendet.`);
             }
         }
     }
-    console.log("timerCheckTime() ausgeführt: data:")
     console.log("now " + now);
     console.log(data);
 }
