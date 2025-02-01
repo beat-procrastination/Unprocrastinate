@@ -578,7 +578,7 @@ if (combinedDateTime < now) {
 function changeButtons(button){
     const playButton = button.parentNode.querySelector("#play-buttonTimer");
     const stopButton = button.parentNode.querySelector("#stop-buttonTimer");
-    const timerID =  button.closest('.timerContainer').get.id;
+    const timerID =  button.closest('.timerContainer').id;
     console.log(timerID);
 
     if(playButton.classList.contains('hidden')){  //Der Timer wurde gestopt. 
