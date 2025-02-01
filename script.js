@@ -966,7 +966,7 @@ function createNewElementWithDataTimer(data) {
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
     originalDivTimer.id = `${data.id}`
-    const isRunning = data.timerGestartet + data.intervall * 60 * 1000 * wiederholungen> Date.now();
+    const isRunning = data.timerGestartet + data.intervall * 60 * 1000 * data.wiederholungen> Date.now();
     
     originalDivTimer.innerHTML = `
         <div class="timerHeadline">
@@ -1142,7 +1142,8 @@ function createNewElementErinnerung(containerId) {
     container.insertBefore(originalDivErinnerung, container.firstChild);
     saveDataErinnerung();  
 }
- //Timer
+
+//Timer
 function createNewElementTimer(containerId) {      
     const container = document.getElementById(containerId);
     const originalDivTimer = document.createElement('div');
@@ -1176,6 +1177,7 @@ function createNewElementTimer(containerId) {
     container.insertBefore(originalDivTimer, container.firstChild);
     saveDataTimer();  // Save the state immediately after creating a new element
 }
+
 //Blocking
 function createNewElementBlocking(containerId) {   
     const container = document.getElementById(containerId);
