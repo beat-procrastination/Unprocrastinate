@@ -428,7 +428,7 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
         console.log("1");
 
         const wiederholungen = Math.floor((now - data.timerGestartet) / (60 * 1000 * data.intervall));
-        if(wiederholungen < data.wiederholungen){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde. 
+        if(wiederholungen < data.wiederholungen && wiederholungen > 0){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde && Überprüft ob der Timer sich mindestens einmal wiederholt hat. 
             timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall;  //Immer kleiner oder gleich now. 
             
             console.log("2");
