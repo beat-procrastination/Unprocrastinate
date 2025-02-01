@@ -20,6 +20,10 @@ function isBeforeInstallPromptSupported() {
 
 // Funktion zum Anzeigen einer Benachrichtigung, wenn die App installiert werden kann
 function showInstallNotification() {
+    if (!('Notification' in window)) {
+        console.warn('Notifications werden in diesem Browser nicht unterstützt.');
+        return;
+    }
     if (Notification.permission === "granted") {
         // Nachricht in einer Variablen definieren
         const notification = {
@@ -65,13 +69,13 @@ if (isBeforeInstallPromptSupported()) {
         deferredPrompt = e;
         
         // Wenn die App noch nicht installiert ist, zeige die Benachrichtigung an
-        if (!isAppInstalled()) {
+        if (!isAppInstalled()  && 'Notification' in window) {
             showInstallNotification();  // Zeigt eine Benachrichtigung an
         }
     });
 } else {
     // Wenn der Browser das beforeinstallprompt nicht unterstützt, zeige die Benachrichtigung direkt an
-    if (!isAppInstalled()) {
+    if (!isAppInstalled()  && 'Notification' in window) {
         showInstallNotification();  // Zeige die Benachrichtigung an
     }
 }
@@ -84,7 +88,7 @@ addEventListener('appinstalled', () => {
 // Funktion zum Prüfen, ob die App bereits installiert wurde
 document.addEventListener('DOMContentLoaded', function() {
     // Wenn die PWA noch nicht installiert ist und das deferredPrompt vorhanden ist
-    if (deferredPrompt && !isAppInstalled()) {
+    if (deferredPrompt && !isAppInstalled()  && 'Notification' in window) {
         showInstallNotification();  // Zeige die Benachrichtigung an
     }
 });
@@ -307,7 +311,7 @@ function erinnerungCheckTime(data, now){
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
         if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){    
-            sendNotification('Ihre Erinnerung ist fällig!', `Bestätigen Sie, dass Sie mit ihrer Erinnerung „${data.name}“ angefangen haben!`); 
+            sendNotification('Ihre Erinnerung ist fällig!', `Bestätigen Sie, dass Sie mit Ihrer Erinnerung „${data.name}“ angefangen haben!`); 
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
@@ -477,7 +481,7 @@ function calculateTimeDiff(time1, time2){
         return milliseconds2 - milliseconds1;  
     }
     else{                                    // Erste Zeit ist größer als Zweite. Mitternacht wird überschritten
-        return (24 * 60 * 60 * 1000) - millis1 + millis2;     // 24 Stunden - erste Zei + zweite Zeit. Beispiel: 24:00 - 23:00 + 02:00 = 3 Stunden Differenz.
+        return (24 * 60 * 60 * 1000) - milliseconds1 + milliseconds2;     // 24 Stunden - erste Zei + zweite Zeit. Beispiel: 24:00 - 23:00 + 02:00 = 3 Stunden Differenz.
     }
 }
 
