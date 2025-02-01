@@ -1,3 +1,4 @@
+'use strict';
 const symbolButton = document.getElementById('symbolButton');
 const elementToShow = document.getElementById('elementToShow');
 const container = document.getElementById('container');
@@ -298,7 +299,7 @@ function erinnerungCheckTime(data, now){
         //Falls die im Local Storage gepeicherte Zeit mit der momentanen übereinstimmt, wird keine Benachrichtigung gesendet. 
         //Könnte als einziges Problem dazu führen, dass nur eine Ausrede erstellt wird, auch wenn  man die Erinnerung mehrere Tage am Stück verpasst hat, ohne die App zu öffnen. Das wäre aber sogar gut, da man somit nicht mit Ausreden zugespammt wird. Diese dienen ja schließlich nicht zu Dokumentation, sondern zur Selbstreflektion in dem Moment und zur Überredung doch noch anzufangen.
         if(now > startTime && (data.startNotificationSend < startTime || data.startNotificationSend == undefined)){    
-            sendNotification('Ihre Erinnerung ist fällig!', `Bestätigen Sie, dass Sie mit ihrer Erinnerung „${data.name}“ angefangen haben!`); 
+            sendNotification('Ihre Erinnerung ist fällig!', `Bestätigen Sie, dass Sie mit Ihrer Erinnerung „${data.name}“ angefangen haben!`); 
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
