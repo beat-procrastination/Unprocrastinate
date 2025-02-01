@@ -78,14 +78,28 @@ self.addEventListener('activate', event => {
       );      
 }); 
 
-// 4. Benachrichtigungen empfangen und anzeigen
+// 4. Benachrichtigungen empfangen und anzeigen (Service Worker)
 self.addEventListener('message', event => {
-    if (event.data && event.data.type === 'show-notification') {
-        self.registration.showNotification(event.data.title, {
-            body: event.data.body,
-            icon: '/Unprocrastinate/icons/192x192.png',
-            vibrate: [200, 100, 200], 
-            requireInteraction: true,
-        });
-    }
+  if (event.data && event.data.type === 'show-notification') {
+      // 🔴 Feature-Check für Safari/iOS hinzufügen
+      if (self.registration && typeof self.registration.showNotification === 'function') {
+          self.registration.showNotification(event.data.title, {
+              body: event.data.body,
+              icon: '/Unprocrastinate/icons/192x192.png',
+              vibrate: [200, 100, 200],
+              requireInteraction: true
+          });
+      } else {
+          // Fallback für Browser ohne Service-Worker-Notifications
+          console.warn('Service-Worker-Benachrichtigungen werden nicht unterstützt');
+          
+          // Optional: Direkte Notification-API als Fallback (funktioniert in Safari nur nach Nutzerinteraktion)
+          if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification(event.data.title, {
+                  body: event.data.body,
+                  icon: '/Unprocrastinate/icons/192x192.png'
+              });
+          }
+      }
+  }
 });
