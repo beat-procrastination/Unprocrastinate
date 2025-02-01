@@ -217,8 +217,10 @@ function fixieren(button) {
 
 // Ruft die Funktionen alle 3 Sekunden auf. 
 function checkElements() {
-    erinnerungCheck();
-    timeBlockingCheck();
+    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
+    erinnerungCheck(now);
+    timeBlockingCheck(now);
+    //timerCheck(now);
     console.log("Check", new Date().toLocaleTimeString());
 }
 
@@ -240,9 +242,8 @@ window.addEventListener("load", () => {
 const millisekundenBisAusrede = 600 * 1000;
 
 //Hauptfunktion Erinnerung, steuert den Rest. 
-function erinnerungCheck(){                          
+function erinnerungCheck(now){                          
     const data = JSON.parse(localStorage.getItem('erinnerung'));
-    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
     if (data) {
         data.forEach(item => {
             erinnerungCheckTime(item, now);
@@ -251,12 +252,20 @@ function erinnerungCheck(){
 }
 
 //Hauptfunktion Blocking, steuert den Rest. 
-function timeBlockingCheck(){                          
+function timeBlockingCheck(now){                          
     const data = JSON.parse(localStorage.getItem('blocking'));
-    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. Wird in Upix Epoch gespeichert.
     if (data) {
         data.forEach(item => {
             timeBlockingCheckTime(item, now);
+        });
+    }
+}
+
+function timerCheck(now){                          
+    const data = JSON.parse(localStorage.getItem('timer'));
+    if (data) {
+        data.forEach(item => {
+            timerCheckTime(item, now);
         });
     }
 }
@@ -398,6 +407,22 @@ function timeBlockingCheckTime(data, now){
     }
 }
 
+
+//Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf, um diese zu senden. 
+function timerCheckTime(data, now){ //now ist in unix Epoch. 
+    if(data.intervall && data.timerGestartet && data.wiederholungen){
+        const wiederholungen = Math.floor((now - data.timerGestartet) / (60 * 1000 * data.intervall));
+        if(wiederholungen < data.wiederholungen){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde. 
+            timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall; 
+        
+            if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || timerNextUnix == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
+                updateStringInLocalStorage("timer", data.id, {timerNotificationSend: timerNextUnix});
+                sendNotification('Timer abgelaufen!',`Ihr Timer  „${data.nameTimer}“ ist abgelaufen`);
+                console.log(`Timer Benachrichtigung für "${data.nameTimer}" wurde gesendet.`);
+            }
+        }
+    }
+}
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
 function unixToCheck(unix, intervallWert, intervallEinheit, now){    
@@ -721,17 +746,25 @@ function saveDataErinnerung() {   //Erinnerung
 function saveDataTimer() {  //Timer 
     const container = document.getElementById('timer-list');
     const timerElements = container.querySelectorAll('.timerContainer');
+
+    const existingData = JSON.parse(localStorage.getItem('timer')) || [];
     
     const data = Array.from(timerElements).map((element) => {
         const intervall = element.querySelector('#Intervall').value;
         const wiederholungen = element.querySelector('#wiederholungen').value;
         const nameTimer = element.querySelector('.timerName').value;
+
+        const existingDataSet = existingData.find(item => item.id === element.id);
         
         return {
             id: element.id,
             intervall: intervall,
             wiederholungen: wiederholungen,
             nameTimer: nameTimer,
+
+            //Diese Daten werden ohne sie zu ändern vom voherigen Arry übernommen, damit sie nicht verloren gehen. Falls kein vorheriger Arry existiert, werden sie als undefined definiert. 
+            timerGestartet: existingDataSet?.timerGestartet || undefined,
+            timerNotificationSend: existingDataSet?.timerNotificationSend || undefined,
         };
     });
     localStorage.setItem('timer', JSON.stringify(data));
