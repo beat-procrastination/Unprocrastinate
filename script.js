@@ -218,31 +218,40 @@ function fixieren(button) {
   
 //Erinnerung und Zeitplanung Benachrichtigungen ohne Play Button. 
 
-// Ruft die Funktionen alle 3 Sekunden auf. 
+// Ruft die Funktionen jede Minute auf. 
 function checkElements() {
     const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
     erinnerungCheck(now);
     timeBlockingCheck(now);
-    //timerCheck(now);
     console.log("Check", new Date().toLocaleTimeString());
 }
 
-let checkIntervallId;
+function checkTimer(){
+    const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
+    timerCheck(now);
+}
 
 // Start das Intervall, wenn die App geöffnet wird. 
 window.addEventListener("load", () => {
     const now = new Date();
     console.log("App geladen, Intervall gestartet.");  
-    const millisecondsToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds() + 1);
+    const millisecondsToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
     checkElements();
-    setTimeout(() => {
+
+    setTimeout(()=> {
+        checkTimer();
+        checkElements();
+        setInterval(checkTimer, 1000);
+    }, 4001)  //Wartet 4 Sekunden und 1 Millisekunde vor der ersten Ausführung. Der Nutzer soll keine Benachrichtigung bekommen, während die App noch nicht voll geladen hat. 
+
+    setTimeout(() => {   //Überprüft Erinnerung und Zeitplanung jede ganze Minute. 
         checkElements();
         setInterval(checkElements, 60000);
-    }, millisecondsToNextMinute);
+    }, millisecondsToNextMinute + 1); //+1 Millisekunde, um Bugs beim Vergleichen von Zeitpunkten zu verhindern. 
 });
 
 
-const millisekundenBisAusrede = 600 * 1000;
+const millisekundenBisAusrede = 600 * 1000;   //Die Zeit die nach der Startzeit vergeht, bis eine Ausrede erstellt wird.
 
 //Hauptfunktion Erinnerung, steuert den Rest. 
 function erinnerungCheck(now){                          
@@ -271,6 +280,7 @@ function timerCheck(now){
             timerCheckTime(item, now);
         });
     }
+    console.log("timerCheck() ausgeführt.")
 }
 
 //Konvertiert Datum und Zeit in Millisekunden seit 1970. 
