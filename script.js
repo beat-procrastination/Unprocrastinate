@@ -430,7 +430,6 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
             if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || data.timerNotificationSend == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
                 updateStringInLocalStorage("timer", data.id, {timerNotificationSend: timerNextUnix});
                 sendNotification('Timer abgelaufen!',`Ihr Timer  „${data.nameTimer}“ ist abgelaufen`);
-                console.log(`Timer Benachrichtigung für "${data.nameTimer}" wurde gesendet.`);
             }
         }
     }
@@ -493,6 +492,7 @@ function calculateTimeDiff(time1, time2){
         return (24 * 60 * 60 * 1000) - milliseconds1 + milliseconds2;     // 24 Stunden - erste Zei + zweite Zeit. Beispiel: 24:00 - 23:00 + 02:00 = 3 Stunden Differenz.
     }
 }
+
 
 document.addEventListener('input', function (event) {
     // Überprüfen, ob das Event von einem Input-Feld stammt
@@ -588,77 +588,6 @@ function changeButtons(button){
         console.log("Timer wurde gestartet.");
     }
 }
-
-/*function startTimer(element) {
-    let myVar;
-    let isRunning = false;  
-    let Wiederholungencounter = 0;
-    
-    function stopTimer() {
-        clearInterval(myVar);
-        isRunning = false;  
-        alert(`Timer wurde gestoppt.`);
-    }
-   
-    const stopButton = element.querySelector("#stop-buttonTimer");
-    if (!stopButton.classList.contains("listener-added")) {
-        stopButton.addEventListener("click", stopTimer);
-        stopButton.classList.add("listener-added"); // Verhindere mehrfaches Hinzufügen
-    }
-    
-    const playButton = element.querySelector("#play-buttonTimer");
-    const intervalInput = element.querySelector("#Intervall");
-    const Wiederholungen = element.querySelector("#wiederholungen");
-    const timerName = element.querySelector("#timerName");
-    const TimerNameValue = timerName.value;
-    const WiederholungenValue = parseInt(Wiederholungen.value);
-    const intervalValue = intervalInput.value * 60000;
-    
-    console.log(TimerNameValue);
-    console.log(WiederholungenValue);
-    console.log(intervalValue);
-    if (WiederholungenValue < 1 || intervalValue <= 0) {
-        alert("Bitte geben Sie gültige Werte ein für Intervall sowie Wiederholungen!");
-        changeButtons(playButton);
-        return;
-    }
-    
-    if (Notification.permission === "default") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                startInterval();
-            } else {
-                alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
-            }
-        });
-    } else if (Notification.permission === "granted") {
-        startInterval();
-    } else {
-        alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie die Benachrichtigungen.");
-    }
-  
-    function startInterval() {
-    
-        isRunning = true;  
-        myVar = setInterval(myTimer, intervalValue);
-
-        function myTimer() {
-            while (!isRunning) {
-            clearInterval(myVar);
-                return; }
-            
-            sendNotification('Timer abgelaufen!',`Ihr Timer  „${TimerNameValue}“ ist abgelaufen`);
-            Wiederholungencounter++;
-            if (Wiederholungencounter >= WiederholungenValue) {
-                clearInterval(myVar);
-                isRunning = false;  
-                changeButtons(playButton);
-                console.log(`Timer hat angehalten nach ${Wiederholungencounter} Wiederholungen.`);
-            }
-        }
-    }
-} 
-*/
 
 
 //Speichern: 
