@@ -424,15 +424,9 @@ function timeBlockingCheckTime(data, now){
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf, um diese zu senden. 
 function timerCheckTime(data, now){ //now ist in unix Epoch. 
     if(data.intervall && data.timerGestartet && data.wiederholungen){
-
-        console.log("1");
-
         const wiederholungen = Math.floor((now - data.timerGestartet) / (60 * 1000 * data.intervall));
         if(wiederholungen < data.wiederholungen && wiederholungen > 0){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde && Überprüft ob der Timer sich mindestens einmal wiederholt hat. 
             timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall;  //Immer kleiner oder gleich now. 
-            
-            console.log("2");
-
             if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || data.timerNotificationSend == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
                 updateStringInLocalStorage("timer", data.id, {timerNotificationSend: timerNextUnix});
                 sendNotification('Timer abgelaufen!',`Ihr Timer  „${data.nameTimer}“ ist abgelaufen`);
@@ -440,8 +434,6 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
             }
         }
     }
-    console.log("now " + now);
-    console.log(data);
 }
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
@@ -502,7 +494,6 @@ function calculateTimeDiff(time1, time2){
     }
 }
 
-
 document.addEventListener('input', function (event) {
     // Überprüfen, ob das Event von einem Input-Feld stammt
     if (event.target.tagName === 'INPUT') {
@@ -514,19 +505,20 @@ document.addEventListener('input', function (event) {
             const Intervall = container.querySelector('#intervallEinheit').value;
             if(erinnerungDatum?.value && Intervall == 'Keine Wiederholung' && time?.value){
                  // Kombinieren von Datum und Zeit
-    const combinedDateTime = new Date(`${erinnerungDatum.value}T${time.value}:00`);
+                const combinedDateTime = new Date(`${erinnerungDatum.value}T${time.value}:00`);
     
-    // Aktuelles Datum und Zeit abrufen
-    const now = new Date();
+                // Aktuelles Datum und Zeit abrufen
+                const now = new Date();
     
-    // Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
-    if (combinedDateTime < now) {
-        alert("Das Startdatum liegt in der Vergangenheit.");
+                // Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
+                if (combinedDateTime < now) {
+                    alert("Das Startdatum liegt in der Vergangenheit.");
                 }
             }
         
-        }}});
-
+        }
+    }
+});
 
 
 //timeBlocking check von differenz zwischen start und Endzeit und ob das Startdatum in der Vergangeheit ist
