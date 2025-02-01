@@ -211,7 +211,7 @@ function fixieren(button) {
 
 
 
-
+  
 //Erinnerung und Zeitplanung Benachrichtigungen ohne Play Button. 
 
 // Ruft die Funktionen alle 3 Sekunden auf. 
@@ -555,17 +555,21 @@ if (combinedDateTime < now) {
 
 //Timer Start
 function changeButtons(button){
-    var playButton = button.parentNode.querySelector("#play-buttonTimer");
-    var stopButton = button.parentNode.querySelector("#stop-buttonTimer");
+    const playButton = button.parentNode.querySelector("#play-buttonTimer");
+    const stopButton = button.parentNode.querySelector("#stop-buttonTimer");
+    const timerID =  button.closest('timerContainer');
+    const now = new Date();
 
-    if(playButton.classList.contains('hidden')){
+    if(playButton.classList.contains('hidden')){  //Der Timer wurde nicht gestartet. 
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
+        updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
         
-    } else if (stopButton.classList.contains('hidden')) {
+    } else if (stopButton.classList.contains('hidden')) {  //Der Timer wurde gestartet. 
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         startTimer(button.parentNode.parentNode);
+        updateStringInLocalStorage("timer", timerID, {timerGestartet: undefined});
     }
   }
 
@@ -939,11 +943,12 @@ function createNewElementWithDataTimer(data) {
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
     originalDivTimer.id = `${data.id}`
+    const isRunning = data.timerGestartet + data.intervall * 60 * 1000 * wiederholungen> Date.now();
     
     originalDivTimer.innerHTML = `
         <div class="timerHeadline">
-            <svg onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
-            <svg class="hidden"  id="stop-buttonTimer" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
+            <svg class="${isRunning ? '' : 'hidden'}" onclick="changeButtons(this)"  id="play-buttonTimer" class="play-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z" fill="#000000"></path> <path d="M16 12L10 16.3301V7.66987L16 12Z" fill="#000000"></path> </g></svg>
+            <svg class="${!isRunning ? '' : 'hidden'}"  id="stop-buttonTimer" onclick="changeButtons(this)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10"></circle> <line x1="10" y1="15" x2="10" y2="9"></line> <line x1="14" y1="15" x2="14" y2="9"></line> </g></svg>
             <input class="input-nameTimer timerName" placeholder="Name Timer" type="text" id="timerName" value="${data.nameTimer}">
             
             <div class="container">
