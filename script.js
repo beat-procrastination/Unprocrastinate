@@ -579,7 +579,7 @@ function changeButtons(button){
     const playButton = button.parentNode.querySelector("#play-buttonTimer");
     const stopButton = button.parentNode.querySelector("#stop-buttonTimer");
     const timerID =  button.closest('timerContainer');
-    const now = new Date();
+    console.log(timerID);
 
     if(playButton.classList.contains('hidden')){  //Der Timer wurde gestopt. 
         playButton.classList.remove('hidden');
@@ -591,6 +591,7 @@ function changeButtons(button){
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         //startTimer(button.parentNode.parentNode);
+        const now = new Date();
         updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
         console.log("Timer wurde gestartet.");
     }
