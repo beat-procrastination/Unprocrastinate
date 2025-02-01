@@ -585,16 +585,18 @@ function changeButtons(button){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
         updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
+        console.log("Timer wurde gestartet.");
         
     } else if (stopButton.classList.contains('hidden')) {  //Der Timer wurde gestartet. 
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-        startTimer(button.parentNode.parentNode);
+        //startTimer(button.parentNode.parentNode);
         updateStringInLocalStorage("timer", timerID, {timerGestartet: undefined});
+        console.log("Timer wurde gestoppt.");
     }
-  }
+}
 
-function startTimer(element) {
+/*function startTimer(element) {
     let myVar;
     let isRunning = false;  
     let Wiederholungencounter = 0;
@@ -663,7 +665,7 @@ function startTimer(element) {
         }
     }
 } 
-
+*/
 
 
 //Speichern: 
