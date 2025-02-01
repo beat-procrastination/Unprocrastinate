@@ -229,6 +229,7 @@ function checkElements() {
 function checkTimer(){
     const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
     timerCheck(now);
+    //console.log("checkTimer() ausgeführt.")
 }
 
 // Start das Intervall, wenn die App geöffnet wird. 
@@ -280,7 +281,6 @@ function timerCheck(now){
             timerCheckTime(item, now);
         });
     }
-    console.log("timerCheck() ausgeführt.")
 }
 
 //Konvertiert Datum und Zeit in Millisekunden seit 1970. 
@@ -435,6 +435,9 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
             }
         }
     }
+    console.log("timerCheckTime() ausgeführt: data:")
+    console.log("now " + now);
+    console.log(data);
 }
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
