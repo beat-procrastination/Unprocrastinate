@@ -423,9 +423,9 @@ function timeBlockingCheckTime(data, now){
 
 //Überprüft ob eine Benachrichtigung gesendet werden muss und ruft eine Funktion auf, um diese zu senden. 
 function timerCheckTime(data, now){ //now ist in unix Epoch. 
-    if(data.intervall && data.timerGestartet && data.wiederholungen){
+    if(data.intervall && data.timerGestartet && data.wiederholungen){  //Prüft ob alle nötigen Daten vorhanden sind
         const wiederholungen = Math.floor((now - data.timerGestartet) / (60 * 1000 * data.intervall));
-        if(wiederholungen < data.wiederholungen && wiederholungen > 0){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde && Überprüft ob der Timer sich mindestens einmal wiederholt hat. 
+        if(wiederholungen <= data.wiederholungen && wiederholungen > 0){   //Überprüft, ob die Anzahl der Wiederholungen des Timers überschritten wurde && Überprüft ob der Timer sich mindestens einmal wiederholt hat. 
             timerNextUnix = data.timerGestartet + wiederholungen * 60 * 1000 * data.intervall;  //Immer kleiner oder gleich now. 
             if(timerNextUnix > now - 5 * 1000 && (data.timerNotificationSend < timerNextUnix || data.timerNotificationSend == undefined)){   //Falls der momentane Zeitpunkt maximal 5 Sekunden größer ist, als der Zeitpunkt für die Benachrichtigung des Timers, wird  für die Benachrichtigung gesendet. Durch timerNotificationSend, wird sichergestellt, dass eine Benachrichtigung nicht zweimal gesendet wird. 
                 updateStringInLocalStorage("timer", data.id, {timerNotificationSend: timerNextUnix});
