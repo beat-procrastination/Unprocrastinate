@@ -87,7 +87,8 @@ self.addEventListener('message', event => {
               vibrate: [200, 100, 200],
               requireInteraction: true
           });
-      } else {
+      } 
+      else {
           // Fallback für Browser ohne Service-Worker-Notifications
           console.warn('Service-Worker-Benachrichtigungen werden nicht unterstützt');
           

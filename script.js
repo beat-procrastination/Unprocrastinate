@@ -42,14 +42,16 @@ function showInstallNotification() {
                         type: 'show-notification',
                         ...notification // Alle Eigenschaften der Benachrichtigung übergeben
                     });
-                } else {
+                } 
+                else {
                     console.warn('Service Worker ist aktiv, hat aber noch keine Kontrolle. Ein Neuladen ist notwendig.');
                     alert('Bitte laden Sie die Seite neu, um Benachrichtigungen zu aktivieren.');
                 
                 }
             });
         }
-    } else {
+    } 
+    else {
         // Berechtigung für Benachrichtigungen anfordern
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
@@ -73,7 +75,8 @@ if (isBeforeInstallPromptSupported()) {
             showInstallNotification();  // Zeigt eine Benachrichtigung an
         }
     });
-} else {
+} 
+else {
     // Wenn der Browser das beforeinstallprompt nicht unterstützt, zeige die Benachrichtigung direkt an
     if (!isAppInstalled()  && 'Notification' in window) {
         showInstallNotification();  // Zeige die Benachrichtigung an
@@ -121,7 +124,6 @@ if ('serviceWorker' in navigator) {
 
 // Function to send a notification
 function sendNotification(title, body) {
-    console.log("Sending Notification");
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
         // Send a message to the Service Worker
         console.log("Notification send to the service worker.");
@@ -130,7 +132,8 @@ function sendNotification(title, body) {
             title: title,
             body: body,
         });
-    } else {
+    } 
+    else {
         console.error('Service Worker not controlling the page.');
     }
 }
@@ -149,9 +152,10 @@ function showTool(toolId) {
 
 // tool1 wird beim ersten Laden als Startseite verwendet. 
 if (location.hash) {
-showTool(location.hash.substring(1));
-} else {
-showTool('tool1');
+    showTool(location.hash.substring(1));
+} 
+else {
+    showTool('tool1');
 }
   
 
@@ -178,10 +182,11 @@ function details(button){
 }
   
 function dropDownMenu(button) {
-    var dropdownMenu = button.parentNode.querySelector('.dropdown-content');
+    const dropdownMenu = button.parentNode.querySelector('.dropdown-content');
     if (dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.remove('hidden');
-    } else {
+    } 
+    else {
       dropdownMenu.classList.add('hidden');
     }
 }
@@ -189,24 +194,21 @@ function dropDownMenu(button) {
 
 
 function löschen(button) {
-    var parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
+    const parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
     parentElement.remove();
 }
 
   
   
 function fixieren(button) {
-
-    var dropdownMenus = document.querySelectorAll('.dropdown-content');
+    const dropdownMenus = document.querySelectorAll('.dropdown-content');
     dropdownMenus.forEach(function(menu) {
         menu.classList.add('hidden');
     });
 
+    const container = button.closest('.erinnerungListe, #timer-list, #blockingListe');
    
-    var container = button.closest('.erinnerungListe, #timer-list, #blockingListe');
-   
-    
-    var containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
+    const containerOfButton =  button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
 
     if (containerOfButton !== container.firstElementChild) {
         container.insertBefore(containerOfButton, container.firstElementChild);
@@ -229,7 +231,6 @@ function checkElements() {
 function checkTimer(){
     const now = Date.now(); //Momentaner Zeitpunkt wird gespeichert, verhindert kleine Verschiebungen der Zeitpunkte durch Verzögerungen des Codes. In Upix Epoch
     timerCheck(now);
-    //console.log("checkTimer() ausgeführt.")
 }
 
 // Start das Intervall, wenn die App geöffnet wird. 
@@ -325,6 +326,7 @@ function erinnerungCheckTime(data, now){
             console.log("Erinnerung wurde gesendet.");
             updateStringInLocalStorage("erinnerung", data.id, {startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
+
         if(now > startTime + millisekundenBisAusrede && data.checkboxErinnerung == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("erinnerung", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
@@ -351,9 +353,9 @@ function erinnerungCheckTime(data, now){
         }
         //Deaktiviert die Checkbox falls der beginn der Erinnerung mehr als 10 Minuten her ist und sie aktiviert ist.
         else if(!checkbox.disabled){ 
-                checkbox.disabled = true;
-                console.log("Checkbox wurde deaktiviert.")
-            }
+            checkbox.disabled = true;
+            console.log("Checkbox wurde deaktiviert.")
+        }
     }
 }
 
@@ -380,11 +382,13 @@ function timeBlockingCheckTime(data, now){
             console.log("Zeitblock hat begonnen.");
             updateStringInLocalStorage("blocking", data.id, { startNotificationSend: startTime});        //Speichert im LocalStorage das bereits eine startNotification für diesen Zeitblock gesendet wurde.
         }
+
         if(now > endTime && now < endTime + 600 * 1000 && (data.endNotificationSend < endTime || data.endNotificationSend == undefined)){     //Der Zeitblock ist um und es sind nicht mehr als 10 Minuten vergangen. Auch wenn man die Checkbox nicht angeklickt hat und auch nicht nachträglich angefangen hat, bekommt man dennoch die Nachricht, dass die Zeit um ist. Dies hilft auch der Reflexion, da es einen dazu anregt zu bedenken, was man den jetzt sonst so in dieser Zeit getan hat. 
             sendNotification('Ende Zeitplanung', `Ihre eingeplante Zeit „${data.nameBlocking} “ ist um!`);
             console.log("Zeitblock ist um.");
             updateStringInLocalStorage("blocking", data.id, { endNotificationSend: endTime}) ;        //Speichert im LocalStorage das bereits eine endNotification für diesen Zeitblock gesendet wurde.
         }
+
         if(now > startTime + millisekundenBisAusrede && data.checkboxBlocking == false && (data.ausredeErstellt < startTime + millisekundenBisAusrede || data.ausredeErstellt == undefined)){  //10 Minuten sind seit beginn des Zeitblocks vergangen und der Nutzer hat die Checkbox nicht abgehagt. Wird auch gesendet, wenn der Zeitblock bereits um ist. 
             console.log("Checkbox wurde innerhalb von 10 Minuten nicht abgehackt.");
             updateStringInLocalStorage("blocking", data.id, {ausredeErstellt: startTime + millisekundenBisAusrede});             //Speichert im LocalStorage das bereits eine Ausrede für diese Zeitplanung erstellt wurde. 
@@ -414,9 +418,9 @@ function timeBlockingCheckTime(data, now){
         }
         //Deaktiviert die Checkbox falls die Zeitplanung gerade nicht im gange ist.
         else if(!checkbox.disabled){ 
-                checkbox.disabled = true;
-                console.log("Checkbox wurde deaktiviert.")
-            }
+            checkbox.disabled = true;
+            console.log("Checkbox wurde deaktiviert.")
+        }
     }
 }
 
@@ -438,7 +442,6 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
             playButton.classList.remove('hidden');
             stopButton.classList.add('hidden');
             updateStringInLocalStorage("timer", data.id, {timerGestartet: undefined});
-            console.log("Alle Wiederholungen des Timers sind fertig.");
         }
     }   
 }
@@ -559,17 +562,18 @@ document.addEventListener('input', function (event) {
             }
             if(zeitplanungDatum?.value && Intervall == 'Keine Wiederholung' && startTimeInput?.value){
                 
-// Kombinieren von Datum und Zeit
-const combinedDateTime = new Date(`${zeitplanungDatum.value}T${startTimeInput.value}:00`);
+                // Kombinieren von Datum und Zeit
+                const combinedDateTime = new Date(`${zeitplanungDatum.value}T${startTimeInput.value}:00`);
 
-// Aktuelles Datum und Zeit abrufen
-const now = new Date();
+                // Aktuelles Datum und Zeit abrufen
+                const now = new Date();
 
-// Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
-if (combinedDateTime < now) {
-    alert("Das Startdatum liegt in der Vergangenheit.");
+                // Überprüfung: Ist das kombinierte Datum in der Vergangenheit?
+                if (combinedDateTime < now) {
+                    alert("Das Startdatum liegt in der Vergangenheit.");
+                }
             }
-        }}
+        }
     }
 });
 
@@ -579,7 +583,6 @@ function changeButtons(button){
     const playButton = button.parentNode.querySelector("#play-buttonTimer");
     const stopButton = button.parentNode.querySelector("#stop-buttonTimer");
     const timerID =  button.closest('.timerContainer').id;
-    console.log(timerID);
 
     if(playButton.classList.contains('hidden')){  //Der Timer wurde gestopt. 
         playButton.classList.remove('hidden');
@@ -626,11 +629,13 @@ document.addEventListener('DOMContentLoaded', function() {
             saveDataErinnerung();
         }
     });
+
     document.getElementById('timer-list').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
             saveDataTimer();
         }
     });
+    
     document.getElementById('blockingListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
             if(event.target.id == "timeBlockingDatum" || event.target.id == "startTime" || event.target.id == "endTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
@@ -642,6 +647,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveDataBlocking();
         }
     });
+
     document.getElementById('offeneAusredeListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
             saveDataOffeneAusrede();
@@ -1228,7 +1234,8 @@ function call(button, klasse) {
             for (let i = 1; i <= 10; i++) {
                 options.push(`Jeden ${i}. Tag`);
             }
-        } else if (type === 'Wöchentlich') {
+        } 
+        else if (type === 'Wöchentlich') {
             const defaultOption = document.createElement('option');
                 defaultOption.textContent = 'Bitte wählen...';
                 defaultOption.disabled = true; // Deaktiviert, damit sie nicht ausgewählt werden kann
@@ -1237,7 +1244,8 @@ function call(button, klasse) {
             for (let i = 1; i <= 10; i++) {
                 options.push(`Jede ${i}. Woche`);
             }
-        } else if (type === 'Monatlich') {
+        } 
+        else if (type === 'Monatlich') {
             const defaultOption = document.createElement('option');
             defaultOption.textContent = 'Bitte wählen...';
             defaultOption.disabled = true; // Deaktiviert, damit sie nicht ausgewählt werden kann
@@ -1246,7 +1254,8 @@ function call(button, klasse) {
             for (let i = 1; i <= 12; i++) {
                 options.push(`Jeden ${i}. Monat`);
             }
-        } else if (type === 'Jährlich') {
+        } 
+        else if (type === 'Jährlich') {
             const defaultOption = document.createElement('option');
             defaultOption.textContent = 'Bitte wählen...';
             defaultOption.disabled = true; // Deaktiviert, damit sie nicht ausgewählt werden kann
@@ -1255,7 +1264,8 @@ function call(button, klasse) {
             for (let i = 1; i <= 5; i++) {
                 options.push(`Jedes Jahr ${i}`);
             }
-        } else if (type === 'Keine Wiederholung') {
+        } 
+        else if (type === 'Keine Wiederholung') {
             intervallWertDiv.style.display = 'none';
         }
 
@@ -1277,7 +1287,8 @@ function call(button, klasse) {
             intervallWertDiv.style.display = 'block'; // Zeige das zweite Dropdown
             updateDetailsOptions(selectedValue); // Aktualisiere die Optionen im zweiten Dropdown
             lastSelectedRepeat = selectedValue; // Speichere die Auswahl
-        } else {
+        } 
+        else {
             intervallWertDiv.style.display = 'none'; // Verstecke das zweite Dropdown
         }
     });
