@@ -31,8 +31,7 @@ self.addEventListener('install', event => {
                   return fetch(url)
                       .then(response => {
                           if (!response.ok) {
-                              // Log the failed response status
-                              throw new Error(`Failed to fetch: ${url} - ${response.status} ${response.statusText}`);
+                              throw new Error(`Failed to fetch: ${url} - ${response.status} ${response.statusText}`); //Logge den Error. 
                           }
                           return cache.add(url);
                       })
@@ -53,7 +52,6 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
           return cachedResponse || fetch(event.request).catch(() => {
-            // Optionally, return a fallback page or asset
           });
         })
       );      
@@ -81,7 +79,7 @@ self.addEventListener('activate', event => {
 // 4. Benachrichtigungen empfangen und anzeigen (Service Worker)
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'show-notification') {
-      // 🔴 Feature-Check für Safari/iOS hinzufügen
+      // Feature-Check für Safari/iOS hinzufügen
       if (self.registration && typeof self.registration.showNotification === 'function') {
           self.registration.showNotification(event.data.title, {
               body: event.data.body,

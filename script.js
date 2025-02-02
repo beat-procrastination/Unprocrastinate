@@ -142,12 +142,12 @@ function showTool(toolId) {
   
     document.getElementById(toolId).style.display = 'block';
   
-    // Update the browser history
+    // Aktualisiert die browser history
     history.pushState({tool: toolId}, toolId, `#${toolId}`);
 }
   
 
-// Initialize the first tool as visible on page load
+// tool1 wird beim ersten Laden als Startseite verwendet. 
 if (location.hash) {
 showTool(location.hash.substring(1));
 } else {
@@ -582,7 +582,6 @@ function changeButtons(button){
     } else if (stopButton.classList.contains('hidden')) {  //Der Timer wurde gestartet. 
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
-        //startTimer(button.parentNode.parentNode);
         const now = Date.now();
         updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
         console.log("Timer wurde gestartet.");
@@ -594,21 +593,21 @@ function changeButtons(button){
 
 let uniqueIdCounter = parseInt(localStorage.getItem('uniqueIdCounter')) || 0;  //ID counter für alle Elemente 
 
-//Add Eventlisteners when loading the page. For DropdownMenues and Loading and Saving Data
+//Füge EventListeners hinzu, wenn die Seite geladen wird. Zum Speichern und Laden von Daten und für DrowpdownMenüs. 
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Add event listener to close all dropdownMenues when user clicks somewhere on the page.
+    //EventListener um alle DropdownMenüs zu schließen, wenn der Nutzer irgendwo auf die Seite klickt. Alle DropdownMenüs werden durch Klicks zuerst geschlossen, bevor danach durch den Klick eventuell ein neue DropdownMenüe geöffnet wird. 
     document.addEventListener('click', function() {
         schließeAlleDropdownMenues(document.querySelector('#erinnerungListe'));
     },true);
     
-    // Load saved data when the page loads
+    // Erstelle Elemente mit den gespeicherten Daten, wenn die Seite geladen wird. (Lädt die gespeicherten Daten.)
     loadDataErinnerung();
     loadDataTimer();
     loadDataBlocking();
     loadDataOffeneAusrede();
     
-    // Add event listeners to save data automatically on input change
+    // EventListeners um bei einem Input Daten automatisch zu speichern. 
     document.getElementById('erinnerungListe').addEventListener('input', function(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
             if(event.target.id == "inputDate" || event.target.id == "inputTime"){  //Verhindert, dass eine Benachrichtigung oder Ausrede für die Vergangenheit erstellt wird, falls der Startzeitpunkt in der Vergangenheit liegt. Hierfür wird, sobald man etwas am startDatum oder der startUhrzeit ändert, im LocalStorage für die Benachrichtigung und Ausrede, der momentanen Zeitpunkt gespeichert. Somit kann nichts für einen Vorherigen Zeitpunkt erstellt werden.
@@ -653,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Function to save data to localStorage 
+//Funktionen um die Daten der Elemente der unterschiedlichen Tools im localStorage zu speichern. 
 
 function saveDataErinnerung() {   //Erinnerung
     const container = document.getElementById('erinnerungListe');
@@ -787,7 +786,7 @@ function saveDataOffeneAusrede() {   //offeneAusrede
 }
 
 
-// Function to load data from localStorage
+// Funktionen um neue Elemente mithilfe der gespeicherten Daten zu erstellen. (Die gespeicherten Elemente zu laden.)
 
 function loadDataErinnerung() {   //Erinnerung
     const data = JSON.parse(localStorage.getItem('erinnerung'));
@@ -827,7 +826,7 @@ function loadDataOffeneAusrede() {   //offeneAusrede
 
 
 
-// Function to create a new element and populate it with data
+//Funktionen um neue Elemente mit den gespeicherten Daten zu erstellen. 
 //Erinnerung
 function createNewElementWithDataErinnerung(data) {  
     const container = document.getElementById('erinnerungListe');
@@ -1004,15 +1003,14 @@ function createNewElementWithDataOffeneAusrede(data) {
 }
 
 
-// Function to create a new element when the button is pressed
+//Funktionen um neue, leere Elemente zu erstellen, wenn der Button "Neues Element" geklickt wird. 
 //Erinnerung
 function createNewElementErinnerung(containerId) {   
     const container = document.getElementById(containerId);
     const originalDivErinnerung = document.createElement('div');
     originalDivErinnerung.className = 'erinnerungContainer';
 
-    originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Increment the counter
-    // Save the updated counter value in localStorage
+    originalDivErinnerung.id = `erinnerung-${uniqueIdCounter++}`; // Erhöht den Zählerstand um 1. Hängt den momentanen Zählerstand daraufhin hinten an die ID.  
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivErinnerung.innerHTML = `
@@ -1071,8 +1069,7 @@ function createNewElementTimer(containerId) {
     const originalDivTimer = document.createElement('div');
     originalDivTimer.className = 'timerContainer';
     
-    originalDivTimer.id = `timer-${uniqueIdCounter++}`; // Increment the counter
-    // Save the updated counter value in localStorage
+    originalDivTimer.id = `timer-${uniqueIdCounter++}`; // Erhöht den Zählerstand um 1. Hängt den momentanen Zählerstand daraufhin hinten an die ID.
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
 
     originalDivTimer.innerHTML = `
@@ -1097,7 +1094,7 @@ function createNewElementTimer(containerId) {
         </div>
     `;
     container.insertBefore(originalDivTimer, container.firstChild);
-    saveDataTimer();  // Save the state immediately after creating a new element
+    saveDataTimer();  
 }
 
 //Blocking
@@ -1106,8 +1103,7 @@ function createNewElementBlocking(containerId) {
     const originalDivBlocking = document.createElement('div');
     originalDivBlocking.className = 'blockingContainer';
     
-    originalDivBlocking.id = `blocking-${uniqueIdCounter++}`; // Increment the counter
-    // Save the updated counter value in localStorage
+    originalDivBlocking.id = `blocking-${uniqueIdCounter++}`; // Erhöht den Zählerstand um 1. Hängt den momentanen Zählerstand daraufhin hinten an die ID.
     localStorage.setItem('uniqueIdCounter', uniqueIdCounter);
     
     originalDivBlocking.innerHTML = `
@@ -1161,7 +1157,7 @@ function createNewElementBlocking(containerId) {
     </div>
     `;
     container.insertBefore(originalDivBlocking, container.firstChild);
-    saveDataBlocking();  // Save the state immediately after creating a new element
+    saveDataBlocking();  
     
 }
 
@@ -1171,8 +1167,8 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
     const originalDivOffeneAusrede = document.createElement('div');
     originalDivOffeneAusrede.className = 'offeneAusredeContainer';
 
-    originalDivOffeneAusrede.id = `ausrede-${uniqueIdCounter++}`; // Increment the counter
-    localStorage.setItem('uniqueIdCounter', uniqueIdCounter); // Save the updated counter value in localStorage
+    originalDivOffeneAusrede.id = `ausrede-${uniqueIdCounter++}`; // Erhöht den Zählerstand um 1. Hängt den momentanen Zählerstand daraufhin hinten an die ID.
+    localStorage.setItem('uniqueIdCounter', uniqueIdCounter); 
     
     //Speichert die festen Daten der Ausrede im LocalStorage. Diese werden beim ersten Erstellen der Ausrede definiert und können sich später nicht mehr ändern. 
     const neuesElement = {
@@ -1200,11 +1196,11 @@ function createNewElementOffeneAusrede(ausredeName, ausredeTime, ausredeDate) {
         </div>
     `;
     container.insertBefore(originalDivOffeneAusrede, container.firstChild);
-    saveDataOffeneAusrede();  // Save the state immediately after creating a new element 
+    saveDataOffeneAusrede();  
 }
 
 
-//Intervall Select 
+//Intervall Auswahl 
 
 function call(button, klasse) {
     let repeatSelect = button.parentNode.parentNode.querySelector("#intervallEinheit");
@@ -1213,7 +1209,7 @@ function call(button, klasse) {
     const parentElement = button.closest('.timerContainer, .blockingContainer, .erinnerungContainer');
 
     function updateDetailsOptions(type) {
-        detailsSelect.innerHTML = ''; // Clear previous options
+        detailsSelect.innerHTML = ''; // Leere die vorherigen Optionen. 
         let options = [];
         if (type === 'Täglich') {
             const defaultOption = document.createElement('option');
@@ -1255,7 +1251,7 @@ function call(button, klasse) {
             intervallWertDiv.style.display = 'none';
         }
 
-        // Add options to the second dropdown
+        // Füge die Optionen für den Wert des Intervalls zum 2. Dropdown hinzu. 
         options.forEach(optionText => {
             const option = document.createElement('option');
             option.textContent = optionText;
@@ -1263,7 +1259,7 @@ function call(button, klasse) {
         });
     }
 
-    // Event listener for first dropdown
+    // EventListener für den 1. Dropdown.
     repeatSelect.addEventListener('click', function() {
         const selectedValue = repeatSelect.value;
         lastSelectedDetail = '';
@@ -1290,7 +1286,7 @@ function call(button, klasse) {
     });
 }    
 
-//autoResize 
+//autoResize: automatisch Textfelder skalieren. 
 function autoResize(textarea) {
     textarea.style.setProperty('height', textarea.scrollHeight + 'px', 'important');
   }
