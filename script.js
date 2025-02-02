@@ -432,7 +432,15 @@ function timerCheckTime(data, now){ //now ist in unix Epoch.
                 sendNotification('Timer abgelaufen!',`Ihr Timer  „${data.nameTimer}“ ist abgelaufen`);
             }
         }
-    }
+        if(data.timerNotificationSend >= data.wiederholungen * data.intervall * 60 * 1000 + data.timerGestartet){  //Die letzte Benachrichtigung wurde gesendet. Der Stop-Button wird durch den Play-Button ersetzt. 
+            const playButton = document.getElementById(data.id).querySelector('#play-buttonTimer');
+            const stopButton = document.getElementById(data.id).querySelector('#stop-buttonTimer');
+            playButton.classList.remove('hidden');
+            stopButton.classList.add('hidden');
+            updateStringInLocalStorage("timer", data.id, {timerGestartet: undefined});
+            console.log("Alle Wiederholungen des Timers sind fertig.");
+        }
+    }   
 }
 
 // Berechnet und gibt den Unix Timestamp zurück, für die späteste Wiederholung, für die es bei Intervallen eine Benachrichtigung senden muss. Falls kein Intervall existiert oder nicht richtig definiert ist, gibt es die Startzeit, die man als ersten Parameter als Unix Timestamp angeben muss, zurück. 
