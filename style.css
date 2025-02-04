@@ -913,3 +913,39 @@ option {
 #inputTime, #inputDate, #endTime, #startTime{
   height: 47% !important;
 }
+
+
+input {
+  border: 2px solid #252525 !important; /* Sichtbarer Rahmen */
+  box-shadow: none !important; /* Überschreiben Sie vorhandene Schatten */
+}
+
+/* Für Safari-spezifische Korrektur: */
+@supports (-webkit-touch-callout: none) {
+  input[type="date"],
+  input[type="time"] {
+    -webkit-appearance: none; /* Safari-Standardstyling deaktivieren */
+    appearance: none;
+  }
+}
+#inputDate:not(:focus):invalid::before,
+#timeBlockingDatum:not(:focus):invalid::before,
+#endDate:not(:focus):invalid::before {
+  content: attr(placeholder); /* Platzhalter-Text anzeigen */
+  color: #666;
+  position: absolute;
+  pointer-events: none;
+  margin-left: 12px;
+}
+
+/* Für Safari-Datumsfelder: */
+#inputDate::-webkit-datetime-edit,
+#timeBlockingDatum::-webkit-datetime-edit,
+#endDate::-webkit-datetime-edit {
+  color: transparent; /* Standard-Text ausblenden */
+}
+#intervallEinheit {
+  width: 100% !important; /* Volle Breite */
+  
+   
+}

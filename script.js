@@ -577,14 +577,14 @@ function changeButtons(button){
         playButton.classList.remove('hidden');
         stopButton.classList.add('hidden');
         updateStringInLocalStorage("timer", timerID, {timerGestartet: undefined});
-        console.log("Timer wurde gestoppt.");
+        alert("Timer wurde gestoppt.");
         
     } else if (stopButton.classList.contains('hidden')) {  //Der Timer wurde gestartet. 
         stopButton.classList.remove('hidden');
         playButton.classList.add('hidden');
         const now = Date.now();
         updateStringInLocalStorage("timer", timerID, {timerGestartet: now});
-        console.log("Timer wurde gestartet.");
+        alert("Timer wurde gestartet.");
     }
 }
 
