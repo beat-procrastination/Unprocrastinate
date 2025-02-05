@@ -518,7 +518,7 @@ function calculateTimeDiff(time1, time2){
 
 document.addEventListener('input', function (event) {
     // Überprüfen, ob das Event von einem Input-Feld stammt
-    if (event.target.tagName === 'INPUT') {
+    if (event.target.tagName === 'INPUT' && event.target.type !== 'checkbox') {
         // Den spezifischen Erinnerungs-containe finden
         const container = event.target.closest('.erinnerungContainer');
         if (container) {

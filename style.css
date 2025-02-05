@@ -191,7 +191,7 @@ h1, h2, svg, label, .neuesElement, .erinnerungContainer, .timerContainer, .block
   
   
   input, select{
-  border:2px solid transparent;
+  border:2px solid transparent !important;
   box-shadow: 0 0 0 2px black;
   background-color: var(--farbe);
   }
@@ -914,12 +914,6 @@ option {
   height: 47% !important;
 }
 
-
-input, select {
-  border: 2px solid #252525 !important; /* Sichtbarer Rahmen */
-  box-shadow: none !important; /* Überschreiben Sie vorhandene Schatten */
-  border-radius: 7%;
-}
 
 /* Für Safari-spezifische Korrektur: */
 @supports (-webkit-touch-callout: none) {

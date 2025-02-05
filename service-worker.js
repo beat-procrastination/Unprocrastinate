@@ -85,7 +85,12 @@ self.addEventListener('message', event => {
               body: event.data.body,
               icon: '/Unprocrastinate/icons/192x192.png',
               vibrate: [200, 100, 200],
-              requireInteraction: true
+              requireInteraction: true,
+              renotify: true,
+              priority: 'high',
+              data: {
+                url:'/https://beat-procrastination.github.io/Unprocrastinate/'
+              }
           });
       } 
       else {
@@ -99,6 +104,19 @@ self.addEventListener('message', event => {
                   icon: '/Unprocrastinate/icons/192x192.png'
               });
           }
-      }
+      }self.addEventListener('notificationclick', event => {
+        event.notification.close();
+              event.waitUntil(
+          clients.matchAll({ type: 'window' }).then(clients => {
+            const appClient = clients.find(c => c.url.includes('https://beat-procrastination.github.io/Unprocrastinate/'));
+      
+            if (appClient) {
+              return appClient.focus();
+            } else {
+              return clients.openWindow(event.notification.data.url);
+            }
+          })
+        );
+      });
   }
 });
