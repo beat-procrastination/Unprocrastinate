@@ -918,6 +918,7 @@ option {
 input, select {
   border: 2px solid #252525 !important; /* Sichtbarer Rahmen */
   box-shadow: none !important; /* Überschreiben Sie vorhandene Schatten */
+  border-radius: 7%;
 }
 
 /* Für Safari-spezifische Korrektur: */
@@ -925,6 +926,7 @@ input, select {
   input[type="date"],
   input[type="time"],
   select {
+    
     -webkit-appearance: none; /* Safari-Standardstyling deaktivieren */
     appearance: none;
   }
@@ -939,9 +941,3 @@ input, select {
   margin-left: 12px;
 }
 
-
-#intervallEinheit {
-  width: 100% !important; /* Volle Breite */
-  
-   
-}
