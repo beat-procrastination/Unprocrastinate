@@ -83,6 +83,7 @@ else {
     }
 }
 
+
 // Event, wenn die App installiert wurde
 addEventListener('appinstalled', () => {
     console.log('App wurde installiert');
@@ -95,6 +96,16 @@ document.addEventListener('DOMContentLoaded', function() {
         showInstallNotification();  // Zeige die Benachrichtigung an
     }
 });
+
+
+// ios einschränkungen warnung
+
+if (/iP(hone|od|ad)/.test(navigator.platform) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+  alert("Auf iOS-Geräten sind einige Funktionen der Web App nur begrenzt verfügbar.");
+}
+
+
 // Service Worker für irgendwas
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
