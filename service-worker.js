@@ -86,7 +86,6 @@ self.addEventListener('message', event => {
               icon: '/Unprocrastinate/icons/192x192.png',
               vibrate: [200, 100, 200],
               requireInteraction: true,
-              renotify: true,
               priority: 'high',
               data: {
                 url:'https://beat-procrastination.github.io/Unprocrastinate/'

@@ -914,9 +914,6 @@ option {
 }
 
 
-input, select {
-  border: 2px solid #252525 ; /* Sichtbarer Rahmen */
-}
 
 /* Für Safari-spezifische Korrektur: */
 @supports (-webkit-touch-callout: none) {
