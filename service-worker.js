@@ -89,7 +89,7 @@ self.addEventListener('message', event => {
               renotify: true,
               priority: 'high',
               data: {
-                url:'/https://beat-procrastination.github.io/Unprocrastinate/'
+                url:'https://beat-procrastination.github.io/Unprocrastinate/'
               }
           });
       } 
@@ -103,7 +103,7 @@ self.addEventListener('message', event => {
                   body: event.data.body,
                   icon: '/Unprocrastinate/icons/192x192.png'
               });
-          }
+          }}
       }self.addEventListener('notificationclick', event => {
         event.notification.close();
               event.waitUntil(
@@ -119,4 +119,4 @@ self.addEventListener('message', event => {
         );
       });
   }
-});
+);

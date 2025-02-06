@@ -915,6 +915,12 @@ option {
 }
 
 
+input, select {
+  border: 3px solid #252525; /* Sichtbarer Rahmen */
+  box-shadow: none; 
+
+}
+
 /* Für Safari-spezifische Korrektur: */
 @supports (-webkit-touch-callout: none) {
   input[type="date"],
@@ -924,7 +930,7 @@ option {
     -webkit-appearance: none; /* Safari-Standardstyling deaktivieren */
     appearance: none;
   }
-}
+
 #inputDate:not(:focus):invalid::before,
 #timeBlockingDatum:not(:focus):invalid::before,
 #endDate:not(:focus):invalid::before {
@@ -934,4 +940,4 @@ option {
   pointer-events: none;
   margin-left: 12px;
 }
-
+}
