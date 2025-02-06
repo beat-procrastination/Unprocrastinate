@@ -191,7 +191,7 @@ h1, h2, svg, label, .neuesElement, .erinnerungContainer, .timerContainer, .block
   
   
   input, select{
-  border:2px solid transparent !important;
+  border:2px solid transparent;
   box-shadow: 0 0 0 2px black;
   background-color: var(--farbe);
   }
