@@ -915,22 +915,19 @@ option {
 }
 
 
-input, select {
-  border: 3px solid #252525; /* Sichtbarer Rahmen */
-  box-shadow: none; 
-
+input {
+  border: 2px solid #252525 !important; /* Sichtbarer Rahmen */
+  box-shadow: none !important; /* Überschreiben Sie vorhandene Schatten */
 }
 
 /* Für Safari-spezifische Korrektur: */
 @supports (-webkit-touch-callout: none) {
   input[type="date"],
-  input[type="time"],
-  select {
-    
+  input[type="time"] {
     -webkit-appearance: none; /* Safari-Standardstyling deaktivieren */
     appearance: none;
   }
-
+}
 #inputDate:not(:focus):invalid::before,
 #timeBlockingDatum:not(:focus):invalid::before,
 #endDate:not(:focus):invalid::before {
@@ -940,4 +937,10 @@ input, select {
   pointer-events: none;
   margin-left: 12px;
 }
+
+/* Für Safari-Datumsfelder: */
+#inputDate::-webkit-datetime-edit,
+#timeBlockingDatum::-webkit-datetime-edit,
+#endDate::-webkit-datetime-edit {
+  color: transparent; /* Standard-Text ausblenden */
 }
