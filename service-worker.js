@@ -1,4 +1,4 @@
-//Name des Caches
+// Name des Caches
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
   '/Unprocrastinate/index.html',
@@ -104,19 +104,21 @@ self.addEventListener('message', event => {
                   icon: '/Unprocrastinate/icons/192x192.png'
               });
           }}
-      }self.addEventListener('notificationclick', event => {
-        event.notification.close();
-              event.waitUntil(
-          clients.matchAll({ type: 'window' }).then(clients => {
+      }
+});
+
+// 5. Benachrichtigungs-Klick-Event
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(clients => {
             const appClient = clients.find(c => c.url.includes('https://beat-procrastination.github.io/Unprocrastinate/'));
       
             if (appClient) {
-              return appClient.focus();
+                return appClient.focus();
             } else {
-              return clients.openWindow(event.notification.data.url);
+                return clients.openWindow(event.notification.data.url);
             }
-          })
-        );
-      });
-  }
-);
+        })
+    );
+});
