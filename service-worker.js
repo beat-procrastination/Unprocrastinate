@@ -102,6 +102,8 @@ self.addEventListener('message', event => {
                   body: event.data.body,
                   icon: '/Unprocrastinate/icons/192x192.png'
               });
+          }else{
+            Notification.requestPermission();
           }}
       }
 });

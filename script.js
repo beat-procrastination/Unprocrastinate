@@ -104,6 +104,17 @@ if (/iP(hone|od|ad)/.test(navigator.platform) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
   alert("Auf iOS-Geräten sind einige Funktionen der Web App nur begrenzt verfügbar.");
 }
+if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent) && 
+    navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i)) {
+    
+    const inputStyles = window.getComputedStyle(document.querySelector('input'));
+    const select = document.querySelector('select');
+
+    // Übertrage relevante Styles
+    ['border', 'boxShadow', 'backgroundColor', 'fontSize', 'padding'].forEach(prop => {
+        select.style[prop] = inputStyles[prop];
+    });
+}
 
 
 // Service Worker für irgendwas
