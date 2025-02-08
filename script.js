@@ -106,14 +106,20 @@ if (/iP(hone|od|ad)/.test(navigator.platform) ||
 }
 if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent) && 
     navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i)) {
-    
-    const inputStyles = window.getComputedStyle(document.querySelector('input'));
-    const select = document.querySelector('select');
 
-    // Übertrage relevante Styles
-    ['border', 'boxShadow', 'backgroundColor', 'fontSize', 'padding'].forEach(prop => {
-        select.style[prop] = inputStyles[prop];
-    });
+    const inputs = document.querySelectorAll('input');
+    const selects = document.querySelectorAll('select');
+
+    if (inputs.length > 0 && selects.length > 0) {
+        inputs.forEach((input, index) => {
+            const inputStyles = window.getComputedStyle(input);
+            const select = selects[index] || selects[0]; // Falls weniger <select> als <input> existieren
+
+            ['border', 'boxShadow', 'backgroundColor', 'fontSize', 'padding'].forEach(prop => {
+                select.style[prop] = inputStyles[prop];
+            });
+        });
+    }
 }
 
 
